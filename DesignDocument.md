@@ -138,11 +138,52 @@ Create a list of all features that the app should achieve. Include all the ideas
 
 the user stories (features) must be categorized by priority as:
 
-### Must develop
+**Must develop**
 
-### Would like to develop
+Farm Technician:
 
-### Could develop if time permits
+- As a farm technician, I want to be able to read temperature values so that I can be informed.
+- As a farm technician, I want to be able to read humidity values so that I can be informed.
+- As a farm technician, I want to be able to read ground moisture values so that I can be informed.
+- As a farm technician, I want to be able to control my fan from the app so that I can control the temperature.As a farm technician, I want to be able to control my light from the app to control the luminosity.
+- As a farm technician, I want to be able to read my fan state from the app so that I can make any changes.
+- As a farm technician, I want to be able to read my light state from the app so that I can make any changes.
+- As a farm technician, I want to be able to set whether actuators are automatically set or manually set when a limit is reached so that I can add the most amount of customization to the app.
+- As a farm technician, I want to be able to log in to my account and see all of my information so that my experience is personalized and isn’t the same regardless of the account.
+- As a farm technician, I want to have all my sensor values be displayed in a main dashboard so that I can easily see if my operations are running smoothly.
+- As a farm technician, I want to be able to see each section of my pods (plants, security, geo-location) on their own dashboard so that I can see more in-depth information about each.
+
+Fleet Owner
+
+- As a fleet owner, I want to see the exact location of the container via the GPS location tracker in a neatly displayed format so that it’s easy-to-read.
+- As a fleet owner wants to get notified if the pitch and roll angle reach a certain amount during transportation to know if the transport company made any errors.
+- As a fleet owner I want to get notified if the pitch and roll angle changes after installation to see if there is any issue with the land that it was installed on for a quick response.
+- As a fleet owner I want to get live pitch and roll angles displayed on the app to see if there are any potential issues.
+- As a fleet owner I want to get live vibrations levels displayed in the app in case of potential issues
+- As the fleet owner I want to get notified if the vibration levels get to a certain amount after installation of the container in case that there is an event happening while not looking at the app
+- As the fleet owner I want to get notified if the vibration levels get to a certain amount during transportation of the container to make sure that there wasn’t any incidence.
+- As a fleet owner I want to see the state of the buzzer through the app in case someone left it on or off at the wrong times
+- As a fleet owner I want to control the buzzer’s state through the app to turn the buzzer off or on incase someone left it on or off
+- As a fleet owner I want all features mentioned to be only accessible to fleet owners to ensure the security of the container
+- As a fleet owner I want to be able to check if the doors of the container are opened or closed to ensure expected behavior
+- As a fleet owner I want to be able to check if the doors of a container are locked to ensure security of the container
+- As a fleet owner I want to be notified whenever a door is opened in the container to ensure nothing unexpected happens
+- As a fleet owner I want to be able to set a doors locked state in the container to ensure no unauthorized users obtain access
+  **Would like to develop**
+
+- As a farm technician, I want to be able to receive notifications about limits I set on my sensors so that I can then use the correct actuators to resolve the situation.
+- As a farm technician, I want to receive push notifications to my device whenever any notification occurs, so I can be alerted of any behaviors that are unexpected
+- As a farm technician, I want to be able to set limits on my sensor values so that I get notifications when the values exceed certain thresholds.
+- As a farm technician, I want to be able to have all my pods accessible on the same app so that I can have different growing conditions in each without having to make a new account for each pod. As a farm technician, I want to be able to delete notifications so that they don’t clutter
+
+**Could develop if time permits**
+
+- As a farm technician, I want to be able to reset my password in case I forget it so that I don’t get locked out of my account.
+- As a farm technician, I want to be able to set tasks in the app to act as reminders.
+- As a farm technician, I want to be able to sort my tasks by the pod they are for so that I can see what needs to be done where.As a farm technician, I want to be able to sort my tasks by status (today, upcoming & completed) so that I can better plan out my days.
+- As a farm technician, I want to be able to delete a task so that they don’t clutter.
+- As a farm technician, I want to be able to edit a task in case I made a mistake.
+- As a farm technician, I want to be able to organize my notifications by the pod they came from so that I can know what incident happened where.As a farm technician, I want to be able to edit the setting (color, name) of each of my pods so that I can differentiate them easily.
 
 ### Likely would not develop because of lack time or knowledge
 
