@@ -20,25 +20,25 @@ As a general overview, here is the screen relations diagram. Each page is descri
 
 #### Login
 
-![Login Page](/src/images/login_page.jpg)
+![Login Page](/src/images/login_page.JPG)
 
 The login screen is the first page that users will see when they open the application. It allows them to log in using their credentials. Once properly authenticated, users will then be navigated to the [home page](#Home).
 
 #### Navigation
 
-![Navigation bar](/src/images/nav.jpg)
+![Navigation bar](/src/images/nav.JPG)
 
 The navigation bar at the bottom of the screen allows users to navigate to the [home page](#home), the [tasks page](#tasks), the [notifications page](#notifications) and the [tools page](#tools). This same navigation bar is accessible on all pages other than the [login page](#login).
 
 #### Account
 
-![Account](/src/images/account.jpg)
+![Account](/src/images/account.JPG)
 
 By selecting the account icon at the top right of any page, the user will be redirected to the account page. On this page, the user will be able to see and edit their account information and credentials.
 
 #### Home
 
-![Home](/src/images/home.jpg)
+![Home](/src/images/home.JPG)
 
 Once on the home page, users can then navigate to another page, select a pod and/or see their tasks for the day. By selecting a pod, the user is then redirected to the [pod dashboard page](#dashboard). Selecting the task view will redirect the user to [task page](#tasks).
 
@@ -46,7 +46,7 @@ Once on the home page, users can then navigate to another page, select a pod and
 
 ##### Dashboard
 
-![Pod Dashboard](/src/images/pod_dashboard.jpg)
+![Pod Dashboard](/src/images/pod_dashboard.JPG)
 
 The pod dashboard page displays all sensor readings for the three categories of the app ([plants](#plants), geo-locations & security). This allows the user to get a quick overview of their pod before accessing a specific category. These categories can be accessed by selecting the appropriate tab at the top of the screen or by selecting the respective section in the body of the page. Selecting a category will redirect the user to the appropriate page. 
 
@@ -72,19 +72,19 @@ The manual and auto values are controlled by pop ups.
 
 ###### Pop up 1
 
-![Pod Plants Pop up 1](/src/images/pod_plants_popup1.jpg)
+![Pod Plants Pop up 1](/src/images/pod_plants_popup1.JPG)
 
 The first pop up allows the user to select whether they want auto or manual. Selecting manual on a sensor will then display the second pop up.
 
 ###### Pop up 2
 
-![Pod Plants Pop up 2](/src/images/pod_plants_popup2.jpg)
+![Pod Plants Pop up 2](/src/images/pod_plants_popup2.JPG)
 
 The second pop up allows the user to enter specific ranges for notifications for that sensor.
 
 ##### Plants
 
-![Pod Plants](/src/images/pod_plants.jpg)
+![Pod Plants](/src/images/pod_plants.JPG)
 
 In the top section, the plants page displays readings from the temperature, humidity and soil moisture sensors while the bottom section allows the user to control those sensors and actuators for a fan and a light.
 
@@ -98,7 +98,7 @@ In the top section, the security page displays readings from the noise, luminosi
 
 #### Tasks
 
-![Tasks](/src/images/tasks.jpg)
+![Tasks](/src/images/tasks.JPG)
 
 The tasks page allows user to see their tasks separated by pod and by status. These slicers are situated at the top. The main body is a list view of each task. These tasks can be edited and deleted. Selecting edit on a task will redirect the user to the [edit task page](#edit). A new task can be added by selecting the add button at the bottom right. This navigates the user to the [add task page](#add).
 
@@ -108,19 +108,19 @@ Both the [add](#add) and [edit](#edit) pages are identical in appearance except 
 
 ##### Add
 
-![Tasks add](/src/images/tasks_add.jpg)
+![Tasks add](/src/images/tasks_add.JPG)
 
 The add page starts with an empty task object
 
 ##### Edit
 
-![Tasks edit](/src/images/tasks_edit.jpg)
+![Tasks edit](/src/images/tasks_edit.JPG)
 
 The edit page is passed a task object and edits it.
 
 #### Notifications
 
-![Notifications](/src/images/notifications.jpg)
+![Notifications](/src/images/notifications.JPG)
 
 The notifications page, much like the [tasks page ](#tasks) has slicers at the top to separate its list content. Each notification can be deleted.
 
