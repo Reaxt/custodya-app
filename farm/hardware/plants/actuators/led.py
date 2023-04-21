@@ -11,22 +11,22 @@ COUNT = 10
 OPEN_COMMAND = "on"
 CLOSE_COMMAND = "off"
 TARGET = "ws2813"
+MAX_BRIGHTNESS = 255
+MIN_BRIGHTNESS = 0
 
 
 class LedController(IActuator):
     """This class controls the led state"""
 
     def __init__(
-        self,
-        gpio: int = OUTPIN,
-        initial_state: dict = {"value": CLOSE_COMMAND}
+        self, gpio: int = OUTPIN, initial_state: dict = {"value": CLOSE_COMMAND}
     ):
-        self.led = GroveWS2813RgbStrip(gpio, COUNT)
+        self.led = GroveWS2813RgbStrip(gpio, COUNT, MIN_BRIGHTNESS)
         self._current_state = {"value": "NEITHER"}
         starting_command = ACommand(TARGET, json.dumps(initial_state))
 
     def validate_command(self, command: ACommand) -> bool:
-        if (command.target_type != TARGET):
+        if command.target_type != TARGET:
             return False
         if not command.data["value"] in (OPEN_COMMAND, CLOSE_COMMAND):
             return False
@@ -36,17 +36,10 @@ class LedController(IActuator):
         if data["value"] == self._current_state["value"]:
             return False
         if data["value"] == OPEN_COMMAND:
-            self.led.on()
+            self.led.setBrightness(MAX_BRIGHTNESS)
         elif data["value"] == CLOSE_COMMAND:
-            self.led.off()
+            self.led.setBrightness(MIN_BRIGHTNESS)
         return True
-
-    def color_wipe(led: GroveWS2813RgbStrip, color: Color, wait_ms=50):
-        """Wipe color across display a pixel at a time."""
-        for i in range(led.numPixels()):
-            led.setPixelColor(i, color)
-            led.show()
-            sleep(wait_ms/1000.0)
 
 
 if __name__ == "__main__":
