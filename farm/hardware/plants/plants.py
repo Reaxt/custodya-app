@@ -21,11 +21,11 @@ LED_OFF_COMMAND = ACommand("led", '{"value": "off"}')
 LED_GPIO = 18
 LED_VALUE = {"value": "off"}
 
-TEMPERATURE_GPIO = 38
+TEMPERATURE_GPIO = 0x38
 TEMPERATURE_MODEL = "Temperature Sensor"
 TEMPERATURE_TYPE = AReading.Type.TEMPERATURE
 
-HUMIDITY_GPIO = 38
+HUMIDITY_GPIO = 0x38
 HUMIDITY_MODEL = "Humidity Sensor"
 HUMIDITY_TYPE = AReading.Type.HUMIDITY
 
@@ -64,8 +64,8 @@ if __name__ == "__main__":
                 led.control_actuator(LED_ON_COMMAND.data)
 
         # print actuator readings
+        print(humidity.read_sensor()[0].__repr__())
         print(temperature.read_sensor().__repr__())
-        print(humidity.read_sensor().__repr__())
         print(moisture.read_sensor().__repr__())
         print(water.read_sensor().__repr__())
 

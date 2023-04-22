@@ -10,7 +10,6 @@ from base.sensors import ISensor, AReading
 MODEL_NAME = "Temperature Sensor"
 GPIO = 38
 BUS = 4
-SENSOR_POSITION = 0
 
 
 class TemperatureSensor(ISensor):
@@ -23,10 +22,11 @@ class TemperatureSensor(ISensor):
         self._sensor = GroveTemperatureHumidityAHT20(gpio, BUS)
 
     def read_sensor(self) -> list[AReading]:
+        temp, hum = self._sensor.read()
         res = AReading(
             AReading.Type.TEMPERATURE,
             AReading.Unit.CELCIUS,
-            float("{0:.2f}".format(self._sensor.read()[SENSOR_POSITION])),
+            float("{0:.2f}".format(temp)),
         )
         return [res]
 
