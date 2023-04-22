@@ -1,11 +1,14 @@
 """This module controls the fan state"""
+import sys
+
+sys.path.append("..")
 from gpiozero import DigitalOutputDevice
 from time import sleep
 import json
-from ..base.actuators import IActuator, ACommand
+from base.actuators import IActuator, ACommand
 
 
-OUTPIN = 16
+OUTPIN = 18
 OPEN_COMMAND = "on"
 CLOSE_COMMAND = "off"
 TARGET = "fan"
@@ -15,16 +18,14 @@ class FanController(IActuator):
     """This class controls the fan state"""
 
     def __init__(
-        self,
-        gpio: int = OUTPIN,
-        initial_state: dict = {"value": CLOSE_COMMAND}
+        self, gpio: int = OUTPIN, initial_state: dict = {"value": CLOSE_COMMAND}
     ):
         self.fan = DigitalOutputDevice(gpio)
         self._current_state = {"value": "NEITHER"}
         starting_command = ACommand(TARGET, json.dumps(initial_state))
 
     def validate_command(self, command: ACommand) -> bool:
-        if (command.target_type != TARGET):
+        if command.target_type != TARGET:
             return False
         if not command.data["value"] in (OPEN_COMMAND, CLOSE_COMMAND):
             return False

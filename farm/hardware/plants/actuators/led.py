@@ -1,12 +1,16 @@
 """This module controls the led state"""
+import sys
+
+sys.path.append("..")
+
 from grove.grove_ws2813_rgb_led_strip import GroveWS2813RgbStrip
 from time import sleep
 from rpi_ws281x import Color
 import json
-from ..base.actuators import IActuator, ACommand
+from base.actuators import IActuator, ACommand
 
 
-OUTPIN = 12
+OUTPIN = 16
 COUNT = 10
 OPEN_COMMAND = "on"
 CLOSE_COMMAND = "off"

@@ -1,8 +1,11 @@
 """This module interfaces with the moisture sensor interface"""
+import sys
+
+sys.path.append("..")
 from time import sleep
 import json
 from grove.grove_moisture_sensor import GroveMoistureSensor
-from ..base.sensors import ISensor, AReading
+from base.sensors import ISensor, AReading
 
 MODEL_NAME = "Moisture Sensor"
 GPIO = 0x04
@@ -15,7 +18,7 @@ class MoistureSensor(ISensor):
         model: str = MODEL_NAME,
         type: AReading.Type = AReading.Type.MOISTURE,
     ):
-        self._sensor = GroveMoistureSensor(GPIO)
+        self._sensor = GroveMoistureSensor(gpio)
 
     def read_sensor(self) -> list[AReading]:
         res = AReading(

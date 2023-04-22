@@ -1,8 +1,11 @@
 """This module interfaces with the humidity sensor interface"""
+import sys
+
+sys.path.append("..")
 from time import sleep
 import json
 from grove.grove_temperature_humidity_aht20 import GroveTemperatureHumidityAHT20
-from ..base.sensors import ISensor, AReading
+from base.sensors import ISensor, AReading
 
 MODEL_NAME = "Temperature Sensor"
 GPIO = 38
@@ -17,7 +20,7 @@ class TemperatureSensor(ISensor):
         model: str = MODEL_NAME,
         type: AReading.Type = AReading.Type.TEMPERATURE,
     ):
-        self._sensor = GroveTemperatureHumidityAHT20(GPIO, BUS)
+        self._sensor = GroveTemperatureHumidityAHT20(gpio, BUS)
 
     def read_sensor(self) -> list[AReading]:
         res = AReading(
