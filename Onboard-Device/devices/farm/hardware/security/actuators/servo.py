@@ -3,24 +3,24 @@
 from gpiozero import Servo
 from time import sleep
 import json
-from actuators import IActuator, ACommand
+from actuators.baseactuators import IActuator, ACommand
 
 
 OUTPIN = 16
 OPEN_COMMAND = "on"
 CLOSE_COMMAND = "off"
-TARGET = "door"
-class ServoController(IActuator):
+class DoorController(IActuator):
     """This class controls the servo motor that acts for the door"""
+    TARGET = "door"
     def __init__(self,
                  gpio:int=OUTPIN,
                  initial_state:dict = {"value":CLOSE_COMMAND}):
         self.servo = Servo(gpio)
         self._current_state = {"value":"NEITHER"}
-        starting_command = ACommand(TARGET, json.dumps(initial_state))
+        starting_command = ACommand(DoorController.TARGET, json.dumps(initial_state))
 
     def validate_command(self, command: ACommand) -> bool:
-        if(command.target_type != TARGET):
+        if(command.target_type != DoorController.TARGET):
             return False
         if not command.data["value"] in (OPEN_COMMAND, CLOSE_COMMAND):
             return False
@@ -35,7 +35,7 @@ class ServoController(IActuator):
         return True
     
 if __name__ == "__main__":
-    servotest = ServoController()
+    servotest = DoorController()
     while True:
 
         servotest.control_actuator({"value":OPEN_COMMAND})

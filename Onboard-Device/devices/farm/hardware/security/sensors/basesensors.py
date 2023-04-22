@@ -13,6 +13,8 @@ class AReading:
         TEMPERATURE = 'temperature'
         HUMIDITY = 'humidity'
         MOTION = 'motion'
+        LOUDNESS = 'loudness'
+        DOOR = 'door'
 
     class Unit(str, Enum):
         """Enum defining all possible units for sensor measuremens.
@@ -21,7 +23,8 @@ class AReading:
         CELCIUS = 'C'
         HUMIDITY = '% HR'
         BOOLEAN = 'bool'
-
+        LOUDNESS = 'loudness'
+        
     def __init__(self, type: Type, unit: Unit, value: Any) -> None:
         """Create new AReading based on a type of reading its units and value
 
