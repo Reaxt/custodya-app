@@ -1,42 +1,34 @@
 import time
 import seeed_python_reterminal.core as rt
 import seeed_python_reterminal.acceleration as rt_accel
-
-class VibrationSensor:
+import math
+class VibrationSensor():
     def __init__(self):
         self.accel_device = rt.get_acceleration_device()
 
-    def calculate_vibration_level(self, acceleration):
-        x, y, z = acceleration
-        magnitude = (x ** 2 + y ** 2 + z ** 2) ** 0.5
-        return magnitude
 
-    def run(self):
+    def calculate_vibration_level(self):
+        x1 = y1 = z1 = None
+        x2 = y2 = z2 = None
         while True:
-            x = None
-            y = None
-            z = None
-            AxisValues = [x,y,z]
             for event in self.accel_device.read_loop():
                 accelEvent = rt_accel.AccelerationEvent(event)
-                if accelEvent.name != None:
-                    if str(accelEvent.name) == "AccelerationName.X":
-                        print(accelEvent.value)
-                        x = accelEvent.value
-                    if str(accelEvent.name) == "AccelerationName.y":
-                        print(accelEvent.value)
-                        y = accelEvent.value
-                    if str(accelEvent.name) == "AccelerationName.z":
-                        print(accelEvent.value)
-                        z = accelEvent.value
-                    if x == None or  y== None or z== None:
-                        continue
-                    else:
-                        acceleration = (x, y, z)
-                        vibration_level = self.calculate_vibration_level(acceleration)
-                        print(acceleration)
-                        print(f"Vibration level: {vibration_level}")
-                        time.sleep(0.1)
+                if str(accelEvent.name) == "AccelerationName.X":
+                    x2 = x1
+                    x1 = accelEvent.value        
+                if str(accelEvent.name) == "AccelerationName.Y":
+                    y2 = y1
+                    y1 = accelEvent.value              
+                if str(accelEvent.name) == "AccelerationName.Z":
+                    z2 = z1
+                    z1 = accelEvent.value
+                if x1 is not None and x2 is not None and y1 is not None and y2 is not None and z1 is not None and z2 is not None:
+                    return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2 + (z1 - z2) ** 2)
+
+
 if __name__ == '__main__':
-    vibration_sensor = VibrationSensor()
-    vibration_sensor.run()
+    while True:
+        sensor = VibrationSensor()
+        vibration_level = sensor.calculate_vibration_level()
+        print("Vibration level:", vibration_level)
+        time.sleep(1)

@@ -1,6 +1,6 @@
 import time
 import seeed_python_reterminal.core as rt
-class Buzzer:
+class Buzzer():
     def __init__(self):
         self.buzzer = rt.buzzer
     
