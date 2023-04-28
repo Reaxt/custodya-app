@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Custodya.PodPage"
+             Title="PodPage">
+    <VerticalStackLayout Margin="10">
+        <HorizontalStackLayout Margin="0,0,0,20">
+            <Label Text="custodya" FontAttributes="Bold" FontSize="Large" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
+            <ImageButton  Source="user.png" HeightRequest="40" Margin="230,0,0,0"/>
+        </HorizontalStackLayout>
+        <Frame Margin="0,0,0,10">
+            <VerticalStackLayout>
+                <HorizontalStackLayout>
+                    <ImageButton BackgroundColor="Lime"/>
+                    <Label Text="Plants" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Frame Grid.Column="0">
+                        <Label Text="24 C"/>
+                    </Frame>
+                    <Frame Grid.Column="1">
+                        <Label Text="32%"/>
+                    </Frame>
+                    <Frame Grid.Column="2">
+                        <Label Text="Wet"/>
+                    </Frame>
+                </Grid>
+            </VerticalStackLayout>
+        </Frame>
+        <Frame Margin="0,0,0,10">
+            <VerticalStackLayout>
+                <HorizontalStackLayout>
+                    <ImageButton BackgroundColor="Lime"/>
+                    <Label Text="Geolocation" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.75*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1.25*"/>
+                    </Grid.ColumnDefinitions>
+                    <Frame Grid.Column="0">
+                        <Label Text="45.434 / -73.845"/>
+                    </Frame>
+                    <Frame Grid.Column="1">
+                        <Label Text="450"/>
+                    </Frame>
+                    <Frame Grid.Column="2">
+                        <Label Text="Buzzing"/>
+                    </Frame>
+                </Grid>
+            </VerticalStackLayout>
+        </Frame>
+        <Frame Margin="0,0,0,10">
+            <VerticalStackLayout>
+                <HorizontalStackLayout>
+                    <ImageButton BackgroundColor="Lime"/>
+                    <Label Text="Security" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Frame Grid.Column="0">
+                        <Label Text="37dB"/>
+                    </Frame>
+                    <Frame Grid.Column="1">
+                        <Label Text="Bright"/>
+                    </Frame>
+                    <Frame Grid.Column="2">
+                        <Label Text="Movement"/>
+                    </Frame>
+                </Grid>
+            </VerticalStackLayout>
+        </Frame>
+    </VerticalStackLayout>
+</ContentPage>

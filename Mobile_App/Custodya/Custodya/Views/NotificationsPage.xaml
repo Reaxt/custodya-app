@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Custodya.NotificationsPage"
+             Title="NotificationsPage">
+    <VerticalStackLayout Margin="10">
+        <HorizontalStackLayout Margin="0,0,0,20">
+            <Label Text="custodya" FontAttributes="Bold" FontSize="Large" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
+            <ImageButton  Source="user.png" HeightRequest="40" Margin="230,0,0,0"/>
+        </HorizontalStackLayout>
+        <ListView>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Button Text="Button"></Button>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <ListView>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <HorizontalStackLayout>
+                        <ImageButton BackgroundColor="Lime" VerticalOptions="Center"/>
+                        <VerticalStackLayout>
+                            <Label VerticalOptions="Center"/>                            
+                        </VerticalStackLayout>
+                    </HorizontalStackLayout>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </VerticalStackLayout>
+</ContentPage>

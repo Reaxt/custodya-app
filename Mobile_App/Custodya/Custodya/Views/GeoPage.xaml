@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Custodya.GeoPage"
+             Title="GeoPage">
+    <VerticalStackLayout Margin="10">
+        <HorizontalStackLayout Margin="0,0,0,20">
+            <Label Text="custodya" FontAttributes="Bold" FontSize="Large" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
+            <ImageButton  Source="user.png" HeightRequest="40" Margin="230,0,0,0"/>
+        </HorizontalStackLayout>
+        <Frame Margin="0,0,0,10">
+            <VerticalStackLayout>
+                <HorizontalStackLayout>
+                    <ImageButton BackgroundColor="Lime"/>
+                    <Label Text="Status" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1.75*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="1.25*"/>
+                    </Grid.ColumnDefinitions>
+                    <Frame Grid.Column="0">
+                        <Label Text="45.434 / -73.845"/>
+                    </Frame>
+                    <Frame Grid.Column="1">
+                        <Label Text="450"/>
+                    </Frame>
+                    <Frame Grid.Column="2">
+                        <Label Text="Buzzing"/>
+                    </Frame>
+                </Grid>
+            </VerticalStackLayout>
+        </Frame>
+        <Frame>
+            <VerticalStackLayout>
+                <HorizontalStackLayout>
+                    <ImageButton BackgroundColor="Lime"/>
+                    <Label Text="Control" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout>
+                    <Label Text="GPS" WidthRequest="175"/>
+                    <Button Text="Manual" WidthRequest="80"/>
+                    <Switch/>
+                    <Label Text="On" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout>
+                    <Label Text="Pitch and Roll" WidthRequest="175"/>
+                    <Button Text="Auto" WidthRequest="80"/>
+                    <Switch/>
+                    <Label Text="Off" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout>
+                    <Label Text="Vibrations" WidthRequest="175"/>
+                    <Button Text="Manual" WidthRequest="80"/>
+                    <Switch/>
+                    <Label Text="Off" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout>
+                    <Label Text="Buzzer" WidthRequest="175"/>
+                    <Button Text="Manual" WidthRequest="80"/>
+                    <Switch/>
+                    <Label Text="On" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Frame>
+    </VerticalStackLayout>
+</ContentPage>

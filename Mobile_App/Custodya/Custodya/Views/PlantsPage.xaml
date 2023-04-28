@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Custodya.PlantsPage"
+             Title="Plants">
+    <VerticalStackLayout Margin="10">
+        <HorizontalStackLayout Margin="0,0,0,20">
+            <Label Text="custodya" FontAttributes="Bold" FontSize="Large" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
+            <ImageButton  Source="user.png" HeightRequest="40" Margin="230,0,0,0"/>
+        </HorizontalStackLayout>
+        <Frame Margin="0,0,0,10">
+            <VerticalStackLayout>
+                <HorizontalStackLayout>
+                    <ImageButton BackgroundColor="Lime"/>
+                    <Label Text="Status" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Frame Grid.Column="0">
+                        <Label Text="24 C"/>
+                    </Frame>
+                    <Frame Grid.Column="1">
+                        <Label Text="32%"/>
+                    </Frame>
+                    <Frame Grid.Column="2">
+                        <Label Text="Wet"/>
+                    </Frame>
+                </Grid>
+            </VerticalStackLayout>
+        </Frame>
+        <Frame>
+            <VerticalStackLayout>
+                <HorizontalStackLayout>
+                    <ImageButton BackgroundColor="Lime"/>
+                    <Label Text="Control" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout>
+                    <Label Text="Temperature" WidthRequest="175"/>
+                    <Button Text="Manual" WidthRequest="80"/>
+                    <Switch/>
+                    <Label Text="On" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout>
+                    <Label Text="Humidity" WidthRequest="175"/>
+                    <Button Text="Auto" WidthRequest="80"/>
+                    <Switch/>
+                    <Label Text="Off" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout>
+                    <Label Text="Soil Moisture" WidthRequest="175"/>
+                    <Button Text="Manual" WidthRequest="80"/>
+                    <Switch/>
+                    <Label Text="Off" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout>
+                    <Label Text="Fan" WidthRequest="175"/>
+                    <Button Text="Manual" WidthRequest="80"/>
+                    <Switch/>
+                    <Label Text="On" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout>
+                    <Label Text="Light" WidthRequest="175"/>
+                    <Button Text="Auto" WidthRequest="80"/>
+                    <Switch/>
+                    <Label Text="On" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Frame>
+    </VerticalStackLayout>
+</ContentPage>

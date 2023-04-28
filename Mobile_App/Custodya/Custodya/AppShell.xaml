@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Custodya.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:Custodya"
+    Shell.FlyoutBehavior="Disabled">
+
+    
+    <TabBar>
+        <Tab Title="Login" Icon="login.png">
+            <ShellContent
+                ContentTemplate="{DataTemplate local:MainPage}"
+                Route="Main" />
+        </Tab>
+        <Tab Title="Home" Icon="home.png">
+            <ShellContent                
+                ContentTemplate="{DataTemplate local:HomePage}"
+                Route="Home" />
+        </Tab>
+        <Tab Title="Notifications" Icon="notifications.png">
+            <ShellContent                
+                ContentTemplate="{DataTemplate local:NotificationsPage}"
+                Route="Notifications" 
+                />
+        </Tab>
+        <Tab Title="Pod" Icon="pod.png">
+            <ShellContent                
+                ContentTemplate="{DataTemplate local:PodPage}"
+                Route="Pod" 
+                />
+        </Tab>
+        <Tab Title="Plants" Icon="plants.png">
+            <ShellContent                
+                ContentTemplate="{DataTemplate local:PlantsPage}"
+                Route="Plants" 
+                />
+        </Tab>
+        <Tab Title="Security" Icon="security.png">
+            <ShellContent                
+                ContentTemplate="{DataTemplate local:SecurityPage}"
+                Route="Security"
+                />
+        </Tab>
+        <Tab Title="Geo" Icon="geo.png">
+            <ShellContent
+                ContentTemplate="{DataTemplate local:GeoPage}"
+                Route="Geo"
+                />
+        </Tab>
+    </TabBar>
+
+</Shell>
