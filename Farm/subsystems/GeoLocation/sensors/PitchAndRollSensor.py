@@ -2,11 +2,24 @@ import time
 import seeed_python_reterminal.core as rt
 import seeed_python_reterminal.acceleration as rt_accel
 import math
-class PitchAndRollSensor():
+from InterFaces import ISensor, AReading
+
+class PitchAndRollSensor(ISensor):
     def __init__(self):
         self.accel_device = rt.get_acceleration_device()
 
-    def get_acceleration(self):
+
+    def read_sensor(self) -> list[AReading]:
+        pitch_level = self.calculate_pitch()
+        roll_level = self.calculate_roll()
+        res = AReading(
+            pitch_level,
+            roll_level,
+            AReading.Unit.HERTZ
+        )
+        return res
+
+    def internal_get_acceleration(self):
         x = y = z = None
         for event in self.accel_device.read_loop():
                 accelEvent = rt_accel.AccelerationEvent(event)

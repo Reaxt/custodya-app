@@ -1,19 +1,29 @@
 import time
 import seeed_python_reterminal.core as rt
-class Buzzer():
+from InterFaces import IActuator, ACommand
+OPEN_COMMAND = "True"
+CLOSE_COMMAND = "False"
+TARGET = "buzzer"
+class Buzzer(IActuator):
     def __init__(self):
         self.buzzer = rt.buzzer
+        self._current_state = {"value": "FALSE"}
     
-    def check_buzzer_status(self):
-        return self.buzzer
+    def validate_command(self, command: ACommand) -> bool:
+        if command.target_type != TARGET:
+            return False
+        if not command.data["value"] in (OPEN_COMMAND, CLOSE_COMMAND):
+            return False
+        return True
     
-    def turn_buzzer_on(self):
-        rt.buzzer = True
-        # code to turn buzzer on
-    
-    def turn_buzzer_off(self):
-        rt.buzzer = False
-        # code to turn buzzer off
+    def control_actuator(self, data: dict) -> bool:
+        if data["value"] == self._current_state["value"]:
+            return False
+        if data["value"] == OPEN_COMMAND:
+            rt.buzzer = True
+        elif data["value"] == CLOSE_COMMAND:
+            rt.buzzer = False
+        return True
 
 def main():
     buzzer = Buzzer()

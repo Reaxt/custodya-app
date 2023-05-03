@@ -1,14 +1,28 @@
 import serial
 import time
 import pynmea2
-class Air530:
-    def __init__(self, port='/dev/ttyAMA0', baudrate=9600):
+from InterFaces import ISensor, AReading
+
+class GPS(ISensor):
+    def __init__(self, port='/dev/ttyAMA0', baudrate=9600, type: AReading.Type = AReading.Type):
+        type: AReading.Type = AReading.Type.GPS,
         self.ser = serial.Serial(port, baudrate, timeout=0.5)
         self.ser.reset_input_buffer()
         self.ser.flush()
         time.sleep(1)
+    
 
-    def read_gps(self):
+    def read_sensor(self) -> list[AReading]:
+        lat,lng = self.Internal_read_sensor()
+        res = AReading(
+            AReading.Type.GPS,
+            lat,
+            lng          
+        )
+        return [res]
+
+
+    def Internal_read_sensor(self):
             try:
                 line = self.ser.readline().decode('utf-8')
                 if line.startswith('$GNGLL'):
@@ -19,9 +33,9 @@ class Air530:
             except:
                 pass
 def main():
-    gps = Air530()
+    GPS = Air530()
     while True:
-        data = gps.read_gps()
+        data = GPS.read_gps()
         if data is not None:
             lat, lng = data
             print("Latitude:", lat)
