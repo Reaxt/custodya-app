@@ -28,7 +28,7 @@ class Security:
         for sensor in self.sensors:
             for reading in sensor.read_sensor():
                 readings.append(reading)
-        print(readings)
+        return readings
 
 
 
