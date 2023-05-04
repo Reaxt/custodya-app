@@ -13,25 +13,24 @@ class GPS(ISensor):
     
 
     def read_sensor(self) -> list[AReading]:
-        lat,lng = self.Internal_read_sensor()
-        res = AReading(
-            AReading.Type.GPS,
-            lat,
-            lng          
-        )
-        return [res]
-
-
-    def Internal_read_sensor(self):
             try:
                 line = self.ser.readline().decode('utf-8')
                 if line.startswith('$GNGLL'):
                     data = pynmea2.parse(line)
                     lat = data.latitude
                     lng = data.longitude
-                    return lat, lng
+                    res = AReading(
+                     AReading.Type.GPS,
+                    lat,
+                    lng          
+                    )
+                return [res]
             except:
                 pass
+
+
+
+
 def main():
     GPS = Air530()
     while True:
