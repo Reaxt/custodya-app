@@ -2,9 +2,18 @@ import time
 import seeed_python_reterminal.core as rt
 import seeed_python_reterminal.acceleration as rt_accel
 import math
+from InterFaces import ISensor, AReading
+
 class VibrationSensor():
     def __init__(self):
         self.accel_device = rt.get_acceleration_device()
+
+    def read_sensor(self) -> list[AReading]:
+        vibration_level = self.calculate_vibration_level()
+        res = AReading(
+            vibration_level
+        )
+        return res
 
 
     def calculate_vibration_level(self):
