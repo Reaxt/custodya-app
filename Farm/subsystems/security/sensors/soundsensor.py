@@ -3,7 +3,7 @@ import math
 import sys
 import time
 from grove.adc import ADC
-from sensors.basesensors import ISensor, AReading
+from InterFaces.sensors import ISensor, AReading
 
 MODEL_NAME = "Grove loudness sensor"
 

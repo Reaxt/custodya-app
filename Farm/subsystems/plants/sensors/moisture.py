@@ -5,7 +5,7 @@ sys.path.append("..")
 from time import sleep
 import json
 from grove.grove_moisture_sensor import GroveMoistureSensor
-from base.sensors import ISensor, AReading
+from InterFaces.sensors import ISensor, AReading
 
 MODEL_NAME = "Moisture Sensor"
 GPIO = 0x04
@@ -16,7 +16,7 @@ class MoistureSensor(ISensor):
         self,
         gpio: int,
         model: str = MODEL_NAME,
-        type: AReading.Type = AReading.Type.MOISTURE,
+        type: AReading.Type = AReading.Type.HUMIDITY,
     ):
         self._sensor = GroveMoistureSensor(gpio)
 

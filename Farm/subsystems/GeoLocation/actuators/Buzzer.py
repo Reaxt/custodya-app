@@ -1,6 +1,10 @@
 import time
 import seeed_python_reterminal.core as rt
-from InterFaces import IActuator, ACommand
+import sys
+
+sys.path.append("..")
+from InterFaces.actuators import IActuator, ACommand
+
 OPEN_COMMAND = "True"
 CLOSE_COMMAND = "False"
 TARGET = "buzzer"

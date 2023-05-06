@@ -1,4 +1,4 @@
-from sensors.basesensors import ISensor, AReading
+from InterFaces.sensors import ISensor, AReading
 from time import sleep
 from gpiozero import Button
 

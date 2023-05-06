@@ -4,7 +4,7 @@ import json
 from grove.gpio import GPIO
 from grove.grove_mini_pir_motion_sensor import GroveMiniPIRMotionSensor
 from gpiozero import DigitalInputDevice
-from sensors.basesensors import ISensor, AReading
+from InterFaces.sensors import ISensor, AReading
 
 MODEL_NAME = "PIR Motion Sensor"
 
