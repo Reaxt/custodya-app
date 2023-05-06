@@ -4,11 +4,11 @@ import sys
 sys.path.append("..")
 from time import sleep
 import json
-from grove.grove_water_sensor import GroveWaterSensor
+from grove.adc import ADC
 from InterFaces.sensors import ISensor, AReading
 
 MODEL_NAME = "Water Sensor"
-GPIO = 0x06
+GPIO = 6
 
 
 class WaterSensor(ISensor):
@@ -18,19 +18,20 @@ class WaterSensor(ISensor):
         model: str = MODEL_NAME,
         type: AReading.Type = AReading.Type.WATER,
     ):
-        self._sensor = GroveWaterSensor(gpio)
+        self._sensor = ADC(gpio)
+        self.gpio = gpio
 
     def read_sensor(self) -> list[AReading]:
         res = AReading(
             AReading.Type.WATER,
             AReading.Unit.WATER,
-            float("{0:.2f}".format(self._sensor.value() / 10)),
+            float("{0:.2f}".format(self._sensor.read(self.gpio) / 10)),
         )
         return [res]
 
 
 if __name__ == "__main__":
-    test = GroveWaterSensor(GPIO)
+    test = ADC(GPIO)
     while True:
         sleep(0.12)
         print(test.read_sensor())

@@ -30,11 +30,11 @@ class PlantsSubSystem:
     HUMIDITY_MODEL = "Humidity Sensor"
     HUMIDITY_TYPE = AReading.Type.HUMIDITY
 
-    MOISTURE_GPIO = 0x04
+    MOISTURE_GPIO = 4
     MOISTURE_MODEL = "Moisture Sensor"
     MOISTURE_TYPE = AReading.Type.HUMIDITY
 
-    WATER_GPIO = 0x06
+    WATER_GPIO = 6
     WATER_MODEL = "Water Sensor"
     WATER_TYPE = AReading.Type.WATER
 

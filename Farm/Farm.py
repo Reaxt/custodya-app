@@ -25,21 +25,22 @@ class Farm:
         readings = list()
         for subsystem in self.subsystems:
             readings.extend(subsystem.read_sensors())
-        return readings;
+        return readings
 
 async def main():
     load_dotenv()
     loop = asyncio.get_event_loop()
     conn_str = os.environ["IOTHUB_DEVICE_CONNECTION_STRING"]
     device_client = IoTHubDeviceClient.create_from_connection_string(conn_str)
+    device_client.on_twin_desired_properties_patch_received = twin_patch_handler
     farm = Farm()
     
     async def telemetryloop():
         while True:
             data = readings_to_json(farm.read_sensors())
-            msg = Message(data);
-            await device_client.send_message(msg);
-            await asyncio.sleep(TELEMETRY_TIME);
+            msg = Message(data)
+            await device_client.send_message(msg)
+            await asyncio.sleep(TELEMETRY_TIME)
     
     #loop.create_task(telemetryloop())
     async def method_request_handler(method_request):
@@ -59,13 +60,15 @@ def readings_to_json(readings:list[AReading]) -> str:
     values = []
     for reading in readings:
         obj = {"type":reading.reading_type, "unit":reading.reading_unit, "value":reading.value}
-        values.append(obj);
+        values.append(obj)
     print(values)
-    return json.dumps(values);
+    return json.dumps(values)
 
-
-
-
+def twin_patch_handler(patch):
+    patch = json.loads(patch)
+    if patch["telemetryInterval"].isnumeric():
+        global TELEMETRY_TIME
+        TELEMETRY_TIME = int(patch["telemetryInterval"])
 
 if __name__ == "__main__":
     asyncio.run(main())
