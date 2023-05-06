@@ -1,12 +1,12 @@
-import security 
-import plants
-import Geolocation 
+from security.SecuritySubSystem import Security
+from plants.plantsSubSystem import Plants
+from GeoLocation.GeoLocationSubSystem import GeoLocation 
 
 class Farm:
     def __init__(self) -> None:
-        securitySubSystem = security()
-        plantsSubSystem = plants()
-        geolocation = Geolocation()
+        securitySubSystem = Security()
+        plantsSubSystem = Plants()
+        geolocation = GeoLocation()
         self.subsystems = list()
         self.subsystems.append(securitySubSystem,plantsSubSystem,geolocation)
 

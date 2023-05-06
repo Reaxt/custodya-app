@@ -14,9 +14,9 @@ from time import sleep
 
 class GeoLocation():
     def __init__(self) -> None:
-        GPSSensor = GPS(self.HUMIDITY_GPIO,self.HUMIDITY_MODEL,self.HUMIDITY_TYPE)
-        PitchAndRoll = PitchAndRollSensor(self.TEMPERATURE_GPIO, self.TEMPERATURE_MODEL, self.TEMPERATURE_TYPE)
-        Vibration = VibrationSensor(self.MOISTURE_GPIO, self.MOISTURE_MODEL, self.MOISTURE_TYPE)
+        GPSSensor = GPS()
+        PitchAndRoll = PitchAndRollSensor()
+        Vibration = VibrationSensor()
         self.sensors: list[ISensor] = [GPSSensor,PitchAndRoll,Vibration]
 
     def read_sensors(self):
