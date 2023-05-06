@@ -14,7 +14,7 @@ LOUDNESS_BUS = 0
 SERVO_PIN = 16
 
 
-class Security:
+class SecuritySubSystem:
 
     def __init__(self) -> None:
         self.sensors: list[ISensor] = [

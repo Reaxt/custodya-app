@@ -11,7 +11,7 @@ from InterFaces.actuators import ACommand, IActuator
 
 from time import sleep
 
-class Plants:
+class PlantsSubSystem:
     FAN_ON_COMMAND = ACommand("fan", '{"value": "on"}')
     FAN_OFF_COMMAND = ACommand("fan", '{"value": "off"}')
     FAN_GPIO = 16

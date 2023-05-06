@@ -10,9 +10,9 @@ class VibrationSensor():
 
     def read_sensor(self) -> list[AReading]:
         vibration_level = self.calculate_vibration_level()
-        res = AReading(
+        res = [
             vibration_level
-        )
+        ]
         return res
 
 

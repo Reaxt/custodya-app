@@ -12,11 +12,9 @@ class PitchAndRollSensor(ISensor):
     def read_sensor(self) -> list[AReading]:
         pitch_level = self.calculate_pitch()
         roll_level = self.calculate_roll()
-        res = AReading(
+        res = [
             pitch_level,
-            roll_level,
-            AReading.Unit.HERTZ
-        )
+            roll_level        ]
         return res
 
     def internal_get_acceleration(self):
@@ -34,7 +32,7 @@ class PitchAndRollSensor(ISensor):
                     return (x, y, z)
     
     def calculate_pitch(self):
-        x, y, z = self.get_acceleration()
+        x, y, z = self.internal_get_acceleration()
         
         if x is None or y is None or z is None:
             return None
@@ -43,7 +41,7 @@ class PitchAndRollSensor(ISensor):
         return math.degrees(pitch)
 
     def calculate_roll(self):
-        x, y, z = self.get_acceleration()
+        x, y, z = self.internal_get_acceleration()
         
         if x is None or y is None or z is None:
             return None

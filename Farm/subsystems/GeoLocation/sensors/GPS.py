@@ -19,14 +19,13 @@ class GPS(ISensor):
                     data = pynmea2.parse(line)
                     lat = data.latitude
                     lng = data.longitude
-                    res = AReading(
-                     AReading.Type.GPS,
+                    res = [
                     lat,
                     lng          
-                    )
+                    ]
                 return [res]
             except:
-                pass
+                return [False]
 
 
 
