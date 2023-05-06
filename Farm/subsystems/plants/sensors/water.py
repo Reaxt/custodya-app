@@ -5,7 +5,7 @@ sys.path.append("..")
 from time import sleep
 import json
 from grove.grove_water_sensor import GroveWaterSensor
-from base.sensors import ISensor, AReading
+from InterFaces.sensors import ISensor, AReading
 
 MODEL_NAME = "Water Sensor"
 GPIO = 0x06

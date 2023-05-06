@@ -3,7 +3,7 @@
 from gpiozero import Servo
 from time import sleep
 import json
-from actuators.baseactuators import IActuator, ACommand
+from subsystems.security.actuators.baseactuators import IActuator, ACommand
 
 
 OUTPIN = 16

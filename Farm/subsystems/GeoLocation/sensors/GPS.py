@@ -1,7 +1,7 @@
 import serial
 import time
 import pynmea2
-from InterFaces import ISensor, AReading
+from InterFaces.sensors import ISensor, AReading
 
 class GPS(ISensor):
     def __init__(self, port='/dev/ttyAMA0', baudrate=9600, type: AReading.Type = AReading.Type):

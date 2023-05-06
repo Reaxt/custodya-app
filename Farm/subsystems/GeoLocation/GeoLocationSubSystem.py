@@ -1,11 +1,11 @@
-from actuators.Buzzer import Buzzer
+from subsystems.GeoLocation.actuators.Buzzer import Buzzer
 
-from sensors.GPS import GPS
-from sensors.PitchAndRollSensor import PitchAndRollSensor
-from sensors.Vibration import VibrationSensor
+from subsystems.GeoLocation.sensors.GPS import GPS
+from subsystems.GeoLocation.sensors.PitchAndRollSensor import PitchAndRollSensor
+from subsystems.GeoLocation.sensors.Vibration import VibrationSensor
 
-from sensors import AReading, ISensor
-from actuators import ACommand, IActuator
+from InterFaces.sensors import AReading, ISensor
+from InterFaces.actuators import ACommand, IActuator
 
 from time import sleep
 

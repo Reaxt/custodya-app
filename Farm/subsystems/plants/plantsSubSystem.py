@@ -1,13 +1,13 @@
-from actuators.fan import FanController
-from actuators.led import LedController
+from subsystems.plants.actuators.fan import FanController
+from subsystems.plants.actuators.led import LedController
 
-from sensors.humidity import HumiditySensor
-from sensors.moisture import MoistureSensor
-from sensors.temperature import TemperatureSensor
-from sensors.water import WaterSensor
+from subsystems.plants.sensors.humidity import HumiditySensor
+from subsystems.plants.sensors.moisture import MoistureSensor
+from subsystems.plants.sensors.temperature import TemperatureSensor
+from subsystems.plants.sensors.water import WaterSensor
 
-from sensors import AReading, ISensor
-from actuators import ACommand, IActuator
+from InterFaces.sensors import AReading, ISensor
+from InterFaces.actuators import ACommand, IActuator
 
 from time import sleep
 
@@ -32,7 +32,7 @@ class Plants:
 
     MOISTURE_GPIO = 0x04
     MOISTURE_MODEL = "Moisture Sensor"
-    MOISTURE_TYPE = AReading.Type.MOISTURE
+    MOISTURE_TYPE = AReading.Type.HUMIDITY
 
     WATER_GPIO = 0x06
     WATER_MODEL = "Water Sensor"

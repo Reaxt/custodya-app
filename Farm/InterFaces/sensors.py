@@ -12,6 +12,7 @@ class AReading:
         # Add new reading types here.
         TEMPERATURE = 'temperature'
         HUMIDITY = 'humidity'
+        WATER = 'WATER'
         GPS = 'GPS'
 
     class Unit(str, Enum):
@@ -21,6 +22,7 @@ class AReading:
         CELCIUS = 'C'
         HUMIDITY = '% HR'
         HERTZ = 'Hz'
+        WATER = 'ml'
 
     def __init__(self, type: Type, unit: Unit, value: Any) -> None:
         """Create new AReading based on a type of reading its units and value

@@ -5,7 +5,7 @@ sys.path.append("..")
 from time import sleep
 import json
 from grove.grove_temperature_humidity_aht20 import GroveTemperatureHumidityAHT20
-from base.sensors import ISensor, AReading
+from InterFaces.sensors import ISensor, AReading
 
 MODEL_NAME = "Temperature Sensor"
 GPIO = 38

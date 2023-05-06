@@ -5,7 +5,7 @@ sys.path.append("..")
 from gpiozero import DigitalOutputDevice
 from time import sleep
 import json
-from InterFaces import IActuator, ACommand
+from InterFaces.actuators import IActuator, ACommand
 
 
 OUTPIN = 18

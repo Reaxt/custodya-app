@@ -1,12 +1,12 @@
 from time import sleep 
 
-from actuators.servo import DoorController
-from actuators.baseactuators import ACommand
+from subsystems.security.actuators.servo import DoorController
+from subsystems.security.actuators.baseactuators import ACommand
 
-from sensors.doorswitch import DoorSensor
-from sensors.motionsensor import MotionSensor
-from sensors.soundsensor import LoudnessSensor
-from sensors.basesensors import AReading, ISensor
+from subsystems.security.sensors.doorswitch import DoorSensor
+from subsystems.security.sensors.motionsensor import MotionSensor
+from subsystems.security.sensors.soundsensor import LoudnessSensor
+from subsystems.security.sensors.basesensors import AReading, ISensor
 
 DOOR_PIN = 5
 MOTION_PIN = 12
