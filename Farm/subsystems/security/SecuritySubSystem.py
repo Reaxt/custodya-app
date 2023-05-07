@@ -18,7 +18,7 @@ class SecuritySubSystem:
 
     def __init__(self) -> None:
         self.sensors: list[ISensor] = [
-        DoorSensor(5),
+        DoorSensor(DOOR_PIN),
         MotionSensor(MOTION_PIN),
         LoudnessSensor(LOUDNESS_BUS)
     ]

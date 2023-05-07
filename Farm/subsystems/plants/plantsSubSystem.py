@@ -14,12 +14,12 @@ from time import sleep
 class PlantsSubSystem:
     FAN_ON_COMMAND = ACommand("fan", '{"value": "on"}')
     FAN_OFF_COMMAND = ACommand("fan", '{"value": "off"}')
-    FAN_GPIO = 16
+    FAN_GPIO = 18
     FAN_VALUE = {"value": "off"}
 
     LED_ON_COMMAND = ACommand("led", '{"value": "on"}')
     LED_OFF_COMMAND = ACommand("led", '{"value": "off"}')
-    LED_GPIO = 18
+    LED_GPIO = 24
     LED_VALUE = {"value": "off"}
 
     TEMPERATURE_GPIO = 0x38
