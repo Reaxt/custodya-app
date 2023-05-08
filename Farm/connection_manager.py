@@ -9,6 +9,7 @@ from typing import Callable, Dict
 from InterFaces.sensors import AReading
 
 def readings_to_json(readings:list[AReading]) -> str:
+    """Converts a list of AReadings into a JSON String"""
     values = []
     for reading in readings:
         obj = {"type":reading.reading_type, "unit":reading.reading_unit, "value":reading.value}
@@ -17,7 +18,7 @@ def readings_to_json(readings:list[AReading]) -> str:
     return json.dumps(values)
 
 class ConnectionManager:
-    """ Responsible for gathering connection strings.
+    """ Responsible for talking with the IOT hub.
     """
     CONN_STR_KEY = "IOTHUB_DEVICE_CONNECTION_STRING"
 
@@ -45,10 +46,13 @@ class ConnectionManager:
         self.client.on_method_request_received = method_request_handler
 
     def set_twin_handler(self, handler: Callable[[dict],None]):
+        """Set the twin handler method"""
         self.client.on_twin_desired_properties_patch_received = handler
     def subscribe_method_request(self, method:str, handler:Callable[[MethodRequest], MethodResponse]):
+        """Set a handler method for a specific direct method"""
         self._commands[method] = handler
     async def connect(self):
+        """Connect to the IOT hub"""
         """Connected to the IoT hub"""
         await self.client.connect()
         self.connected = True
