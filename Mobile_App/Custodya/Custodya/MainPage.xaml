@@ -10,8 +10,10 @@
             <Image
                 Source="hero.jpg"
                 SemanticProperties.Description="hero"
-                HeightRequest="200"
                 HorizontalOptions="Center" 
+                Aspect="AspectFill"
+                HeightRequest="250"
+                WidthRequest="500"
                 Margin="0,0,0,30"/>
 
             <Label
@@ -22,16 +24,16 @@
 
             <Label Text="Log in to continue" Margin="0,0,0,30"/>
             <Label Text="Email address"/>
-            <Entry Margin="0,0,0,30"/>
+            <Entry x:Name="entryUsername" Margin="0,0,0,30"/>
 
             <Label Text="Password"/>
-            <Entry Margin="0,0,0,30"/>
+            <Entry x:Name="entryPassword" Margin="0,0,0,30"/>
             <HorizontalStackLayout Margin="0,0,0,30">
                 <CheckBox></CheckBox>
                 <Label Text="Remember me" VerticalOptions="Center"/>
             </HorizontalStackLayout>
 
-            <Button Text="Log In" Margin="0,0,0,30"/>
+            <Button x:Name="btnLogin" Clicked="btnLogin_Clicked" Text="Log In" Margin="0,0,0,30"/>
             <Label Text="Forgot password?" HorizontalOptions="Center"/>
 
 
