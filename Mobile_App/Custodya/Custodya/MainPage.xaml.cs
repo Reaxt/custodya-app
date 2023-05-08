@@ -1,6 +1,7 @@
 ﻿using Custodya.Services;
 using Firebase.Auth;
 using Microsoft.Maui.ApplicationModel.Communication;
+using Custodya.Config;
 
 namespace Custodya;
 
@@ -16,6 +17,11 @@ public partial class MainPage : ContentPage
     {
         try
         {
+            await DisplayAlert("Config",
+            $"{nameof(App.Settings.APIKey)}: {App.Settings.APIKey}\n" +
+            $"{nameof(App.Settings.FireBase_DB_BaseUrl)}: {App.Settings.FireBase_DB_BaseUrl}\n" +
+            $"{nameof(App.Settings.RefreshRate)}: {App.Settings.RefreshRate}\n" +
+            $"{nameof(App.Settings.IsEnabled)}: {App.Settings.IsEnabled}", "OK");
             NetworkAccess accessType = Connectivity.Current.NetworkAccess;
 
             if (accessType == NetworkAccess.Internet)

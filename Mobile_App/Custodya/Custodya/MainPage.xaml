@@ -35,7 +35,7 @@
 
             <Button x:Name="btnLogin" Clicked="btnLogin_Clicked" Text="Log In" Margin="0,0,0,30"/>
             <Label Text="Forgot password?" HorizontalOptions="Center"/>
-
+            
 
         </VerticalStackLayout>
     </ScrollView>
