@@ -1,14 +1,14 @@
 import asyncio
-import json
 import os
 from dotenv import load_dotenv
 from subsystems.security.SecuritySubSystem import SecuritySubSystem
 from subsystems.plants.plantsSubSystem import PlantsSubSystem
 from subsystems.GeoLocation.GeoLocationSubSystem import GeoLocation 
 from azure.iot.device.aio import IoTHubDeviceClient
-from azure.iot.device import MethodResponse
+from azure.iot.device import MethodResponse, MethodRequest
 from azure.iot.device import Message
 from InterFaces.sensors import AReading
+from connection_manager import ConnectionManager
 class Farm:
     def __init__(self) -> None:
         geolocation = GeoLocation()
@@ -28,52 +28,34 @@ class Farm:
 
 async def main():
     TELEMETRY_TIME = 5
-    load_dotenv()
-    loop = asyncio.get_event_loop()
-    conn_str = os.environ["IOTHUB_DEVICE_CONNECTION_STRING"]
-    device_client = IoTHubDeviceClient.create_from_connection_string(conn_str)   
-    await device_client.connect()
-    farm = Farm()
-    
-    async def telemetryloop():
-        while True:
-            data = readings_to_json(farm.read_sensors())
-            msg = Message(data)
-            await device_client.send_message(msg)
-            await asyncio.sleep(TELEMETRY_TIME)
-    
-    #loop.create_task(telemetryloop())
-    async def method_request_handler(method_request):
-        payload = None
-        if method_request.name == "is_online":
-            payload = {"result":True}
-            status = 200
-        else:
-            payload = {"details":"method name unknown"}
-            status = 400
-        method_response = MethodResponse.create_from_method_request(method_request, status, payload)
-        await device_client.send_method_response(method_response)
+    connection_manager: ConnectionManager = ConnectionManager()
 
-    def twin_patch_handler(patch):
+    connection_manager.subscribe_method_request("is_online", is_online_handler)
+    def twin_patch_handler(patch: dict):
         print(f"Patch received: {patch}")        
         try:
             telemetryInterval = patch["telemetryInterval"]
             if telemetryInterval.isnumeric():
                 TELEMETRY_TIME = int(telemetryInterval)
         except:
-            TELEMETRY_TIME = 5        
+            TELEMETRY_TIME = 5
+    connection_manager.set_twin_handler(twin_patch_handler)
+
+    await connection_manager.connect()
+
+    farm = Farm()
     
-    device_client.on_twin_desired_properties_patch_received = twin_patch_handler
-    device_client.on_method_request_received = method_request_handler
+    async def telemetryloop():
+        while True:
+            await connection_manager.send_telemetry(farm.read_sensors())
+            await asyncio.sleep(TELEMETRY_TIME)
     await telemetryloop()
 
-def readings_to_json(readings:list[AReading]) -> str:
-    values = []
-    for reading in readings:
-        obj = {"type":reading.reading_type, "unit":reading.reading_unit, "value":reading.value}
-        values.append(obj)
-    print(values)
-    return json.dumps(values)
+def is_online_handler(method_request: MethodRequest) -> MethodResponse:
+    payload = {"result":True}
+    status = 200
+    return MethodResponse.create_from_method_request(method_request, status, payload)
+
 
 if __name__ == "__main__":
     asyncio.run(main())
