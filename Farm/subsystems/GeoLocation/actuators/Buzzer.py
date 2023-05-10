@@ -1,4 +1,5 @@
 import time
+from typing import Any
 import seeed_python_reterminal.core as rt
 import sys
 
@@ -27,7 +28,12 @@ class Buzzer(IActuator):
             rt.buzzer = True
         elif data["value"] == CLOSE_COMMAND:
             rt.buzzer = False
+        self._current_state = data
         return True
+    def get_current_state(self) -> Any:
+        return True if self._current_state["value"] == OPEN_COMMAND else False
+    def get_actuator_name(self) -> str:
+        return "Buzzer"
 
 def main():
     buzzer = Buzzer()

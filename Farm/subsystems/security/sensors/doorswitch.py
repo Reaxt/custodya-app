@@ -5,7 +5,7 @@ from gpiozero import Button
 MODEL_NAME = "SEC-100 Magnetic Door Sensor Reed Switch"
 class DoorSensor(ISensor):
         """The door sensor"""
-        def __init__(self, gpio: int , model: str = MODEL_NAME, type: AReading.Type = AReading.Type.MOTION):
+        def __init__(self, gpio: int , model: str = MODEL_NAME, type: AReading.Type = AReading.Type.DOOR):
             """Sensor for door, readings return true when closed.
             
             :param int gpio: The GPIO pin channel

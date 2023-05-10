@@ -4,7 +4,7 @@ import pynmea2
 from InterFaces.sensors import ISensor, AReading
 
 class GPS(ISensor):
-    def __init__(self, port='/dev/ttyAMA0', baudrate=9600, type: AReading.Type = AReading.Type):
+    def __init__(self, port='/dev/ttyAMA0', baudrate=9600, type: AReading.Type = AReading.Type.GPS):
         type: AReading.Type = AReading.Type.GPS,
         self.ser = serial.Serial(port, baudrate, timeout=0.5)
         self.ser.reset_input_buffer()

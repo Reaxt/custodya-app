@@ -4,20 +4,8 @@ from configuration_manager import Configuration
 from datetime import datetime
 from azure.iot.device.aio import IoTHubDeviceClient
 from azure.iot.device import MethodRequest, MethodResponse, Message
-from typing import Callable, Dict
+from typing import Any, Callable, Dict
 from InterFaces.sensors import AReading
-
-def readings_to_json(readings:dict[str,list[AReading]]) -> str:
-    """Converts a list of AReadings into a JSON String"""
-    telemetry_obj = {}
-    telemetry_obj["timestamp"] = datetime.now().timestamp()
-    for key in readings:
-        telemetry_obj[key] = list()
-        for reading in readings[key]:
-            obj = {"type":reading.reading_type, "unit":reading.reading_unit, "value":reading.value}
-            telemetry_obj[key].append(obj)
-    print(telemetry_obj)
-    return json.dumps(telemetry_obj)
 
 class ConnectionManager:
     """ Responsible for talking with the IOT hub.
@@ -53,7 +41,8 @@ class ConnectionManager:
         """Connected to the IoT hub"""
         await self.client.connect()
         self.connected = True
-    async def send_telemetry(self, readings:dict[str, list[AReading]]):
-        jsonstr = readings_to_json(readings)
+    async def send_telemetry(self, telemetry:dict[str, Any]):
+        jsonstr = json.dumps(telemetry)
+        print(jsonstr)
         msg = Message(jsonstr)
         await self.client.send_message(msg)

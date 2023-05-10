@@ -1,5 +1,7 @@
 import asyncio
 import os
+from datetime import datetime
+from typing import Any
 from dotenv import load_dotenv
 from configuration_manager import Configuration
 from subsystems.security.SecuritySubSystem import SecuritySubSystem
@@ -9,31 +11,30 @@ from azure.iot.device.aio import IoTHubDeviceClient
 from azure.iot.device import MethodResponse, MethodRequest
 from azure.iot.device import Message
 from InterFaces.sensors import AReading
+from InterFaces.subsystem import ASubsystem
 from connection_manager import ConnectionManager
 class Farm:
     def __init__(self, configuration:Configuration) -> None:
+        self._subsystems: list[ASubsystem] = list()
+        if configuration.geolocation_enabled:
+            self._subsystems.append(GeoLocation())
+        if configuration.security_enabled:
+            self._subsystems.append(SecuritySubSystem())
+        if configuration.plants_enabled:
+            self._subsystems.append(PlantsSubSystem())
         
-        self.subsystems = dict()
-        if(configuration.geolocation_enabled):
-            self.subsystems["geolocation"] = GeoLocation()
-        else:
-            self.subsystems["geolocation"] = None
-        if(configuration.security_enabled):
-            self.subsystems["security"] = SecuritySubSystem()
-        else:
-            self.subsystems["security"] = None
-        
-        if(configuration.plants_enabled):
-            self.subsystems["plants"] = PlantsSubSystem()
-        else:
-            self.subsystems["plants"] = None
-    def read_sensors(self) -> dict[str, list[AReading]]:
-        readings = dict()
-        for key in self.subsystems:
-            if self.subsystems[key] != None:
-                readings[key]=(self.subsystems[key].read_sensors())
+    def read_sensors(self) -> list[AReading]:
+        readings = list()
+        for subsystem in self._subsystems:
+            readings.extend(subsystem.read_sensors())
         return readings
-
+    
+    def serialize_state(self) -> dict[str, Any]:
+        state: dict[str, Any] = dict()
+        state["timestamp"] = datetime.now().timestamp()
+        for subsystem in self._subsystems:
+            state[subsystem.get_name()] = subsystem.serialize_state()
+        return state
 async def main():
     TELEMETRY_TIME = 5
     configuration: Configuration = Configuration()
@@ -56,7 +57,7 @@ async def main():
     
     async def telemetryloop():
         while True:
-            await connection_manager.send_telemetry(farm.read_sensors())
+            await connection_manager.send_telemetry(farm.serialize_state())
             await asyncio.sleep(TELEMETRY_TIME)
     await telemetryloop()
 
