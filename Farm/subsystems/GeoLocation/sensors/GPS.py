@@ -13,19 +13,19 @@ class GPS(ISensor):
     
 
     def read_sensor(self) -> list[AReading]:
+            reading = list()
             try:
                 line = self.ser.readline().decode('utf-8')
                 if line.startswith('$GNGLL'):
                     data = pynmea2.parse(line)
                     lat = data.latitude
                     lng = data.longitude
-                    res = [
-                    lat,
-                    lng          
-                    ]
-                return [res]
+                    res = {"Latitude": lat, "Longitude":lng}
+                    reading.append(AReading(AReading.Type.GPS, AReading.Unit.GPS, res))
             except:
-                return [False]
+                #kevin when you see this, please make this throw an error!!
+                return []
+            return reading
 
 
 

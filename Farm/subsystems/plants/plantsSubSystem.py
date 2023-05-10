@@ -50,7 +50,7 @@ class PlantsSubSystem(ASubsystem):
         self._actuators: list[IActuator] = [self._fan_actuator, self._led_actuator]
 
     def get_name(self):
-        return "plants"
+        return "Plants"
     
 """
 if __name__ == "__main__":
