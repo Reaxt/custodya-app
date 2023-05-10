@@ -1,6 +1,7 @@
 import asyncio
 import json
 import os
+from datetime import datetime
 from os.path import exists
 from dotenv import load_dotenv
 from azure.iot.device.aio import IoTHubDeviceClient
@@ -13,6 +14,7 @@ def readings_to_json(readings:list[AReading]) -> str:
     values = []
     for reading in readings:
         obj = {"type":reading.reading_type, "unit":reading.reading_unit, "value":reading.value}
+        obj["timestamp"] = datetime.now().timestamp()
         values.append(obj)
     print(values)
     return json.dumps(values)
