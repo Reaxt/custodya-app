@@ -1,36 +1,31 @@
 import asyncio
 import json
-import os
+from configuration_manager import Configuration
 from datetime import datetime
-from os.path import exists
-from dotenv import load_dotenv
 from azure.iot.device.aio import IoTHubDeviceClient
 from azure.iot.device import MethodRequest, MethodResponse, Message
 from typing import Callable, Dict
 from InterFaces.sensors import AReading
 
-def readings_to_json(readings:list[AReading]) -> str:
+def readings_to_json(readings:dict[str,list[AReading]]) -> str:
     """Converts a list of AReadings into a JSON String"""
-    values = []
-    for reading in readings:
-        obj = {"type":reading.reading_type, "unit":reading.reading_unit, "value":reading.value}
-        obj["timestamp"] = datetime.now().timestamp()
-        values.append(obj)
-    print(values)
-    return json.dumps(values)
+    telemetry_obj = {}
+    telemetry_obj["timestamp"] = datetime.now().timestamp()
+    for key in readings:
+        telemetry_obj[key] = list()
+        for reading in readings[key]:
+            obj = {"type":reading.reading_type, "unit":reading.reading_unit, "value":reading.value}
+            telemetry_obj[key].append(obj)
+    print(telemetry_obj)
+    return json.dumps(telemetry_obj)
 
 class ConnectionManager:
     """ Responsible for talking with the IOT hub.
     """
     CONN_STR_KEY = "IOTHUB_DEVICE_CONNECTION_STRING"
 
-    def __init__(self):
-        if not exists('.env'):
-            raise FileNotFoundError("Env file not found!") # maybe we dont want this. Given it could be setup elsewhere in the environment
-        load_dotenv()
-        conn_string = os.environ.get(ConnectionManager.CONN_STR_KEY)
-        if conn_string is None:
-            raise EnvironmentError("Missing connection environment variable!")
+    def __init__(self, configuration:Configuration):
+        conn_string = configuration.iot_connection_string
         self.client: IoTHubDeviceClient = IoTHubDeviceClient.create_from_connection_string(conn_string)
         self.connected: bool = False
         self._commands: Dict[str, Callable[[MethodRequest], MethodResponse]] = dict()
@@ -58,8 +53,7 @@ class ConnectionManager:
         """Connected to the IoT hub"""
         await self.client.connect()
         self.connected = True
-    async def send_telemetry(self, readings:list[AReading]):
+    async def send_telemetry(self, readings:dict[str, list[AReading]]):
         jsonstr = readings_to_json(readings)
         msg = Message(jsonstr)
         await self.client.send_message(msg)
-
