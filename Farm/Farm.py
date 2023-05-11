@@ -66,6 +66,6 @@ def is_online_handler(method_request: MethodRequest) -> MethodResponse:
     status = 200
     return MethodResponse.create_from_method_request(method_request, status, payload)
 
-
+#test Comment for git
 if __name__ == "__main__":
     asyncio.run(main())
