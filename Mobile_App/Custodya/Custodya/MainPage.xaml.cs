@@ -2,6 +2,7 @@
 using Firebase.Auth;
 using Microsoft.Maui.ApplicationModel.Communication;
 using Custodya.Config;
+using Custodya.Repos;
 
 namespace Custodya;
 
@@ -35,7 +36,7 @@ public partial class MainPage : ContentPage
                 //email.Text = $"Email: {entryUsername.Text}";
                 //Login.IsVisible = false;
                 //Logout.IsVisible = true;
-                await Shell.Current.GoToAsync("//MauiFitness");
+                DataRepoProvider.InitDb();
             }
             else
             {

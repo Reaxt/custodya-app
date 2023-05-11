@@ -26,6 +26,7 @@ namespace Custodya.Services
         private string _dbKey;
         private ObservableCollection<T> _items;
         private FirebaseClient _client;
+        private TelemetryDatabaseUpdaterService<T> _updaterService;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -69,6 +70,7 @@ namespace Custodya.Services
             _realtimeDb =
                 client.Child(dbKey)
                 .AsRealtimeDatabase<T>(dbKey, "", StreamingOptions.LatestOnly, InitialPullStrategy.MissingOnly, true);
+            _updaterService = new TelemetryDatabaseUpdaterService<T>(this);
         }
         public async Task<bool> AddItemAsync(T item)
         {
@@ -77,6 +79,7 @@ namespace Custodya.Services
                 item.Key = _realtimeDb.Post(item);
                 _realtimeDb.Put(item.Key, item);
                 Items.Add(item);
+                LatestItem = item;
             }
             catch (Exception)
             {
@@ -91,6 +94,7 @@ namespace Custodya.Services
             {
                 _realtimeDb.Delete(item.Key);
                 Items.Remove(item);
+                LatestItem = await GetLastItemAsync();
             }
             catch (Exception)
             {
@@ -139,7 +143,7 @@ namespace Custodya.Services
 
         public async Task<bool> CheckExists(T item)
         {
-            return Items.Any((x) => x.Key.Equals(item.Key));
+            return Items.Any((x) => x.Timestamp.Equals(item.Timestamp));
         }
     }
 }

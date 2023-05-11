@@ -28,6 +28,7 @@ namespace Custodya.Services
             _observers = new List<IObserver<string>>();
             _eventProcessor.ProcessEventAsync += ProcessEventHandler;
             _eventProcessor.ProcessErrorAsync += _eventProcessor_ProcessErrorAsync;
+            Task.Run(() => _eventProcessor.StartProcessingAsync());
         }
 
         private async Task _eventProcessor_ProcessErrorAsync(ProcessErrorEventArgs arg)
