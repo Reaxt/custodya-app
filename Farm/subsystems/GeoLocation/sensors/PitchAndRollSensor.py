@@ -4,8 +4,10 @@ import seeed_python_reterminal.acceleration as rt_accel
 import math
 from InterFaces.sensors import ISensor, AReading
 
+MODEL_NAME = "PitchAndRoll Sensor"
+
 class PitchAndRollSensor(ISensor):
-    def __init__(self):
+    def __init__(self, gpio = 0,  model = MODEL_NAME, type = AReading.Type.PITCH_ROLL):
         self.accel_device = rt.get_acceleration_device()
 
 
