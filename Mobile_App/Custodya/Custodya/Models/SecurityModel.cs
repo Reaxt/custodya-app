@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Custodya.Attributes;
+using Custodya.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,9 +11,10 @@ namespace Custodya.Models
     /// <summary>
     /// The model representing received security data
     /// </summary>
-    [Serializable]
-    public class SecurityModel
+    [Serializable, ModelJsonName("Security")]
+    public class SecurityModel : IHasUKey, ISubsystemState
     {
+        
         [Serializable]
         public enum DoorState
         {
@@ -34,6 +37,9 @@ namespace Custodya.Models
         /// Whether the door is currently locked or unlocked
         /// </summary>
         public DoorState DoorLock { get; set; }
+        public DateTime Timestamp { get; set; }
+        public string Key { get; set; }
+
         public SecurityModel(bool motion, float loudness, DoorState doorstate, DoorState lockstate)
         {
             Motion = motion;

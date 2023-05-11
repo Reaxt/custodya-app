@@ -69,7 +69,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Frame Grid.Column="0">
-                        <Label Text="37dB"/>
+                        <Label Text="{Binding LatestItem.Loudness}"/>
                     </Frame>
                     <Frame Grid.Column="1">
                         <Label Text="Bright"/>

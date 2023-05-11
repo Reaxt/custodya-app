@@ -17,11 +17,13 @@ public partial class MainPage : ContentPage
     {
         try
         {
+#if DEBUG
             await DisplayAlert("Config",
-            $"{nameof(App.Settings.APIKey)}: {App.Settings.APIKey}\n" +
+            $"{nameof(App.Settings.FireBaseAPIKey)}: {App.Settings.FireBaseAPIKey}\n" +
             $"{nameof(App.Settings.FireBase_DB_BaseUrl)}: {App.Settings.FireBase_DB_BaseUrl}\n" +
             $"{nameof(App.Settings.RefreshRate)}: {App.Settings.RefreshRate}\n" +
             $"{nameof(App.Settings.IsEnabled)}: {App.Settings.IsEnabled}", "OK");
+#endif
             NetworkAccess accessType = Connectivity.Current.NetworkAccess;
 
             if (accessType == NetworkAccess.Internet)

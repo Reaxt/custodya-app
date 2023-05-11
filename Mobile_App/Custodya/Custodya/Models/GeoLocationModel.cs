@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Custodya.Attributes;
+using Custodya.Interfaces;
 using Microsoft.Azure.Devices.Client;
 using Newtonsoft.Json;
 
 namespace Custodya.Models
 {
 
-    [Serializable]
-    public class GeoLocationModel
+    [Serializable, ModelJsonName("GeoLocation")]
+    public class GeoLocationModel : ISubsystemState, IHasUKey
     {
         /// <summary>
         /// The current Longitude
@@ -31,19 +33,23 @@ namespace Custodya.Models
         /// <summary>
         /// The buzzer state (on = true, off = false)
         /// </summary>
-        public bool BuzzerState { get; set; }
+        public bool Buzzer { get; set; }
         /// <summary>
         /// InTransport 
         /// </summary>
         public bool InTransport { get; set; }
 
-        public GeoLocationModel(double longitude, double latitude, double pitch, double roll, bool buzzerState, bool inTransport)
+        public string JsonKey { get; set; }
+        public DateTime Timestamp { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string Key { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public GeoLocationModel(double longitude, double latitude, double pitch, double roll, bool buzzer, bool inTransport)
         {
             Longitude = longitude;
             Latitude = latitude;
             Pitch = pitch;
             Roll = roll;
-            BuzzerState = buzzerState;
+            Buzzer = buzzer;
             InTransport = inTransport;
         }
     }

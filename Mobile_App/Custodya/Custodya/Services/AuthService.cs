@@ -14,8 +14,8 @@ namespace Custodya.Services
         // Configure...
         private static FirebaseAuthConfig config = new FirebaseAuthConfig
         {
-            ApiKey = ResourceStrings.Apikey,
-            AuthDomain = ResourceStrings.AuthorizedDomain,
+            ApiKey = App.Settings.FireBaseAPIKey,
+            AuthDomain = App.Settings.FireBase_Authorized_Domain,
             Providers = new FirebaseAuthProvider[]
             {
                 // Add and configure individual providers

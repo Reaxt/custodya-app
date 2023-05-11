@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Custodya.Attributes;
+using Custodya.Interfaces;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,9 +12,10 @@ namespace Custodya.Models
     /// <summary>
     /// The relevant model for plant data
     /// </summary>
-    [Serializable]
-    public class PlantsModel
+    [Serializable, ModelJsonName("Plants")]
+    public class PlantsModel : IHasUKey, ISubsystemState, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
         /// <summary>
         /// The humidity sensor value
         /// </summary>
@@ -36,6 +40,8 @@ namespace Custodya.Models
         /// The led state (true = on. false = off)
         /// </summary>
         public bool Led { get; set; }
+        public DateTime Timestamp { get; set; }
+        public string Key { get; set; }
 
         public PlantsModel(float humidity, float moisture, float temperature, float water, bool fan, bool led) 
         {
@@ -46,5 +52,6 @@ namespace Custodya.Models
             Fan= fan;
             Led= led;
         }
+
     }
 }

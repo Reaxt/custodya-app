@@ -24,10 +24,10 @@
 
             <Label Text="Log in to continue" Margin="0,0,0,30"/>
             <Label Text="Email address"/>
-            <Entry x:Name="entryUsername" Margin="0,0,0,30"/>
+            <Entry x:Name="entryUsername" Text ="admind@admin.ca" Margin="0,0,0,30"/>
 
             <Label Text="Password"/>
-            <Entry x:Name="entryPassword" Margin="0,0,0,30"/>
+            <Entry x:Name="entryPassword" Text="coolpassword" Margin="0,0,0,30"/>
             <HorizontalStackLayout Margin="0,0,0,30">
                 <CheckBox></CheckBox>
                 <Label Text="Remember me" VerticalOptions="Center"/>
