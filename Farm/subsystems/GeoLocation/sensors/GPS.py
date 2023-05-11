@@ -24,16 +24,17 @@ class GPS(ISensor):
                     reading.append(AReading(AReading.Type.GPS, AReading.Unit.GPS, res))
             except:
                 #kevin when you see this, please make this throw an error!!
-                return []
+                res = {"Error":"no GPS detected"}
+                return [AReading(AReading.Type.GPS, AReading.Unit.GPS, res)]
             return reading
 
 
 
 
 def main():
-    GPS = Air530()
+    gps = GPS()
     while True:
-        data = GPS.read_gps()
+        data = gps.read_sensor()
         if data is not None:
             lat, lng = data
             print("Latitude:", lat)
