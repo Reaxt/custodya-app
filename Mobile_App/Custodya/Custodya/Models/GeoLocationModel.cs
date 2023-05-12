@@ -40,8 +40,8 @@ namespace Custodya.Models
         public bool InTransport { get; set; }
 
         public string JsonKey { get; set; }
-        public DateTime Timestamp { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string Key { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public DateTime Timestamp { get; set; }
+        public string Key { get; set; }
 
         public GeoLocationModel(double longitude, double latitude, double pitch, double roll, bool buzzer, bool inTransport)
         {
