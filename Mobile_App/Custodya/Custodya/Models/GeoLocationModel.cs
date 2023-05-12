@@ -14,22 +14,17 @@ namespace Custodya.Models
     [Serializable, ModelJsonName("GeoLocation")]
     public class GeoLocationModel : ISubsystemState, IHasUKey
     {
+        public Coordinate Coordinates { get; set; }
+
+
         /// <summary>
-        /// The current Longitude
+        /// The current roll and pitch
         /// </summary>
-        public double Longitude { get; set; }
-        /// <summary>
-        /// The current latitude
-        /// </summary>
-        public double Latitude { get; set; }
-        /// <summary>
-        /// The current pitch
-        /// </summary>
-        public double Pitch { get; set; }
-        /// <summary>
-        /// The current roll
-        /// </summary>
-        public double Roll { get; set; }
+
+        public Heading Heading { get; set; }
+
+
+
         /// <summary>
         /// The buzzer state (on = true, off = false)
         /// </summary>
@@ -45,14 +40,26 @@ namespace Custodya.Models
 
         public GeoLocationModel(double longitude, double latitude, double pitch, double roll, bool buzzer, bool inTransport)
         {
-            Longitude = longitude;
-            Latitude = latitude;
-            Pitch = pitch;
-            Roll = roll;
+            Coordinates.Longitude.Equals(longitude);
+            Coordinates.Latitude.Equals(latitude);
+            Heading.Pitch.Equals(pitch);
+            Heading.Roll.Equals(roll);
             Buzzer = buzzer;
             InTransport = inTransport;
         }
     }
 
+    [Serializable]
+    public struct Coordinate
+    {
+        public double Longitude;
+        public double Latitude;
+    }
 
+    [Serializable]
+    public struct Heading
+    {
+        public double Pitch;
+        public double Roll;
+    }
 }
