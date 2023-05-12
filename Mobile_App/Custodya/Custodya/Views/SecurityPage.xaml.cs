@@ -9,5 +9,6 @@ public partial class SecurityPage : ContentPage
     public SecurityPage()
 	{
         InitializeComponent();
-	}
+        this.BindingContext = DataRepoProvider.SecurityDatabase;
+    }
 }

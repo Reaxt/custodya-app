@@ -21,13 +21,36 @@
                         <ColumnDefinition Width="1.25*"/>
                     </Grid.ColumnDefinitions>
                     <Frame Grid.Column="0">
-                        <Label Text="45.434 / -73.845"/>
+                        <VerticalStackLayout>
+                            <Label Text="Coordinates:"/>
+                            <Label>
+                                <Label.Text>
+                                    <MultiBinding StringFormat="{}{0}/{1}">
+                                        <Binding Path="LatestItem.Longitude"/>
+                                        <Binding Path="LatestItem.Latitude"/>
+                                    </MultiBinding>
+                                </Label.Text>
+                            </Label>
+                        </VerticalStackLayout>
                     </Frame>
                     <Frame Grid.Column="1">
-                        <Label Text="450"/>
+                        <VerticalStackLayout>
+                            <Label Text="Pitch/Roll:"/>
+                            <Label>
+                                <Label.Text>
+                                    <MultiBinding StringFormat="{}{0}/{1}">
+                                        <Binding Path="LatestItem.Pitch"/>
+                                        <Binding Path="LatestItem.Roll"/>
+                                    </MultiBinding>
+                                </Label.Text>
+                            </Label>
+                        </VerticalStackLayout>
                     </Frame>
                     <Frame Grid.Column="2">
-                        <Label Text="Buzzing"/>
+                        <VerticalStackLayout>
+                            <Label Text="Noise:"/>
+                            <Label Text="{Binding LatestItem.Buzzer}"/>
+                        </VerticalStackLayout>
                     </Frame>
                 </Grid>
             </VerticalStackLayout>

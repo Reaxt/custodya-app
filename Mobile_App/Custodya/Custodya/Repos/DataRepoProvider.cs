@@ -1,11 +1,6 @@
 ﻿using Custodya.Interfaces;
 using Custodya.Models;
 using Custodya.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Custodya.Repos
 {
@@ -20,8 +15,8 @@ namespace Custodya.Repos
         public static void InitDb() 
         {
             if (SecurityDatabase== null) SecurityDatabase = new FirebaseRealtimeDatabaseService<SecurityModel>();
-            if (GeolocationDatabase == null) GeolocationDatabase = new FirebaseRealtimeDatabaseService<GeoLocationModel>();
             if (PlantsDatabase == null) PlantsDatabase = new FirebaseRealtimeDatabaseService<PlantsModel>();
+            if (GeolocationDatabase == null) GeolocationDatabase = new FirebaseRealtimeDatabaseService<GeoLocationModel>();
         }
     }
 }

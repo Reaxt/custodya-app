@@ -17,7 +17,7 @@ public partial class MainPage : ContentPage
     private async void btnLogin_Clicked(object sender, EventArgs e)
     {
         try
-        { 
+        {
             NetworkAccess accessType = Connectivity.Current.NetworkAccess;
 
             if (accessType == NetworkAccess.Internet)
@@ -25,11 +25,13 @@ public partial class MainPage : ContentPage
                 // Connection to internet is available
                 AuthService.UserCreds = await AuthService.Client.SignInWithEmailAndPasswordAsync(entryUsername.Text, entryPassword.Text);
                 await DisplayAlert("Login", "Logged in successfully", "Ok");
+                DataRepoProvider.InitDb();
+                string destination = entryUsername.Text.Split('@')[0].ToLower() == "owner" ? "Owner" : "User";
+                await Shell.Current.GoToAsync($"//{destination}");
                 //uid.Text = $"Id: {AuthService.UserCreds.User.Uid}";
                 //email.Text = $"Email: {entryUsername.Text}";
                 //Login.IsVisible = false;
                 //Logout.IsVisible = true;
-                DataRepoProvider.InitDb();
             }
             else
             {
