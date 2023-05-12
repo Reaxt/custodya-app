@@ -10,13 +10,17 @@ class AReading:
         """Enum defining all possible types of readings that sensors might make.
         """
         # Add new reading types here.
-        TEMPERATURE = 'temperature'
-        HUMIDITY = 'humidity'
-        WATER = 'WATER'
-        GPS = 'GPS'
-        MOTION = 'motion'
-        LOUDNESS = 'loudness'
-        DOOR = 'door'
+        TEMPERATURE = 'Temperature'
+        HUMIDITY = 'Humidity'
+        WATER = 'Water'
+        MOISTURE = 'Moisture'
+        GPS = 'Coordinates'
+        MOTION = 'Motion'
+        LOUDNESS = 'Loudness'
+        DOOR = 'Door'
+        VIBRATION='Vibration'
+        PITCH_ROLL='Heading'
+
 
     class Unit(str, Enum):
         """Enum defining all possible units for sensor measuremens.
@@ -24,10 +28,14 @@ class AReading:
         # Add new reading units here.
         CELCIUS = 'C'
         HUMIDITY = '% HR'
+        MOISTURE = "%"
         HERTZ = 'Hz'
         WATER = 'ml'
         BOOLEAN = 'bool'
         LOUDNESS = 'loudness'
+        VIBRATION = 'vibration %'
+        PITCH_ROLL = "PitchAndRoll"
+        GPS = "GPS Coords"
 
     def __init__(self, type: Type, unit: Unit, value: Any) -> None:
         """Create new AReading based on a type of reading its units and value

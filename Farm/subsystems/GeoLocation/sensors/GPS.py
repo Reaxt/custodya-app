@@ -4,7 +4,7 @@ import pynmea2
 from InterFaces.sensors import ISensor, AReading
 
 class GPS(ISensor):
-    def __init__(self, port='/dev/ttyAMA0', baudrate=9600, type: AReading.Type = AReading.Type):
+    def __init__(self, port='/dev/ttyAMA0', baudrate=9600, type: AReading.Type = AReading.Type.GPS):
         type: AReading.Type = AReading.Type.GPS,
         self.ser = serial.Serial(port, baudrate, timeout=0.5)
         self.ser.reset_input_buffer()
@@ -13,27 +13,28 @@ class GPS(ISensor):
     
 
     def read_sensor(self) -> list[AReading]:
+            reading = list()
             try:
                 line = self.ser.readline().decode('utf-8')
                 if line.startswith('$GNGLL'):
                     data = pynmea2.parse(line)
                     lat = data.latitude
                     lng = data.longitude
-                    res = [
-                    lat,
-                    lng          
-                    ]
-                return [res]
+                    res = {"Latitude": lat, "Longitude":lng}
+                    reading.append(AReading(AReading.Type.GPS, AReading.Unit.GPS, res))
             except:
-                return [False]
+                #kevin when you see this, please make this throw an error!!
+                res = {"Error":"no GPS detected"}
+                return [AReading(AReading.Type.GPS, AReading.Unit.GPS, res)]
+            return reading
 
 
 
 
 def main():
-    GPS = Air530()
+    gps = GPS()
     while True:
-        data = GPS.read_gps()
+        data = gps.read_sensor()
         if data is not None:
             lat, lng = data
             print("Latitude:", lat)

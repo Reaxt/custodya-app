@@ -1,36 +1,30 @@
-from time import sleep 
-
+from time import sleep
+from InterFaces.actuators import IActuator, ACommand
+from InterFaces.sensors import ISensor, AReading
+from InterFaces.subsystem import ASubsystem
 from subsystems.security.actuators.servo import DoorController
-from subsystems.security.actuators.baseactuators import ACommand
-
 from subsystems.security.sensors.doorswitch import DoorSensor
 from subsystems.security.sensors.motionsensor import MotionSensor
 from subsystems.security.sensors.soundsensor import LoudnessSensor
-from subsystems.security.sensors.basesensors import AReading, ISensor
-
 DOOR_PIN = 5
 MOTION_PIN = 12
 LOUDNESS_BUS = 0
 SERVO_PIN = 16
 
 
-class SecuritySubSystem:
+class SecuritySubSystem(ASubsystem):
 
     def __init__(self) -> None:
-        self.sensors: list[ISensor] = [
+        self._sensors: list[ISensor] = [
         DoorSensor(DOOR_PIN),
         MotionSensor(MOTION_PIN),
         LoudnessSensor(LOUDNESS_BUS)
-    ]
-    
-    def read_sensors(self):
-        readings: list[AReading] = []
-        for sensor in self.sensors:
-            for reading in sensor.read_sensor():
-                readings.append(reading)
-        return readings
-
-
+        ]
+        self._actuators: list[IActuator] = [
+            DoorController(SERVO_PIN)
+        ]
+    def get_name(self) -> str:
+        return "Security"
 
 
 

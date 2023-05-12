@@ -16,7 +16,7 @@ class MoistureSensor(ISensor):
         self,
         gpio: int,
         model: str = MODEL_NAME,
-        type: AReading.Type = AReading.Type.HUMIDITY,
+        type: AReading.Type = AReading.Type.MOISTURE,
     ):
         self._sensor = ADC(gpio)
         self.gpio = gpio

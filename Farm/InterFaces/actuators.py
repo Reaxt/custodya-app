@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from enum import Enum
 import json
+from typing import Any
 
 class ACommand:
     """Class for actuator commands. The type of the command has to be handled by the actuator itself."""
@@ -54,3 +55,19 @@ class IActuator(ABC):
             return self.control_actuator(command.data)
         else:
             return False
+    @abstractmethod
+    def get_current_state(self) -> Any:
+        """Get the current state of the actuator in a way that works for serialization
+
+        Returns:
+            Any: The actuators current state.
+        """
+        pass
+    @abstractmethod
+    def get_actuator_name(self) -> str:
+        """Get the name of this actuator for serialization
+
+        Returns:
+            str: the name of this actuator.
+        """
+        pass

@@ -1,5 +1,6 @@
 """This module controls the fan state"""
 import sys
+from typing import Any
 
 sys.path.append("..")
 from gpiozero import DigitalOutputDevice
@@ -38,9 +39,12 @@ class FanController(IActuator):
             self.fan.on()
         elif data["value"] == CLOSE_COMMAND:
             self.fan.off()
+        self._current_state = data
         return True
-
-
+    def get_current_state(self) -> Any:
+        return True if self._current_state == OPEN_COMMAND else False
+    def get_actuator_name(self) -> str:
+        return "Fan"
 if __name__ == "__main__":
     fantest = FanController()
     while True:

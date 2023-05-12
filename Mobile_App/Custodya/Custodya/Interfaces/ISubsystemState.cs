@@ -1,4 +1,4 @@
-﻿using Custodya.Models;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace Custodya.Interfaces
 {
-    public interface IDeviceRepository<T>
+    public interface ISubsystemState
     {
-        Task<T> GetLatestData();
-        Task<IEnumerable<T>> GetPastData(int points = 10);
+        public DateTime Timestamp { get; set; }
 
     }
 }

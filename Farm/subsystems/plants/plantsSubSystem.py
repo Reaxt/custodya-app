@@ -8,10 +8,11 @@ from subsystems.plants.sensors.water import WaterSensor
 
 from InterFaces.sensors import AReading, ISensor
 from InterFaces.actuators import ACommand, IActuator
+from InterFaces.subsystem import ASubsystem
 
 from time import sleep
 
-class PlantsSubSystem:
+class PlantsSubSystem(ASubsystem):
     FAN_ON_COMMAND = ACommand("fan", '{"value": "on"}')
     FAN_OFF_COMMAND = ACommand("fan", '{"value": "off"}')
     FAN_GPIO = 18
@@ -39,23 +40,18 @@ class PlantsSubSystem:
     WATER_TYPE = AReading.Type.WATER
 
     def __init__(self) -> None:
-        humidity = HumiditySensor(self.HUMIDITY_GPIO,self.HUMIDITY_MODEL,self.HUMIDITY_TYPE)
-        temperature = TemperatureSensor(self.TEMPERATURE_GPIO, self.TEMPERATURE_MODEL, self.TEMPERATURE_TYPE)
-        moisture = MoistureSensor(self.MOISTURE_GPIO, self.MOISTURE_MODEL, self.MOISTURE_TYPE)
-        water = WaterSensor(self.WATER_GPIO, self.WATER_MODEL, self.WATER_TYPE)
-        self.sensors: list[ISensor] = [humidity, temperature, moisture, water]
+        self._humidity_sensor = HumiditySensor(self.HUMIDITY_GPIO,self.HUMIDITY_MODEL,self.HUMIDITY_TYPE)
+        self._temperature_sensor = TemperatureSensor(self.TEMPERATURE_GPIO, self.TEMPERATURE_MODEL, self.TEMPERATURE_TYPE)
+        self._moisture_sensor = MoistureSensor(self.MOISTURE_GPIO, self.MOISTURE_MODEL, self.MOISTURE_TYPE)
+        self._water_sensor = WaterSensor(self.WATER_GPIO, self.WATER_MODEL, self.WATER_TYPE)
+        self._sensors: list[ISensor] = [self._humidity_sensor, self._temperature_sensor, self._moisture_sensor, self._water_sensor]
+        self._fan_actuator = FanController(PlantsSubSystem.FAN_GPIO, PlantsSubSystem.FAN_VALUE)
+        self._led_actuator = LedController(PlantsSubSystem.LED_GPIO, PlantsSubSystem.LED_VALUE)
+        self._actuators: list[IActuator] = [self._fan_actuator, self._led_actuator]
 
-
-    def read_sensors(self):
-        readings: list[AReading] = []
-        for sensor in self.sensors:
-            for reading in sensor.read_sensor():
-                readings.append(reading)
-        return readings
-
-
-
-
+    def get_name(self):
+        return "Plants"
+    
 """
 if __name__ == "__main__":
     fan = FanController(FAN_GPIO, FAN_VALUE)
