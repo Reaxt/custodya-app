@@ -18,10 +18,14 @@ class GPS(ISensor):
                 line = self.ser.readline().decode('utf-8')
                 if line.startswith('$GNGLL'):
                     data = pynmea2.parse(line)
-                    lat = data.latitude
-                    lng = data.longitude
-                    res = {"Latitude": lat, "Longitude":lng}
+                    self.lat = data.latitude
+                    self.lng = data.longitude
+                    res = {"Latitude": self.lat, "Longitude":self.lng}
                     reading.append(AReading(AReading.Type.GPS, AReading.Unit.GPS, res))
+                else:
+                    res = {"Latitude": self.lat, "Longitude":self.lng}
+                    reading.append(AReading(AReading.Type.GPS, AReading.Unit.GPS, res))
+
             except:
                 #kevin when you see this, please make this throw an error!!
                 res = {"Error":"no GPS detected"}
