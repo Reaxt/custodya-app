@@ -1,10 +1,10 @@
 """This module controls the servo motor state
 """
+from typing import Any
 from gpiozero import Servo
 from time import sleep
 import json
-from subsystems.security.actuators.baseactuators import IActuator, ACommand
-
+from InterFaces.actuators import IActuator, ACommand
 
 OUTPIN = 16
 OPEN_COMMAND = "on"
@@ -32,8 +32,13 @@ class DoorController(IActuator):
             self.servo.max()
         elif data["value"] == CLOSE_COMMAND:
             self.servo.min()
+        self._current_state = data
         return True
-    
+    def get_current_state(self) -> Any:
+        return True if self._current_state["value"] == OPEN_COMMAND else False
+    def get_actuator_name(self) -> str:
+        return "DoorLock"
+
 if __name__ == "__main__":
     servotest = DoorController()
     while True:

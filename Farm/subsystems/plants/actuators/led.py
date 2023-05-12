@@ -1,5 +1,6 @@
 """This module controls the led state"""
 import sys
+from typing import Any
 
 sys.path.append("..")
 
@@ -43,9 +44,12 @@ class LedController(IActuator):
             self.led.setBrightness(MAX_BRIGHTNESS)
         elif data["value"] == CLOSE_COMMAND:
             self.led.setBrightness(MIN_BRIGHTNESS)
+        self._current_state = data;
         return True
-
-
+    def get_current_state(self) -> Any:
+        return True if self._current_state["value"] == OPEN_COMMAND else False
+    def get_actuator_name(self) -> str:
+        return "Led"
 if __name__ == "__main__":
     ledtest = LedController()
     while True:

@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Custodya.Services
+namespace Custodya.Interfaces
 {
-    internal class AzureIOTService
+    public interface IHasUKey
     {
+        public string Key { get; set; }
     }
 }
