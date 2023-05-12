@@ -21,13 +21,22 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Frame Grid.Column="0">
-                        <Label Text="24 C"/>
+                        <VerticalStackLayout>
+                            <Label Text="Temperature:"/>
+                            <Label Text="{Binding LatestItem.Temperature, StringFormat='{0}°C'}"/>
+                        </VerticalStackLayout>
                     </Frame>
                     <Frame Grid.Column="1">
-                        <Label Text="32%"/>
+                        <VerticalStackLayout>
+                            <Label Text="Humidity:"/>
+                            <Label Text="{Binding LatestItem.Humidity, StringFormat='{0}%'}"/>
+                        </VerticalStackLayout>
                     </Frame>
                     <Frame Grid.Column="2">
-                        <Label Text="Wet"/>
+                        <VerticalStackLayout>
+                            <Label Text="Water:"/>
+                            <Label Text="{Binding LatestItem.Moisture}"/>
+                        </VerticalStackLayout>
                     </Frame>
                 </Grid>
             </VerticalStackLayout>

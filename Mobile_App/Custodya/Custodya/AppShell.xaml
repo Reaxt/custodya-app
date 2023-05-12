@@ -4,28 +4,15 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Custodya"
-    Shell.FlyoutBehavior="Disabled">    
-    <TabBar>
-        <Tab Title="Login" Icon="login.png">
-            <ShellContent
-                ContentTemplate="{DataTemplate local:MainPage}"
-                Route="Main" />
-        </Tab>
-        <Tab Title="Home" Icon="home.png">
+    Shell.FlyoutBehavior="Disabled">
+    <ShellContent
+        ContentTemplate="{DataTemplate local:MainPage}"
+        Route="Login" />
+    <TabBar Route="User">
+        <Tab Title="Security" Icon="security.png">
             <ShellContent                
-                ContentTemplate="{DataTemplate local:HomePage}"
-                Route="Home" />
-        </Tab>
-        <Tab Title="Notifications" Icon="notifications.png">
-            <ShellContent                
-                ContentTemplate="{DataTemplate local:NotificationsPage}"
-                Route="Notifications" 
-                />
-        </Tab>
-        <Tab Title="Pod" Icon="pod.png">
-            <ShellContent                
-                ContentTemplate="{DataTemplate local:PodPage}"
-                Route="Pod" 
+                ContentTemplate="{DataTemplate local:SecurityPage}"
+                Route="Security"
                 />
         </Tab>
         <Tab Title="Plants" Icon="plants.png">
@@ -34,6 +21,14 @@
                 Route="Plants" 
                 />
         </Tab>
+        <Tab Title="Account" Icon="user.png">
+            <ShellContent                
+                ContentTemplate="{DataTemplate local:AccountPage}"
+                Route="Account" 
+                />
+        </Tab>
+    </TabBar>
+    <TabBar Route="Owner">
         <Tab Title="Security" Icon="security.png">
             <ShellContent                
                 ContentTemplate="{DataTemplate local:SecurityPage}"
@@ -46,6 +41,11 @@
                 Route="Geo"
                 />
         </Tab>
+        <Tab Title="Account" Icon="user.png">
+            <ShellContent                
+                ContentTemplate="{DataTemplate local:AccountPage}"
+                Route="Account" 
+                />
+        </Tab>
     </TabBar>
-
 </Shell>

@@ -24,6 +24,7 @@ public partial class MainPage : ContentPage
             $"{nameof(App.Settings.FireBase_DB_BaseUrl)}: {App.Settings.FireBase_DB_BaseUrl}\n" +
             $"{nameof(App.Settings.RefreshRate)}: {App.Settings.RefreshRate}\n" +
             $"{nameof(App.Settings.IsEnabled)}: {App.Settings.IsEnabled}", "OK");
+
 #endif
             NetworkAccess accessType = Connectivity.Current.NetworkAccess;
 
@@ -32,11 +33,13 @@ public partial class MainPage : ContentPage
                 // Connection to internet is available
                 AuthService.UserCreds = await AuthService.Client.SignInWithEmailAndPasswordAsync(entryUsername.Text, entryPassword.Text);
                 await DisplayAlert("Login", "Logged in successfully", "Ok");
+                DataRepoProvider.InitDb();
+                string destination = entryUsername.Text.Split('@')[0].ToLower() == "owner" ? "Owner" : "User";
+                await Shell.Current.GoToAsync($"//{destination}");
                 //uid.Text = $"Id: {AuthService.UserCreds.User.Uid}";
                 //email.Text = $"Email: {entryUsername.Text}";
                 //Login.IsVisible = false;
                 //Logout.IsVisible = true;
-                DataRepoProvider.InitDb();
             }
             else
             {

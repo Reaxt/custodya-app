@@ -4,9 +4,9 @@ from datetime import datetime
 from typing import Any
 from dotenv import load_dotenv
 from configuration_manager import Configuration
-from subsystems.security.SecuritySubSystem import SecuritySubSystem
+#from subsystems.security.SecuritySubSystem import SecuritySubSystem
 from subsystems.plants.plantsSubSystem import PlantsSubSystem
-from subsystems.GeoLocation.GeoLocationSubSystem import GeoLocation 
+#from subsystems.GeoLocation.GeoLocationSubSystem import GeoLocation 
 from azure.iot.device.aio import IoTHubDeviceClient
 from azure.iot.device import MethodResponse, MethodRequest
 from azure.iot.device import Message

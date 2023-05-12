@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Custodya.AccountPage">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="10,0">
+
+            <Image
+                Source="hero.jpg"
+                SemanticProperties.Description="hero"
+                HorizontalOptions="Center" 
+                Aspect="AspectFill"
+                HeightRequest="250"
+                WidthRequest="500"
+                Margin="0,0,0,30"/>
+
+            <Label
+                Text="Account"
+                FontAttributes="Bold"
+                SemanticProperties.HeadingLevel="Level1"
+                FontSize="26"
+                Margin="0,0,0,25"/>
+
+            <Label Text="Email"/>
+            <Label Text="{Binding Email}" Margin="0,0,0,25"/>
+
+            <Button x:Name="btnLogout" Clicked="btnLogout_Clicked"  Text="Log Out" Margin="0,0,0,30"/>
+
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

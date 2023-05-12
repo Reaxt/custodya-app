@@ -47,8 +47,8 @@ namespace Custodya.Services
 
         private async Task LoadItems()
         {
-            _items = new ObservableCollection<T>(await GetAllItemsAsync());
-            LatestItem = _items.OrderBy(x => x.Timestamp).First();
+            _items = new ObservableCollection<T>(await GetAllItemsAsync()) ?? new();
+            LatestItem = _items.Count == 0 ? null : _items.OrderBy(x => x.Timestamp).First();
         }
         public FirebaseRealtimeDatabaseService()
         {
@@ -71,6 +71,7 @@ namespace Custodya.Services
                 client.Child(dbKey)
                 .AsRealtimeDatabase<T>(dbKey, "", StreamingOptions.LatestOnly, InitialPullStrategy.MissingOnly, true);
             _updaterService = new TelemetryDatabaseUpdaterService<T>(this);
+            _items = Items;
         }
         public async Task<bool> AddItemAsync(T item)
         {

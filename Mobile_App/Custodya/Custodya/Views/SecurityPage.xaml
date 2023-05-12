@@ -21,13 +21,22 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Frame Grid.Column="0">
-                        <Label Text="37dB"/>
+                        <VerticalStackLayout>
+                            <Label Text="Noise:"/>
+                            <Label Text="{Binding LatestItem.Loudness, StringFormat='{0} dB'}"/>
+                        </VerticalStackLayout>                        
                     </Frame>
                     <Frame Grid.Column="1">
-                        <Label Text="Bright"/>
+                        <VerticalStackLayout>
+                            <Label Text="Motion:"/>
+                            <Label Text="{Binding LatestItem.Motion}"/>
+                        </VerticalStackLayout>
                     </Frame>
                     <Frame Grid.Column="2">
-                        <Label Text="Movement"/>
+                        <VerticalStackLayout>
+                            <Label Text="Door:"/>
+                            <Label Text="{Binding LatestItem.Door}"/>
+                        </VerticalStackLayout>
                     </Frame>
                 </Grid>
             </VerticalStackLayout>
