@@ -10,5 +10,9 @@ public partial class SecurityPage : ContentPage
 	{
         InitializeComponent();
         this.BindingContext = DataRepoProvider.SecurityDatabase;
+        if (Shell.Current.CurrentItem.Route == "Owner")
+        {
+            controlFrame.IsVisible = false;
+        }
     }
 }

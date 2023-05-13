@@ -41,7 +41,7 @@
                 </Grid>
             </VerticalStackLayout>
         </Frame>
-        <Frame>
+        <Frame x:Name="controlFrame">
             <VerticalStackLayout>
                 <HorizontalStackLayout>
                     <ImageButton BackgroundColor="Lime"/>

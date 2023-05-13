@@ -8,7 +8,7 @@ public partial class AccountPage : ContentPage
 	public AccountPage()
 	{
 		InitializeComponent();
-        this.BindingContext = AuthService.UserCreds.User.Info;
+        this.BindingContext = AuthService.UserCreds.User.Info;        
 	}
 
 	private async void btnLogout_Clicked(object sender, EventArgs e)
