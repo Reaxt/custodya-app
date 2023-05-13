@@ -10,6 +10,7 @@ public partial class GeoPage : ContentPage
     public GeoPage()
     {
         InitializeComponent();
-        this.BindingContext = DataRepoProvider.PlantsDatabase;
+        this.BindingContext = DataRepoProvider.GeolocationDatabase;
+
     }
 }

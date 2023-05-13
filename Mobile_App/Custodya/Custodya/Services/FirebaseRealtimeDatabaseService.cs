@@ -47,7 +47,7 @@ namespace Custodya.Services
 
         private async Task LoadItems()
         {
-            _items = new ObservableCollection<T>(await GetAllItemsAsync()) ?? new();
+            _items = new ObservableCollection<T>(await GetAllItemsAsync());
             LatestItem = _items.Count == 0 ? null : _items.OrderBy(x => x.Timestamp).First();
         }
         public FirebaseRealtimeDatabaseService()

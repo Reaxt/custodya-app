@@ -16,34 +16,20 @@
                 </HorizontalStackLayout>
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1.75*"/>
+                        <ColumnDefinition Width="1.5*"/>
+                        <ColumnDefinition Width="1.5*"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="1.25*"/>
                     </Grid.ColumnDefinitions>
                     <Frame Grid.Column="0">
                         <VerticalStackLayout>
                             <Label Text="Coordinates:"/>
-                            <Label>
-                                <Label.Text>
-                                    <MultiBinding StringFormat="{}{0}/{1}">
-                                        <Binding Path="LatestItem.Longitude"/>
-                                        <Binding Path="LatestItem.Latitude"/>
-                                    </MultiBinding>
-                                </Label.Text>
-                            </Label>
+                            <Label Text="{Binding LatestItem.CoordinatesString}" HeightRequest="75"/>
                         </VerticalStackLayout>
                     </Frame>
                     <Frame Grid.Column="1">
                         <VerticalStackLayout>
                             <Label Text="Pitch/Roll:"/>
-                            <Label>
-                                <Label.Text>
-                                    <MultiBinding StringFormat="{}{0}/{1}">
-                                        <Binding Path="LatestItem.Pitch"/>
-                                        <Binding Path="LatestItem.Roll"/>
-                                    </MultiBinding>
-                                </Label.Text>
-                            </Label>
+                            <Label Text="{Binding LatestItem.HeadingString}"/>
                         </VerticalStackLayout>
                     </Frame>
                     <Frame Grid.Column="2">

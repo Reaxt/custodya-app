@@ -1,5 +1,4 @@
-﻿using Android.Util;
-using Azure.Messaging.EventHubs;
+﻿using Azure.Messaging.EventHubs;
 using Azure.Messaging.EventHubs.Processor;
 using Azure.Storage.Blobs;
 using System;
@@ -34,7 +33,7 @@ namespace Custodya.Services
         private async Task _eventProcessor_ProcessErrorAsync(ProcessErrorEventArgs arg)
         {
 #if ANDROID
-            Log.Error("EventHubService", $"Error: {arg.Exception.Message}");
+// Log.Error("EventHubService", $"Error: {arg.Exception.Message}");
 #endif
         }
 
