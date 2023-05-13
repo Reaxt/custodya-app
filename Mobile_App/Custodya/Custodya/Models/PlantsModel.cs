@@ -13,9 +13,8 @@ namespace Custodya.Models
     /// The relevant model for plant data
     /// </summary>
     [Serializable, ModelJsonName("Plants")]
-    public class PlantsModel : IHasUKey, ISubsystemState, INotifyPropertyChanged
+    public class PlantsModel : IHasUKey, ISubsystemState
     {
-        public event PropertyChangedEventHandler PropertyChanged;
         /// <summary>
         /// The humidity sensor value
         /// </summary>

@@ -1,12 +1,5 @@
-﻿ using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Custodya.Attributes;
+﻿using Custodya.Attributes;
 using Custodya.Interfaces;
-using Microsoft.Azure.Devices.Client;
-using Newtonsoft.Json;
 
 namespace Custodya.Models
 {
@@ -15,15 +8,27 @@ namespace Custodya.Models
     public class GeoLocationModel : ISubsystemState, IHasUKey
     {
         public Coordinate Coordinates { get; set; }
+        public string CoordinatesString { 
+            get
+            {
+                return Coordinates.Longitude.ToString() + " / " + Coordinates.Latitude.ToString();
+            }
+        }
 
 
         /// <summary>
         /// The current roll and pitch
         /// </summary>
 
-        public Heading Heading { get; set; }
+        public Direction Heading { get; set; }
 
-
+        public string HeadingString
+        {
+            get
+            {
+                return Heading.Pitch.ToString() + " / " + Heading.Roll.ToString();
+            }
+        }
 
         /// <summary>
         /// The buzzer state (on = true, off = false)
@@ -40,10 +45,8 @@ namespace Custodya.Models
 
         public GeoLocationModel(double longitude, double latitude, double pitch, double roll, bool buzzer, bool inTransport)
         {
-            Coordinates.Longitude.Equals(longitude);
-            Coordinates.Latitude.Equals(latitude);
-            Heading.Pitch.Equals(pitch);
-            Heading.Roll.Equals(roll);
+            Coordinates = new() { Longitude = longitude, Latitude = latitude};
+            Heading = new() { Pitch = pitch, Roll = roll };
             Buzzer = buzzer;
             InTransport = inTransport;
         }
@@ -57,7 +60,7 @@ namespace Custodya.Models
     }
 
     [Serializable]
-    public struct Heading
+    public struct Direction
     {
         public double Pitch;
         public double Roll;
