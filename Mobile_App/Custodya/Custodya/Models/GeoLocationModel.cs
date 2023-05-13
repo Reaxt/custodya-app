@@ -1,52 +1,68 @@
-﻿ using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Azure.Devices.Client;
-using Newtonsoft.Json;
+﻿using Custodya.Attributes;
+using Custodya.Interfaces;
 
 namespace Custodya.Models
 {
 
-    [Serializable]
-    public class GeoLocationModel
+    [Serializable, ModelJsonName("GeoLocation")]
+    public class GeoLocationModel : ISubsystemState, IHasUKey
     {
+        public Coordinate Coordinates { get; set; }
+        public string CoordinatesString { 
+            get
+            {
+                return Coordinates.Longitude.ToString() + " / " + Coordinates.Latitude.ToString();
+            }
+        }
+
+
         /// <summary>
-        /// The current Longitude
+        /// The current roll and pitch
         /// </summary>
-        public double Longitude { get; set; }
-        /// <summary>
-        /// The current latitude
-        /// </summary>
-        public double Latitude { get; set; }
-        /// <summary>
-        /// The current pitch
-        /// </summary>
-        public double Pitch { get; set; }
-        /// <summary>
-        /// The current roll
-        /// </summary>
-        public double Roll { get; set; }
+
+        public Direction Heading { get; set; }
+
+        public string HeadingString
+        {
+            get
+            {
+                return Heading.Pitch.ToString() + " / " + Heading.Roll.ToString();
+            }
+        }
+
         /// <summary>
         /// The buzzer state (on = true, off = false)
         /// </summary>
-        public bool BuzzerState { get; set; }
+        public bool Buzzer { get; set; }
         /// <summary>
         /// InTransport 
         /// </summary>
         public bool InTransport { get; set; }
 
-        public GeoLocationModel(double longitude, double latitude, double pitch, double roll, bool buzzerState, bool inTransport)
+        public string JsonKey { get; set; }
+        public DateTime Timestamp { get; set; }
+        public string Key { get; set; }
+
+        public GeoLocationModel(double longitude, double latitude, double pitch, double roll, bool buzzer, bool inTransport)
         {
-            Longitude = longitude;
-            Latitude = latitude;
-            Pitch = pitch;
-            Roll = roll;
-            BuzzerState = buzzerState;
+            Coordinates = new() { Longitude = longitude, Latitude = latitude};
+            Heading = new() { Pitch = pitch, Roll = roll };
+            Buzzer = buzzer;
             InTransport = inTransport;
         }
     }
 
+    [Serializable]
+    public struct Coordinate
+    {
+        public double Longitude;
+        public double Latitude;
+    }
 
+    [Serializable]
+    public struct Direction
+    {
+        public double Pitch;
+        public double Roll;
+    }
 }

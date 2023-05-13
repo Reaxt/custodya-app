@@ -1,34 +1,44 @@
 import asyncio
 import os
+from datetime import datetime
+from typing import Any
 from dotenv import load_dotenv
-from subsystems.security.SecuritySubSystem import SecuritySubSystem
+from configuration_manager import Configuration
+#from subsystems.security.SecuritySubSystem import SecuritySubSystem
 from subsystems.plants.plantsSubSystem import PlantsSubSystem
-from subsystems.GeoLocation.GeoLocationSubSystem import GeoLocation 
+#from subsystems.GeoLocation.GeoLocationSubSystem import GeoLocation 
 from azure.iot.device.aio import IoTHubDeviceClient
 from azure.iot.device import MethodResponse, MethodRequest
 from azure.iot.device import Message
 from InterFaces.sensors import AReading
+from InterFaces.subsystem import ASubsystem
 from connection_manager import ConnectionManager
 class Farm:
-    def __init__(self) -> None:
-        geolocation = GeoLocation()
-
-        securitySubSystem = SecuritySubSystem()
-        plantsSubSystem = PlantsSubSystem()
+    def __init__(self, configuration:Configuration) -> None:
+        self._subsystems: list[ASubsystem] = list()
+        if configuration.geolocation_enabled:
+            self._subsystems.append(GeoLocation())
+        if configuration.security_enabled:
+            self._subsystems.append(SecuritySubSystem())
+        if configuration.plants_enabled:
+            self._subsystems.append(PlantsSubSystem())
         
-        self.subsystems = list()
-        self.subsystems.append(securitySubSystem)
-        #self.subsystems.append(plantsSubSystem)
-        #self.subsystems.append(geolocation)
     def read_sensors(self) -> list[AReading]:
         readings = list()
-        for subsystem in self.subsystems:
+        for subsystem in self._subsystems:
             readings.extend(subsystem.read_sensors())
         return readings
-
+    
+    def serialize_state(self) -> dict[str, Any]:
+        state: dict[str, Any] = dict()
+        state["timestamp"] = datetime.now().timestamp()
+        for subsystem in self._subsystems:
+            state[subsystem.get_name()] = subsystem.serialize_state()
+        return state
 async def main():
     TELEMETRY_TIME = 5
-    connection_manager: ConnectionManager = ConnectionManager()
+    configuration: Configuration = Configuration()
+    connection_manager: ConnectionManager = ConnectionManager(configuration)
 
     connection_manager.subscribe_method_request("is_online", is_online_handler)
     def twin_patch_handler(patch: dict):
@@ -43,11 +53,11 @@ async def main():
 
     await connection_manager.connect()
 
-    farm = Farm()
+    farm = Farm(configuration)
     
     async def telemetryloop():
         while True:
-            await connection_manager.send_telemetry(farm.read_sensors())
+            await connection_manager.send_telemetry(farm.serialize_state())
             await asyncio.sleep(TELEMETRY_TIME)
     await telemetryloop()
 

@@ -4,19 +4,22 @@ import seeed_python_reterminal.acceleration as rt_accel
 import math
 from InterFaces.sensors import ISensor, AReading
 
-class VibrationSensor():
-    def __init__(self):
+MODEL_NAME = "Vibration Sensor"
+
+#theres a lot wrong here i think, I can't really work on refactoring this in its state. Is this still used?
+class VibrationSensor(ISensor):
+    def __init__(self, gpio = 0,  model = MODEL_NAME, type = AReading.Type.VIBRATION):
         self.accel_device = rt.get_acceleration_device()
 
     def read_sensor(self) -> list[AReading]:
         vibration_level = self.calculate_vibration_level()
         res = [
-            vibration_level
+        AReading(AReading.Type.VIBRATION,AReading.Unit.VIBRATION,vibration_level)
         ]
         return res
 
 
-    def calculate_vibration_level(self):
+    def calculate_vibration_level(self) ->float:
         x1 = y1 = z1 = None
         x2 = y2 = z2 = None
         while True:
