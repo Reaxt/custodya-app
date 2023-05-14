@@ -44,19 +44,19 @@ public static class MauiProgram
 
     public static MauiAppBuilder RegisterIOTServices(this MauiAppBuilder builder)
     {
-        builder.Services.AddSingleton<EventHubService>();
-        builder.Services.AddSingleton<TelemetryJsonParser<GeoLocationModel>>();
+        builder.Services.AddSingleton<IGenericRealtimeDatabase<PlantsModel>, FirebaseRealtimeDatabaseService<PlantsModel>>();
         builder.Services.AddSingleton<IGenericRealtimeDatabase<GeoLocationModel>, FirebaseRealtimeDatabaseService<GeoLocationModel>>();
+        builder.Services.AddSingleton<IGenericRealtimeDatabase<SecurityModel>, FirebaseRealtimeDatabaseService<SecurityModel>>();
         builder.Services.AddSingleton<IGenericDatabase<GeoLocationModel>>(x => x.GetService<IGenericRealtimeDatabase<GeoLocationModel>>());
+        builder.Services.AddSingleton<IGenericDatabase<SecurityModel>>(x => x.GetService<IGenericRealtimeDatabase<SecurityModel>>());
+        builder.Services.AddSingleton<IGenericDatabase<SecurityModel>>(x => x.GetService<IGenericRealtimeDatabase<SecurityModel>>());
+        builder.Services.AddSingleton<EventHubService>();
+        /*builder.Services.AddSingleton<TelemetryJsonParser<GeoLocationModel>>();
         builder.Services.AddSingleton<TelemetryDatabaseUpdaterService<GeoLocationModel>>();
         builder.Services.AddSingleton<TelemetryJsonParser<SecurityModel>>();
-        builder.Services.AddSingleton<IGenericRealtimeDatabase<SecurityModel>, FirebaseRealtimeDatabaseService<SecurityModel>>();
-        builder.Services.AddSingleton<IGenericDatabase<SecurityModel>>(x => x.GetService<IGenericRealtimeDatabase<SecurityModel>>());
         builder.Services.AddSingleton<TelemetryDatabaseUpdaterService<SecurityModel>>();
         builder.Services.AddSingleton<TelemetryJsonParser<PlantsModel>>();
-        builder.Services.AddSingleton<IGenericRealtimeDatabase<PlantsModel>, FirebaseRealtimeDatabaseService<PlantsModel>>();
-        builder.Services.AddSingleton<IGenericDatabase<SecurityModel>>(x => x.GetService<IGenericRealtimeDatabase<SecurityModel>>());
-        builder.Services.AddSingleton<TelemetryDatabaseUpdaterService<PlantsModel>>();
+        builder.Services.AddSingleton<TelemetryDatabaseUpdaterService<PlantsModel>>();*/
         return builder;
     }
 }

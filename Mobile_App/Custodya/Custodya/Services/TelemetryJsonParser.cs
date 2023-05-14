@@ -56,8 +56,8 @@ namespace Custodya.Services
             if(modelJson != null)
             {
                 model = modelJson.ToObject<T>();
-                float posix = (float)modelJson["timestamp"];
-                var timeOffset = DateTimeOffset.FromUnixTimeSeconds((long)MathF.Round(posix));
+                long posix = (long)telemetry["timestamp"];
+                var timeOffset = DateTimeOffset.FromUnixTimeSeconds(posix);
                 model.Timestamp = timeOffset.LocalDateTime;
                 SendOutModel(model);
             }    

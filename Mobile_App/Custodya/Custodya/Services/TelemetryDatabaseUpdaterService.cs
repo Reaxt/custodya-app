@@ -16,10 +16,10 @@ namespace Custodya.Services
     {
         private IGenericDatabase<T> _database;
         TelemetryJsonParser<T> _telemetry;
-        public TelemetryDatabaseUpdaterService(IGenericDatabase<T> database, TelemetryJsonParser<T> parser) 
+        public TelemetryDatabaseUpdaterService(IGenericDatabase<T> database) 
         {
             this._database = database;
-            this._telemetry = parser;
+            this._telemetry = new TelemetryJsonParser<T>(MauiProgram.Services.GetService<EventHubService>());
             this._telemetry.Subscribe(this);
         }
 

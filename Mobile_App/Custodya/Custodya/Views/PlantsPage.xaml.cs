@@ -7,7 +7,6 @@ namespace Custodya;
 
 public partial class PlantsPage : ContentPage
 {
-    IGenericRealtimeDatabase<PlantsModel> _database;
     public PlantsPage(IGenericRealtimeDatabase<PlantsModel> plantsDatabase)
 	{
         

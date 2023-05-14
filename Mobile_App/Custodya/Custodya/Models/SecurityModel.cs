@@ -18,8 +18,8 @@ namespace Custodya.Models
         [Serializable]
         public enum DoorState
         {
-            Open,
-            Closed
+            Open = 0,
+            Closed = 1
         }
         /// <summary>
         /// The motion sensor value
