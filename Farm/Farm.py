@@ -1,6 +1,6 @@
 import asyncio
 import os
-from datetime import datetime
+import time
 from typing import Any
 from dotenv import load_dotenv
 from configuration_manager import Configuration
@@ -31,7 +31,7 @@ class Farm:
     
     def serialize_state(self) -> dict[str, Any]:
         state: dict[str, Any] = dict()
-        state["timestamp"] = datetime.now().timestamp()
+        state["timestamp"] = int(time.time())
         for subsystem in self._subsystems:
             state[subsystem.get_name()] = subsystem.serialize_state()
         return state
