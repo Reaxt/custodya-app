@@ -7,31 +7,31 @@ import json
 from grove.adc import ADC
 from InterFaces.sensors import ISensor, AReading
 
-MODEL_NAME = "Moisture Sensor"
-GPIO = 4
+MODEL_NAME = "Moisture"
 
 
 class MoistureSensor(ISensor):
     def __init__(
         self,
-        gpio: int,
+        gpio: int = 0,
         model: str = MODEL_NAME,
         type: AReading.Type = AReading.Type.MOISTURE,
     ):
-        self._sensor = ADC(gpio)
-        self.gpio = gpio
+        self.sensor = ADC(address=0x04)
+        self.channel = gpio
 
     def read_sensor(self) -> list[AReading]:
-        res = AReading(
+        moisture = AReading(
             AReading.Type.MOISTURE,
             AReading.Unit.MOISTURE,
-            float("{0:.2f}".format(self._sensor.read_voltage(self.gpio))),
+            self.sensor.read(self.channel),
         )
-        return [res]
+
+        return [moisture]
 
 
 if __name__ == "__main__":
-    test = ADC(GPIO)
+    test = Test(4)
     while True:
         sleep(0.12)
         print(test.read_sensor())
