@@ -16,12 +16,12 @@ from time import sleep
 class PlantsSubSystem(ASubsystem):
     FAN_ON_COMMAND = ACommand("fan", '{"value": "on"}')
     FAN_OFF_COMMAND = ACommand("fan", '{"value": "off"}')
-    FAN_GPIO = 18
+    FAN_GPIO = 5
     FAN_VALUE = {"value": "off"}
 
     LED_ON_COMMAND = ACommand("led", '{"value": "on"}')
     LED_OFF_COMMAND = ACommand("led", '{"value": "off"}')
-    LED_GPIO = 5
+    LED_GPIO = 18
     LED_VALUE = {"value": "off"}
 
     TEMPERATURE_GPIO = 0x38
@@ -41,12 +41,12 @@ class PlantsSubSystem(ASubsystem):
     WATER_TYPE = AReading.Type.WATER
 
     def __init__(self) -> None:
-        # self._humidity_sensor = HumiditySensor(
-        #     self.HUMIDITY_GPIO, self.HUMIDITY_MODEL, self.HUMIDITY_TYPE
-        # )
-        # self._temperature_sensor = TemperatureSensor(
-        #     self.TEMPERATURE_GPIO, self.TEMPERATURE_MODEL, self.TEMPERATURE_TYPE
-        # )
+        self._humidity_sensor = HumiditySensor(
+            self.HUMIDITY_GPIO, self.HUMIDITY_MODEL, self.HUMIDITY_TYPE
+        )
+        self._temperature_sensor = TemperatureSensor(
+            self.TEMPERATURE_GPIO, self.TEMPERATURE_MODEL, self.TEMPERATURE_TYPE
+        )
         self._moisture_sensor = MoistureSensor(
             self.MOISTURE_GPIO, self.MOISTURE_MODEL, self.MOISTURE_TYPE
         )
@@ -55,14 +55,17 @@ class PlantsSubSystem(ASubsystem):
         )
         self._sensors: list[ISensor] = [
             self._moisture_sensor,
-            # self._humidity_sensor,
-            # self._temperature_sensor,
+            self._humidity_sensor,
+            self._temperature_sensor,
             self._water_sensor,
         ]
-        # self._fan_actuator = FanController(PlantsSubSystem.FAN_GPIO, PlantsSubSystem.FAN_VALUE)
-        # self._led_actuator = LedController(PlantsSubSystem.LED_GPIO, PlantsSubSystem.LED_VALUE)
-        # self._actuators: list[IActuator] = [self._fan_actuator, self._led_actuator]
-
+        self._fan_actuator = FanController(PlantsSubSystem.FAN_GPIO, PlantsSubSystem.FAN_VALUE)
+        self._led_actuator = LedController(PlantsSubSystem.LED_GPIO, PlantsSubSystem.LED_VALUE)
+        self._actuators: list[IActuator] = [
+            self._fan_actuator,
+            self._led_actuator
+            ]
+        self._led_actuator.try_command(PlantsSubSystem.LED_OFF_COMMAND)
     def get_name(self):
         return "Plants"
 
