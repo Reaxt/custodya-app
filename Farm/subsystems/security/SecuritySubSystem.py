@@ -6,7 +6,7 @@ from subsystems.security.actuators.servo import DoorController
 from subsystems.security.sensors.doorswitch import DoorSensor
 from subsystems.security.sensors.motionsensor import MotionSensor
 from subsystems.security.sensors.soundsensor import LoudnessSensor
-DOOR_PIN = 5
+DOOR_PIN = 24
 MOTION_PIN = 12
 LOUDNESS_BUS = 0
 SERVO_PIN = 16
