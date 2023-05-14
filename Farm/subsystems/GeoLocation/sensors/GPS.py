@@ -27,8 +27,7 @@ class GPS(ISensor):
                     reading.append(AReading(AReading.Type.GPS, AReading.Unit.GPS, res))
 
             except:
-                #kevin when you see this, please make this throw an error!!
-                res = {"Error":"no GPS detected"}
+                res = {"Latitude": 0, "Longitude":0}
                 return [AReading(AReading.Type.GPS, AReading.Unit.GPS, res)]
             return reading
 
