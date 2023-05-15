@@ -29,12 +29,21 @@ class ASubsystem(ABC):
             for reading in sensor.read_sensor():
                 readings.append(reading)
         return readings
-    def process_command(self, commands:list[ACommand]) -> None:
+    def process_command(self, commands:list[ACommand]) -> bool:
         """Validate and process a command that may be for this subsystem.
+
+        Args:
+            commands (list[ACommand]): list of commands to attempt and process
+
+        Returns:
+            bool: False if zero commands where valid. otherwise true.
         """
+        res:bool = False
         for command in commands:
             for actuator in self._actuators:
-                actuator.try_command(command)
+                temp = actuator.try_command(command)
+                res = True if temp else res
+        return res
     def serialize_state(self) -> dict:
         """Serialize this subsystem for telemetry
 
