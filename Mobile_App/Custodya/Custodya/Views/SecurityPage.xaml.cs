@@ -64,7 +64,7 @@ public partial class SecurityPage : ContentPage
                             
                         }
                     }
-                    else if (Sensor.SecurityActuators.Contains(propertyInfo.Name) && !_actuators.Any(a => a.Name == propertyInfo.Name))
+                    else if (Actuator.SecurityActuators.Contains(propertyInfo.Name) && !_actuators.Any(a => a.Name == propertyInfo.Name))
                     {
                         _actuators.Add(new()
                         {
@@ -115,5 +115,10 @@ public partial class SecurityPage : ContentPage
     private void toggleState_Toggled(object sender, ToggledEventArgs e)
     {
         // Logic goes here
+    }
+
+    private async void ibtnAccount_Clicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync($"//User/Account");
     }
 }

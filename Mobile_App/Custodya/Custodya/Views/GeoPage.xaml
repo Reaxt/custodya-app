@@ -7,81 +7,49 @@
         <VerticalStackLayout Margin="10">
             <HorizontalStackLayout Margin="0,0,0,20">
                 <Label Text="custodya" FontAttributes="Bold" FontSize="Large" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
-                <ImageButton  Source="user.png" HeightRequest="40" Margin="230,0,0,0"/>
+                <ImageButton  Source="user.png" HeightRequest="40" Margin="230,0,0,0" x:Name="ibtnAccount" Clicked="ibtnAccount_Clicked"/>
             </HorizontalStackLayout>
             <Frame Margin="0,0,0,10">
                 <VerticalStackLayout>
-                    <HorizontalStackLayout Margin="0,0,0,10">
-                        <ImageButton BackgroundColor="Lime"/>
+                    <HorizontalStackLayout>
+                        <ImageButton Background="lime"/>
                         <Label Text="Status" VerticalOptions="Center"/>
                     </HorizontalStackLayout>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <Frame Grid.Row="0" Margin="0,0,0,10">
-                            <VerticalStackLayout VerticalOptions="Center">
-                                <Label Text="Coordinates:"/>
-                                <Label Text="{Binding LatestItem.CoordinatesString}"/>
-                            </VerticalStackLayout>
-                        </Frame>
-                        <Frame Grid.Row="1"  Margin="0,0,0,10">
-                            <VerticalStackLayout VerticalOptions="Center">
-                                <Label Text="Pitch/Roll:"/>
-                                <Label Text="{Binding LatestItem.HeadingString}"/>
-                            </VerticalStackLayout>
-                        </Frame>
-                        <Frame Grid.Row="2"  Margin="0,0,0,10">
-                            <VerticalStackLayout VerticalOptions="Center">
-                                <Label Text="Noise:"/>
-                                <Label Text="{Binding LatestItem.Buzzer}"/>
-                            </VerticalStackLayout>
-                        </Frame>
-                    </Grid>
+                    <CollectionView x:Name="Sensors" HorizontalOptions="Start">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Frame>
+                                    <HorizontalStackLayout>
+                                        <VerticalStackLayout>
+                                            <Label Text="{Binding Name}"/>
+                                            <Label Text="{Binding Value}"/>
+                                        </VerticalStackLayout>
+                                        <ImageButton HorizontalOptions="End" HeightRequest="20" x:Name="ibtnEditSensor" Clicked="ibtnEditSensor_Clicked" Source="edit.png" IsVisible="{Binding Editable}"/>
+                                    </HorizontalStackLayout>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
                 </VerticalStackLayout>
             </Frame>
-            <Frame>
+            <Frame x:Name="controlFrame">
                 <VerticalStackLayout>
-                    <Frame Margin="0,0,0,10">
-                        <HorizontalStackLayout>
-                            <ImageButton BackgroundColor="Lime"/>
-                            <Label Text="Control" VerticalOptions="Center"/>
-                        </HorizontalStackLayout>
-                    </Frame>
-                    <Frame Margin="0,0,0,10">
-                    <HorizontalStackLayout>
-                        <Label Text="GPS" WidthRequest="175"/>
-                        <Button Text="Manual" WidthRequest="80"/>
-                        <Switch/>
-                        <Label Text="On" VerticalOptions="Center"/>
-                    </HorizontalStackLayout>
-                    </Frame>
-                    <Frame Margin="0,0,0,10">
-                        <HorizontalStackLayout>
-                            <Label Text="Pitch and Roll" WidthRequest="175"/>
-                            <Button Text="Auto" WidthRequest="80"/>
-                            <Switch/>
-                            <Label Text="Off" VerticalOptions="Center"/>
-                        </HorizontalStackLayout>
-                    </Frame>
-                    <Frame Margin="0,0,0,10">
-                        <HorizontalStackLayout>
-                            <Label Text="Vibrations" WidthRequest="175"/>
-                            <Button Text="Manual" WidthRequest="80"/>
-                            <Switch/>
-                            <Label Text="Off" VerticalOptions="Center"/>
-                        </HorizontalStackLayout>
-                    </Frame>
-                    <Frame Margin="0,0,0,10">
-                        <HorizontalStackLayout>
-                            <Label Text="Buzzer" WidthRequest="175"/>
-                            <Button Text="Manual" WidthRequest="80"/>
-                            <Switch/>
-                            <Label Text="On" VerticalOptions="Center"/>
-                        </HorizontalStackLayout>
-                    </Frame>
+                    <CollectionView x:Name="Actuators">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <HorizontalStackLayout>
+                                    <Label Text="{Binding Name}"/>
+                                    <Switch x:Name="toggleState" Toggled="toggleState_Toggled" IsToggled="{Binding State}"/>
+                                </HorizontalStackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
                 </VerticalStackLayout>
             </Frame>
         </VerticalStackLayout>

@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 namespace Custodya.Models
 {
 
-    public class Sensor: IHasUKey, ISubsystemState
+    public class Sensor
     {
-        public static string[] SecuritySensors = new[] { "Motion", "Loudness", "Door" };
-        public static string[] SecurityActuators = new[] { "DoorLock" };
+        public static string[] SecuritySensors = new[] { "Motion", "Loudness", "Door" };        
+        public static string[] PlantSensors = new[] { "Temperature", "Moisture", "Humidity", "Water" };        
+        public static string[] GeoSensors = new[] { "CoordinatesString", "HeadingString", "InTransport"};
         public enum SensorState { Valid, Error }
 
         public string Name { get; set; }
@@ -19,8 +20,6 @@ namespace Custodya.Models
         public double Max { get; set; }
         public dynamic Value { get; set; }
         public bool Editable { get; set; } = true;
-        public string Key { get; set; }
         public SensorState State { get; set; }
-        public DateTime Timestamp { get; set; }
     }
 }
