@@ -9,6 +9,9 @@ namespace Custodya.Models
 {
     public class Actuator
     {
+        public static string[] SecurityActuators = new[] { "DoorLock" };
+        public static string[] PlantActuators = new[] { "Led", "Fan" };
+        public static string[] GeoActuators = new[] { "Buzzer" };
 
         public string Name { get; set; }
         public bool State { get; set; } = false;

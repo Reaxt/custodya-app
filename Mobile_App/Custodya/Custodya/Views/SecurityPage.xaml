@@ -6,7 +6,7 @@
     <VerticalStackLayout Margin="10">
         <HorizontalStackLayout Margin="0,0,0,20">
             <Label Text="custodya" FontAttributes="Bold" FontSize="Large" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
-            <ImageButton  Source="user.png" HeightRequest="40" Margin="230,0,0,0"/>
+            <ImageButton  Source="user.png" HeightRequest="40" Margin="230,0,0,0" x:Name="ibtnAccount" Clicked="ibtnAccount_Clicked"/>
         </HorizontalStackLayout>
         <Frame Margin="0,0,0,10">
             <VerticalStackLayout>
@@ -35,7 +35,7 @@
             </VerticalStackLayout>
         </Frame>
         <Frame x:Name="controlFrame">
-            <VerticalStackLayout>                
+            <VerticalStackLayout>
                 <CollectionView x:Name="Actuators">
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout Orientation="Vertical" />
@@ -50,42 +50,6 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
             </VerticalStackLayout>
-            <!--<VerticalStackLayout>
-                <HorizontalStackLayout>
-                    <ImageButton BackgroundColor="Lime"/>
-                    <Label Text="Control" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-                <HorizontalStackLayout>
-                    <Label Text="Noise" WidthRequest="175"/>
-                    <Button Text="Manual" WidthRequest="80"/>
-                    <Switch/>
-                    <Label Text="On" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-                <HorizontalStackLayout>
-                    <Label Text="Luminosity" WidthRequest="175"/>
-                    <Button Text="Auto" WidthRequest="80"/>
-                    <Switch/>
-                    <Label Text="Off" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-                <HorizontalStackLayout>
-                    <Label Text="Motion" WidthRequest="175"/>
-                    <Button Text="Manual" WidthRequest="80"/>
-                    <Switch/>
-                    <Label Text="Off" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-                <HorizontalStackLayout>
-                    <Label Text="Door Lock" WidthRequest="175"/>
-                    <Button Text="Manual" WidthRequest="80"/>
-                    <Switch/>
-                    <Label Text="On" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-                <HorizontalStackLayout>
-                    <Label Text="Buzzer" WidthRequest="175"/>
-                    <Button Text="Auto" WidthRequest="80"/>
-                    <Switch/>
-                    <Label Text="On" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-            </VerticalStackLayout>-->
         </Frame>
     </VerticalStackLayout>
 </ContentPage>
