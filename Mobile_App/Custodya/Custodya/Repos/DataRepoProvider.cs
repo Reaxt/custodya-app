@@ -14,7 +14,7 @@ namespace Custodya.Repos
         /// </summary>
         public static void InitDb() 
         {
-            if (SecurityDatabase== null) SecurityDatabase = new FirebaseRealtimeDatabaseService<SecurityModel>();
+            if (SecurityDatabase == null) SecurityDatabase = new FirebaseRealtimeDatabaseService<SecurityModel>();
             if (PlantsDatabase == null) PlantsDatabase = new FirebaseRealtimeDatabaseService<PlantsModel>();
             if (GeolocationDatabase == null) GeolocationDatabase = new FirebaseRealtimeDatabaseService<GeoLocationModel>();
         }

@@ -24,7 +24,7 @@
 
             <Label Text="Log in to continue" Margin="0,0,0,30"/>
             <Label Text="Email address"/>
-            <Entry x:Name="entryUsername" Text ="owner@jac.ca" Margin="0,0,0,30"/>
+            <Entry x:Name="entryUsername" Text ="user@jac.ca" Margin="0,0,0,30"/>
 
             <Label Text="Password"/>
             <Entry x:Name="entryPassword" Text="password" Margin="0,0,0,30"/>

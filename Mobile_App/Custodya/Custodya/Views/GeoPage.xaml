@@ -3,75 +3,87 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Custodya.GeoPage"
              Title="GeoPage">
-    <VerticalStackLayout Margin="10">
-        <HorizontalStackLayout Margin="0,0,0,20">
-            <Label Text="custodya" FontAttributes="Bold" FontSize="Large" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
-            <ImageButton  Source="user.png" HeightRequest="40" Margin="230,0,0,0"/>
-        </HorizontalStackLayout>
-        <Frame Margin="0,0,0,10">
-            <VerticalStackLayout>
-                <HorizontalStackLayout>
-                    <ImageButton BackgroundColor="Lime"/>
-                    <Label Text="Status" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1.5*"/>
-                        <ColumnDefinition Width="1.5*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Frame Grid.Column="0">
-                        <VerticalStackLayout>
-                            <Label Text="Coordinates:"/>
-                            <Label Text="{Binding LatestItem.CoordinatesString}" HeightRequest="75"/>
-                        </VerticalStackLayout>
+    <ScrollView>
+        <VerticalStackLayout Margin="10">
+            <HorizontalStackLayout Margin="0,0,0,20">
+                <Label Text="custodya" FontAttributes="Bold" FontSize="Large" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
+                <ImageButton  Source="user.png" HeightRequest="40" Margin="230,0,0,0"/>
+            </HorizontalStackLayout>
+            <Frame Margin="0,0,0,10">
+                <VerticalStackLayout>
+                    <HorizontalStackLayout Margin="0,0,0,10">
+                        <ImageButton BackgroundColor="Lime"/>
+                        <Label Text="Status" VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Frame Grid.Row="0" Margin="0,0,0,10">
+                            <VerticalStackLayout VerticalOptions="Center">
+                                <Label Text="Coordinates:"/>
+                                <Label Text="{Binding LatestItem.CoordinatesString}"/>
+                            </VerticalStackLayout>
+                        </Frame>
+                        <Frame Grid.Row="1"  Margin="0,0,0,10">
+                            <VerticalStackLayout VerticalOptions="Center">
+                                <Label Text="Pitch/Roll:"/>
+                                <Label Text="{Binding LatestItem.HeadingString}"/>
+                            </VerticalStackLayout>
+                        </Frame>
+                        <Frame Grid.Row="2"  Margin="0,0,0,10">
+                            <VerticalStackLayout VerticalOptions="Center">
+                                <Label Text="Noise:"/>
+                                <Label Text="{Binding LatestItem.Buzzer}"/>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+            <Frame>
+                <VerticalStackLayout>
+                    <Frame Margin="0,0,0,10">
+                        <HorizontalStackLayout>
+                            <ImageButton BackgroundColor="Lime"/>
+                            <Label Text="Control" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
                     </Frame>
-                    <Frame Grid.Column="1">
-                        <VerticalStackLayout>
-                            <Label Text="Pitch/Roll:"/>
-                            <Label Text="{Binding LatestItem.HeadingString}"/>
-                        </VerticalStackLayout>
+                    <Frame Margin="0,0,0,10">
+                    <HorizontalStackLayout>
+                        <Label Text="GPS" WidthRequest="175"/>
+                        <Button Text="Manual" WidthRequest="80"/>
+                        <Switch/>
+                        <Label Text="On" VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
                     </Frame>
-                    <Frame Grid.Column="2">
-                        <VerticalStackLayout>
-                            <Label Text="Noise:"/>
-                            <Label Text="{Binding LatestItem.Buzzer}"/>
-                        </VerticalStackLayout>
+                    <Frame Margin="0,0,0,10">
+                        <HorizontalStackLayout>
+                            <Label Text="Pitch and Roll" WidthRequest="175"/>
+                            <Button Text="Auto" WidthRequest="80"/>
+                            <Switch/>
+                            <Label Text="Off" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
                     </Frame>
-                </Grid>
-            </VerticalStackLayout>
-        </Frame>
-        <Frame>
-            <VerticalStackLayout>
-                <HorizontalStackLayout>
-                    <ImageButton BackgroundColor="Lime"/>
-                    <Label Text="Control" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-                <HorizontalStackLayout>
-                    <Label Text="GPS" WidthRequest="175"/>
-                    <Button Text="Manual" WidthRequest="80"/>
-                    <Switch/>
-                    <Label Text="On" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-                <HorizontalStackLayout>
-                    <Label Text="Pitch and Roll" WidthRequest="175"/>
-                    <Button Text="Auto" WidthRequest="80"/>
-                    <Switch/>
-                    <Label Text="Off" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-                <HorizontalStackLayout>
-                    <Label Text="Vibrations" WidthRequest="175"/>
-                    <Button Text="Manual" WidthRequest="80"/>
-                    <Switch/>
-                    <Label Text="Off" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-                <HorizontalStackLayout>
-                    <Label Text="Buzzer" WidthRequest="175"/>
-                    <Button Text="Manual" WidthRequest="80"/>
-                    <Switch/>
-                    <Label Text="On" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-            </VerticalStackLayout>
-        </Frame>
-    </VerticalStackLayout>
+                    <Frame Margin="0,0,0,10">
+                        <HorizontalStackLayout>
+                            <Label Text="Vibrations" WidthRequest="175"/>
+                            <Button Text="Manual" WidthRequest="80"/>
+                            <Switch/>
+                            <Label Text="Off" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+                    </Frame>
+                    <Frame Margin="0,0,0,10">
+                        <HorizontalStackLayout>
+                            <Label Text="Buzzer" WidthRequest="175"/>
+                            <Button Text="Manual" WidthRequest="80"/>
+                            <Switch/>
+                            <Label Text="On" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+                    </Frame>
+                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
