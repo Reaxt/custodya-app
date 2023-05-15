@@ -32,7 +32,7 @@ namespace Custodya.Services
 
         public ObservableCollection<T> Items
         {
-            //not ideal!!! maybe we could remove this..?
+            
             get
             {
                 if(_items == null)
@@ -62,7 +62,7 @@ namespace Custodya.Services
             var attr = typeof(T).GetCustomAttribute<ModelJsonName>();
             if (attr != null)
             {
-                //Default to the class name..
+                
                 dbKey = attr.Name;
             }
             this._client = client;
