@@ -6,6 +6,9 @@ using System.Reflection;
 
 namespace Custodya;
 
+/// <summary>
+/// bindingContext for the GeoLocation DataBase
+/// </summary>
 public partial class GeoPage : ContentPage
 {
     private ObservableCollection<Sensor> _sensors = new();

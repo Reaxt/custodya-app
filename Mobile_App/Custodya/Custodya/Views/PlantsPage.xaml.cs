@@ -7,8 +7,12 @@ namespace Custodya;
 
 public partial class PlantsPage : ContentPage
 {
+
     private ObservableCollection<Sensor> _sensors = new();
     private ObservableCollection<Actuator> _actuators = new();
+    /// <summary>
+    /// binds the plant database to its corespiting XMAL part
+    /// </summary>
     public PlantsPage()
     {
         InitializeComponent();

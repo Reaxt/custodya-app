@@ -7,8 +7,12 @@ namespace Custodya;
 
 public partial class SecurityPage : ContentPage
 {
+    /// <summary>
+    /// binds the XAML to the database data, and shows the right user the information that they are intended to see
+    /// </summary>
     private ObservableCollection<Sensor> _sensors = new();
     private ObservableCollection<Actuator> _actuators = new();
+    
     public SecurityPage()
 	{
         InitializeComponent();
