@@ -14,31 +14,31 @@ from time import sleep
 
 
 class PlantsSubSystem(ASubsystem):
-    FAN_ON_COMMAND = ACommand("fan", '{"value": "on"}')
-    FAN_OFF_COMMAND = ACommand("fan", '{"value": "off"}')
+    FAN_ON_COMMAND = ACommand("fan", '{"value": true}')
+    FAN_OFF_COMMAND = ACommand("fan", '{"value": false}')
     FAN_GPIO = 5
-    FAN_VALUE = {"value": "off"}
+    FAN_VALUE = {"value": False}
 
-    LED_ON_COMMAND = ACommand("led", '{"value": "on"}')
-    LED_OFF_COMMAND = ACommand("led", '{"value": "off"}')
+    LED_ON_COMMAND = ACommand("led", '{"value": true}')
+    LED_OFF_COMMAND = ACommand("led", '{"value": false}')
     LED_GPIO = 18
-    LED_VALUE = {"value": "off"}
+    LED_VALUE = {"value": False}
 
     TEMPERATURE_GPIO = 0x38
     TEMPERATURE_MODEL = "Temperature Sensor"
-    TEMPERATURE_TYPE = AReading.Type.TEMPERATURE
+    TEMPERATURE_TYPE = AReading.ReadingType.TEMPERATURE
 
     HUMIDITY_GPIO = 0x38
     HUMIDITY_MODEL = "Humidity Sensor"
-    HUMIDITY_TYPE = AReading.Type.HUMIDITY
+    HUMIDITY_TYPE = AReading.ReadingType.HUMIDITY
 
     MOISTURE_GPIO = 6
     MOISTURE_MODEL = "Moisture Sensor"
-    MOISTURE_TYPE = AReading.Type.HUMIDITY
+    MOISTURE_TYPE = AReading.ReadingType.HUMIDITY
 
     WATER_GPIO = 4
     WATER_MODEL = "Water Sensor"
-    WATER_TYPE = AReading.Type.WATER
+    WATER_TYPE = AReading.ReadingType.WATER
 
     def __init__(self) -> None:
         self._humidity_sensor = HumiditySensor(

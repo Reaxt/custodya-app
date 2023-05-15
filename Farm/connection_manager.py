@@ -12,15 +12,16 @@ from InterFaces.twins import ITwinSubscriber
 class ConnectionManager:
     """ Responsible for talking with the IOT hub.
     """
-    CONN_STR_KEY = "IOTHUB_DEVICE_CONNECTION_STRING"
-
+    REPORT_RATE_KEY = "reportUpdateRate"
+    DEFAULT_REPORT_RATE = 10
     def __init__(self, configuration:Configuration):
         conn_string = configuration.iot_connection_string
         self.client: IoTHubDeviceClient = IoTHubDeviceClient.create_from_connection_string(conn_string)
         self.connected: bool = False
         self._commands: Dict[str, Callable[[MethodRequest], MethodResponse]] = dict()
         self._twin_handlers: list[ITwinSubscriber] = list()
-
+        self._report_sleep = ConnectionManager.DEFAULT_REPORT_RATE
+        
         async def method_request_handler(method_request:MethodRequest):
             method_response:MethodResponse
             if any (method_request.name in key for key in self._commands):
@@ -30,15 +31,29 @@ class ConnectionManager:
                 status = 400
                 method_response = MethodResponse.create_from_method_request(method_request, status, payload)
             await self.client.send_method_response(method_response)
-        def twin_property_handler(data:dict):
-            print(f"received {data}")
-            print(f"providing {data}")
-            for handler in self._twin_handlers:
-                print(f"serving {handler}")
-                handler.handle_desired(data)
-        self.client.on_twin_desired_properties_patch_received = twin_property_handler
+
+
 
         self.client.on_method_request_received = method_request_handler
+
+    def twin_property_handler(self, data:dict):
+        print(f"received twin patch")
+        if data[ConnectionManager.REPORT_RATE_KEY]:
+            self._report_sleep = data[ConnectionManager.REPORT_RATE_KEY]
+        print(self._twin_handlers)
+        for handler in self._twin_handlers:
+            print(f"serving {handler}")
+            handler.handle_desired(data)    
+    async def report_loop(self):
+        #does this need a cancellation token?
+        while True:
+            await asyncio.sleep(self._report_sleep)
+            report = {
+                ConnectionManager.REPORT_RATE_KEY: self._report_sleep
+            }
+            for subscriber in self._twin_handlers:
+                report = subscriber.generate_report(report)
+            await self.client.patch_twin_reported_properties(report)
 
     def add_twin_handler(self, handler: ITwinSubscriber):
         """Adds a callable to be ran when we receive twin updates.
@@ -46,6 +61,7 @@ class ConnectionManager:
         Args:
             handler (ITwinSubscriber): Twin handler.
         """
+        print(f"adding twin handler {handler}")
         self._twin_handlers.append(handler)
 
     def subscribe_method_request(self, method:str, handler:Callable[[MethodRequest], MethodResponse]):
@@ -55,12 +71,18 @@ class ConnectionManager:
     async def connect(self):
         """Connect to the IOT hub"""
         """Connected to the IoT hub"""
+        self.client.on_twin_desired_properties_patch_received = self.twin_property_handler
+        print("connecting..")
+
         await self.client.connect()
+        print("connected")
         self.connected = True
-        await self.client.get_twin()
+        twin = await self.client.get_twin()
+        #init
+        self.twin_property_handler(twin["desired"])
+        self._report_task = asyncio.create_task(self.report_loop())
 
     async def send_telemetry(self, telemetry:dict[str, Any]):
         jsonstr = json.dumps(telemetry)
-        print(jsonstr)
         msg = Message(jsonstr)
         await self.client.send_message(msg)

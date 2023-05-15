@@ -4,8 +4,8 @@ import pynmea2
 from InterFaces.sensors import ISensor, AReading
 
 class GPS(ISensor):
-    def __init__(self, port='/dev/ttyAMA0', baudrate=9600, type: AReading.Type = AReading.Type.GPS):
-        type: AReading.Type = AReading.Type.GPS,
+    def __init__(self, port='/dev/ttyAMA0', baudrate=9600, type: AReading.ReadingType = AReading.ReadingType.GPS):
+        type: AReading.ReadingType = AReading.ReadingType.GPS,
         self.ser = serial.Serial(port, baudrate, timeout=0.5)
         self.ser.reset_input_buffer()
         self.ser.flush()
@@ -21,14 +21,14 @@ class GPS(ISensor):
                     self.lat = data.latitude
                     self.lng = data.longitude
                     res = {"Latitude": self.lat, "Longitude":self.lng}
-                    reading.append(AReading(AReading.Type.GPS, AReading.Unit.GPS, res))
+                    reading.append(AReading(AReading.ReadingType.GPS, AReading.Unit.GPS, res))
                 else:
                     res = {"Latitude": self.lat, "Longitude":self.lng}
-                    reading.append(AReading(AReading.Type.GPS, AReading.Unit.GPS, res))
+                    reading.append(AReading(AReading.ReadingType.GPS, AReading.Unit.GPS, res))
 
             except:
                 res = {"Latitude": 0, "Longitude":0}
-                return [AReading(AReading.Type.GPS, AReading.Unit.GPS, res)]
+                return [AReading(AReading.ReadingType.GPS, AReading.Unit.GPS, res)]
             return reading
 
 
