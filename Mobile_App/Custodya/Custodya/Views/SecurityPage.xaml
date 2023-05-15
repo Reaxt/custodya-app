@@ -14,35 +14,43 @@
                     <ImageButton Background="lime"/>
                     <Label Text="Status" VerticalOptions="Center"/>
                 </HorizontalStackLayout>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Frame Grid.Column="0">
-                        <VerticalStackLayout>
-                            <Label Text="Noise:"/>
-                            <Label Text="{Binding LatestItem.Loudness, StringFormat='{0} dB'}"/>
-                        </VerticalStackLayout>                        
-                    </Frame>
-                    <Frame Grid.Column="1">
-                        <VerticalStackLayout>
-                            <Label Text="Motion:"/>
-                            <Label Text="{Binding LatestItem.Motion}"/>
-                        </VerticalStackLayout>
-                    </Frame>
-                    <Frame Grid.Column="2">
-                        <VerticalStackLayout>
-                            <Label Text="Door:"/>
-                            <Label Text="{Binding LatestItem.Door}"/>
-                        </VerticalStackLayout>
-                    </Frame>
-                </Grid>
+                <CollectionView x:Name="Sensors" HorizontalOptions="Start">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame>
+                                <HorizontalStackLayout>
+                                    <VerticalStackLayout>
+                                        <Label Text="{Binding Name}"/>
+                                        <Label Text="{Binding Value}"/>
+                                    </VerticalStackLayout>
+                                    <ImageButton HorizontalOptions="End" HeightRequest="20" x:Name="ibtnEditSensor" Clicked="ibtnEditSensor_Clicked" Source="edit.png" IsVisible="{Binding Editable}"/>
+                                </HorizontalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
             </VerticalStackLayout>
         </Frame>
         <Frame x:Name="controlFrame">
-            <VerticalStackLayout>
+            <VerticalStackLayout>                
+                <CollectionView x:Name="Actuators">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <HorizontalStackLayout>
+                                <Label Text="{Binding Name}"/>
+                                <Switch x:Name="toggleState" Toggled="toggleState_Toggled" IsToggled="{Binding State}"/>
+                            </HorizontalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+            <!--<VerticalStackLayout>
                 <HorizontalStackLayout>
                     <ImageButton BackgroundColor="Lime"/>
                     <Label Text="Control" VerticalOptions="Center"/>
@@ -77,7 +85,7 @@
                     <Switch/>
                     <Label Text="On" VerticalOptions="Center"/>
                 </HorizontalStackLayout>
-            </VerticalStackLayout>
+            </VerticalStackLayout>-->
         </Frame>
     </VerticalStackLayout>
 </ContentPage>

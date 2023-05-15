@@ -14,6 +14,5 @@ public partial class GeoPage : ContentPage
     {
         InitializeComponent();
         this.BindingContext = DataRepoProvider.GeolocationDatabase;
-
     }
 }
