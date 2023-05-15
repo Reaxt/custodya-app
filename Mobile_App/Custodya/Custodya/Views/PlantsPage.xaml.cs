@@ -6,6 +6,9 @@ namespace Custodya;
 
 public partial class PlantsPage : ContentPage
 {
+    /// <summary>
+    /// binds the plant database to its corespiting XMAL part
+    /// </summary>
     public PlantsPage()
     {
         InitializeComponent();

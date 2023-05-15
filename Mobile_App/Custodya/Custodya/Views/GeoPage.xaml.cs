@@ -5,6 +5,9 @@ using System.Collections.ObjectModel;
 
 namespace Custodya;
 
+/// <summary>
+/// bindingContext for the GeoLocation DataBase
+/// </summary>
 public partial class GeoPage : ContentPage
 {
     public GeoPage()

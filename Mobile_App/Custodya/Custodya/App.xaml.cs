@@ -12,7 +12,7 @@ public partial class App : Application
 
 		MainPage = new AppShell();
 	}
-    public static Settings Settings { get; private set; } = MauiProgram.Services.GetService<IConfiguration>()
+    public static Settings Settings { get; private set; } = MauiProgram.Services.GetService<IConfiguration>() //gets the required connection strings
 	.GetRequiredSection(nameof(Settings)).Get<Settings>();
 	public static EventHubService EventHubService { get { return MauiProgram.Services.GetService<EventHubService>(); } } 
 
