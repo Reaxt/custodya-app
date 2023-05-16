@@ -21,7 +21,7 @@ namespace Custodya.Services
         public EventHubService() 
         {
             var blobClient = new BlobContainerClient(App.Settings.StorageConnectionString, App.Settings.BlobContainerName);
-            _eventProcessor = new EventProcessorClient(blobClient, App.Settings.ConsumerGroup, App.Settings.EventHubConnectionString);
+            _eventProcessor = new EventProcessorClient(blobClient, App.Settings.ConsumerGroup, App.Settings.EndpointConnectionString);
             _partitionEventCount = new ConcurrentDictionary<string, int>();
             _telemeteryEvents = new List<string>();
             _observers = new List<IObserver<string>>();
