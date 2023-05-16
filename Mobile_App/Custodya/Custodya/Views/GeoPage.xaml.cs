@@ -1,5 +1,6 @@
 using Custodya.Models;
 using Custodya.Repos;
+using Microsoft.Azure.Devices;
 using Microsoft.Maui.Controls;
 using System.Collections.ObjectModel;
 using System.Reflection;
@@ -13,10 +14,13 @@ public partial class GeoPage : ContentPage
 {
     private ObservableCollection<Sensor> _sensors = new();
     private ObservableCollection<Actuator> _actuators = new();
+    private static RegistryManager registryManager;
+
     public GeoPage()
     {
         InitializeComponent();
         this.BindingContext = DataRepoProvider.GeolocationDatabase;
+        registryManager = RegistryManager.CreateFromConnectionString(App.Settings.EventHubConnectionString);
 
         try
         {
@@ -94,9 +98,27 @@ public partial class GeoPage : ContentPage
         }
     }
 
-    private void toggleState_Toggled(object sender, ToggledEventArgs e)
+    private async void toggleState_Toggled(object sender, ToggledEventArgs e)
     {
-        // Logic goes here
+        var twin = await registryManager.GetTwinAsync(App.Settings.HubConnectionString);
+        Switch switchToggle = (Switch)sender;
+
+
+        var patch =
+                $@"{{
+                    properties: {{
+                        desired: {{
+                            actuatorControl: {{
+                                Buzzer:{{
+                                    manualState : {switchToggle.IsToggled}
+                                }}
+                            }}
+                        }}
+                    }}
+                }}
+        ";
+
+        await registryManager.UpdateTwinAsync(twin.DeviceId, patch, twin.ETag);
     }
 
     private async void ibtnAccount_Clicked(object sender, EventArgs e)
