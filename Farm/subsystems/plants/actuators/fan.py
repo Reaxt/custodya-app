@@ -10,9 +10,9 @@ from InterFaces.actuators import IActuator, ACommand
 
 
 OUTPIN = 18
-OPEN_COMMAND = "on"
-CLOSE_COMMAND = "off"
-TARGET = "fan"
+OPEN_COMMAND = True
+CLOSE_COMMAND = False
+TARGET = "Fan"
 
 
 class FanController(IActuator):
@@ -44,7 +44,7 @@ class FanController(IActuator):
     def get_current_state(self) -> Any:
         return True if self._current_state == OPEN_COMMAND else False
     def get_actuator_name(self) -> str:
-        return "Fan"
+        return TARGET
 if __name__ == "__main__":
     fantest = FanController()
     while True:

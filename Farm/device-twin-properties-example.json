@@ -1,0 +1,82 @@
+{
+    "desired": {
+        "telemetryInterval": 5,
+        "ruleUpdateRate": 1,
+        "reportUpdateRate": 30,
+        "actuatorControl": {
+            "Led": {
+                "controlMethod": "rules",
+                "manualState": false,
+                "rules": [
+                    {
+                        "targetReadingType": "Loudness",
+                        "targetValue": 100,
+                        "comparisonType": ">",
+                        "valueOnRule": true
+                    },
+                    {
+                        "targetReadingType": "Loudness",
+                        "targetValue": 100,
+                        "comparisonType": "<",
+                        "valueOnRule": false
+                    }
+                ]
+            },
+            "Buzzer": {
+                "controlMethod": "manual",
+                "manualState": false,
+                "rules": []
+            },
+            "DoorLock": {
+                "controlMethod": "manual",
+                "manualState": true,
+                "rules": []
+            },
+            "Fan": {
+                "controlMethod": "manual",
+                "manualState": false,
+                "rules": []
+            }
+        }
+    },
+    "reported": {
+        "reportUpdateRate": 30,
+        "ruleUpdateRate": 1,
+        "telemetryInterval": 5,
+        "actuatorControl": {
+            "Buzzer": {
+                "controlMethod": "manual",
+                "manualState": false,
+                "rules": []
+            },
+            "DoorLock": {
+                "controlMethod": "manual",
+                "manualState": true,
+                "rules": []
+            },
+            "Fan": {
+                "controlMethod": "manual",
+                "manualState": false,
+                "rules": []
+            },
+            "Led": {
+                "controlMethod": "rules",
+                "manualState": true,
+                "rules": [
+                    {
+                        "targetReadingType": "Loudness",
+                        "targetValue": 60,
+                        "comparisonType": ">",
+                        "valueOnRule": true
+                    },
+                    {
+                        "targetReadingType": "Loudness",
+                        "targetValue": 60,
+                        "comparisonType": "<",
+                        "valueOnRule": false
+                    }
+                ]
+            }
+        }
+    }
+}

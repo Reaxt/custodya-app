@@ -13,9 +13,9 @@ from InterFaces.actuators import IActuator, ACommand
 
 OUTPIN = 16
 COUNT = 10
-OPEN_COMMAND = "on"
-CLOSE_COMMAND = "off"
-TARGET = "led"
+OPEN_COMMAND = True
+CLOSE_COMMAND = False
+TARGET = "Led"
 
 
 class LedController(IActuator):
@@ -31,7 +31,7 @@ class LedController(IActuator):
     def validate_command(self, command: ACommand) -> bool:
         if command.target_type != TARGET:
             return False
-        if not command.data["value"] in (OPEN_COMMAND.lower(), CLOSE_COMMAND.lower()):
+        if not command.data["value"] in (OPEN_COMMAND, CLOSE_COMMAND):
             return False
         return True
 
@@ -55,7 +55,8 @@ class LedController(IActuator):
     def get_current_state(self) -> Any:
         return True if self._current_state["value"] == OPEN_COMMAND else False
     def get_actuator_name(self) -> str:
-        return "Led"
+        return TARGET
+
 if __name__ == "__main__":
     ledtest = LedController()
     while True:

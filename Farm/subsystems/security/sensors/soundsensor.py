@@ -9,7 +9,7 @@ MODEL_NAME = "Grove loudness sensor"
 
 class LoudnessSensor(ISensor):
     """Class representing the loudness sensor"""
-    def __init__(self, gpio: int=0 , model: str = MODEL_NAME, type: AReading.Type = AReading.Type.MOTION):
+    def __init__(self, gpio: int=0 , model: str = MODEL_NAME, type: AReading.ReadingType = AReading.ReadingType.MOTION):
         """Loudness sensor
         
         :param int gpio: The i2c channel
@@ -19,7 +19,7 @@ class LoudnessSensor(ISensor):
         self._channel = gpio
     def read_sensor(self) -> list[AReading]:
         return [
-        AReading(AReading.Type.LOUDNESS, AReading.Unit.LOUDNESS, self._adc.read(self._channel))
+        AReading(AReading.ReadingType.LOUDNESS, AReading.Unit.LOUDNESS, self._adc.read(self._channel))
         ]
 
 

@@ -7,7 +7,7 @@ from InterFaces.sensors import ISensor, AReading
 MODEL_NAME = "PitchAndRoll Sensor"
 
 class PitchAndRollSensor(ISensor):
-    def __init__(self, gpio = 0,  model = MODEL_NAME, type = AReading.Type.PITCH_ROLL):
+    def __init__(self, gpio = 0,  model = MODEL_NAME, type = AReading.ReadingType.PITCH_ROLL):
         self.accel_device = rt.get_acceleration_device()
 
 
@@ -15,7 +15,7 @@ class PitchAndRollSensor(ISensor):
         pitch_level = self.calculate_pitch()
         roll_level = self.calculate_roll()
         res = {"Pitch": pitch_level, "Roll": roll_level}
-        return [AReading(AReading.Type.PITCH_ROLL, AReading.Unit.PITCH_ROLL, res)]
+        return [AReading(AReading.ReadingType.PITCH_ROLL, AReading.Unit.PITCH_ROLL, res)]
 
     def internal_get_acceleration(self):
         x = y = z = None

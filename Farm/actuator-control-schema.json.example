@@ -1,0 +1,23 @@
+{
+    "actuatorControl":{
+        "actuatorName":{
+            "controlMethod": "manual | rules",
+            "manualState": "value",
+            "rules" :
+            [
+                {
+                    "targetReadingType": "reading-name",
+                    "targetValue": "ANY //could be a object for geolocation, bool, float, etc. has to match reading type",
+                    "comparisonType": "> OR < OR ==",
+                    "valueOnRule": "value" 
+                }, 
+                {
+                    "targetReadingType": "reading-name",
+                    "targetValue": "ANY //could be a object for geolocation, bool, float, etc. has to match reading type",
+                    "comparisonType": "> OR < OR ==",
+                    "valueOnRule": "value" 
+                }
+            ]
+        }
+    }
+}
