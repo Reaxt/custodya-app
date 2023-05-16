@@ -36,11 +36,12 @@ class ConnectionManager:
 
         self.client.on_method_request_received = method_request_handler
 
-    def twin_property_handler(self, data:dict):
+    async def twin_property_handler(self, data:dict):
         print(f"received twin patch")
-        if data[ConnectionManager.REPORT_RATE_KEY]:
+        #it would be nice to have this handle partial updates, but for now we will just refetch our desired properties each time.
+        data = (await self.client.get_twin())["desired"]
+        if ConnectionManager.REPORT_RATE_KEY in data:
             self._report_sleep = data[ConnectionManager.REPORT_RATE_KEY]
-        print(self._twin_handlers)
         for handler in self._twin_handlers:
             print(f"serving {handler}")
             handler.handle_desired(data)    
@@ -70,7 +71,6 @@ class ConnectionManager:
 
     async def connect(self):
         """Connect to the IOT hub"""
-        """Connected to the IoT hub"""
         self.client.on_twin_desired_properties_patch_received = self.twin_property_handler
         print("connecting..")
 
@@ -79,7 +79,7 @@ class ConnectionManager:
         self.connected = True
         twin = await self.client.get_twin()
         #init
-        self.twin_property_handler(twin["desired"])
+        await self.twin_property_handler(twin["desired"])
         self._report_task = asyncio.create_task(self.report_loop())
 
     async def send_telemetry(self, telemetry:dict[str, Any]):

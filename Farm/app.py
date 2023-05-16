@@ -35,7 +35,7 @@ async def main():
         while True:
             state = farm.serialize_state()
             if args.logtelemetry:
-                print(json.dumps(state))
+                print(json.dumps(state, indent=2))
             await connection_manager.send_telemetry(state)
             await asyncio.sleep(telemetry_time.get_interval())
     await telemetryloop()
