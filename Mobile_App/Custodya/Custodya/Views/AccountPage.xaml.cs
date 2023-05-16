@@ -3,6 +3,9 @@ using Firebase.Auth;
 
 namespace Custodya;
 
+/// <summary>
+/// sets up the context for the account page then if the user clicks the logout button it will redirect them to the login page, and will also have the proper error catching details if needed
+/// </summary>
 public partial class AccountPage : ContentPage
 {
 	public AccountPage()

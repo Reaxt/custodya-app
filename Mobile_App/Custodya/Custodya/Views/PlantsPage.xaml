@@ -6,77 +6,49 @@
     <VerticalStackLayout Margin="10">
         <HorizontalStackLayout Margin="0,0,0,20">
             <Label Text="custodya" FontAttributes="Bold" FontSize="Large" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
-            <ImageButton  Source="user.png" HeightRequest="40" Margin="230,0,0,0"/>
+            <ImageButton  Source="user.png" HeightRequest="40" Margin="230,0,0,0" x:Name="ibtnAccount" Clicked="ibtnAccount_Clicked"/>
         </HorizontalStackLayout>
         <Frame Margin="0,0,0,10">
             <VerticalStackLayout>
                 <HorizontalStackLayout>
-                    <ImageButton BackgroundColor="Lime"/>
+                    <ImageButton Background="lime"/>
                     <Label Text="Status" VerticalOptions="Center"/>
                 </HorizontalStackLayout>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1.25*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Frame Grid.Column="0">
-                        <VerticalStackLayout>
-                            <Label Text="Temperature:"/>
-                            <Label Text="{Binding LatestItem.Temperature, StringFormat='{0}°C'}"/>
-                        </VerticalStackLayout>
-                    </Frame>
-                    <Frame Grid.Column="1">
-                        <VerticalStackLayout>
-                            <Label Text="Humidity:"/>
-                            <Label Text="{Binding LatestItem.Humidity, StringFormat='{0}%'}"/>
-                        </VerticalStackLayout>
-                    </Frame>
-                    <Frame Grid.Column="2">
-                        <VerticalStackLayout>
-                            <Label Text="Water:"/>
-                            <Label Text="{Binding LatestItem.Moisture}"/>
-                        </VerticalStackLayout>
-                    </Frame>
-                </Grid>
+                <CollectionView x:Name="Sensors" HorizontalOptions="Start">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame>
+                                <HorizontalStackLayout>
+                                    <VerticalStackLayout>
+                                        <Label Text="{Binding Name}"/>
+                                        <Label Text="{Binding Value}"/>
+                                    </VerticalStackLayout>
+                                    <ImageButton HorizontalOptions="End" HeightRequest="20" x:Name="ibtnEditSensor" Clicked="ibtnEditSensor_Clicked" Source="edit.png" IsVisible="{Binding Editable}"/>
+                                </HorizontalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
             </VerticalStackLayout>
         </Frame>
-        <Frame>
+        <Frame x:Name="controlFrame">
             <VerticalStackLayout>
-                <HorizontalStackLayout>
-                    <ImageButton BackgroundColor="Lime"/>
-                    <Label Text="Control" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-                <HorizontalStackLayout>
-                    <Label Text="Temperature" WidthRequest="175"/>
-                    <Button Text="Manual" WidthRequest="80"/>
-                    <Switch/>
-                    <Label Text="On" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-                <HorizontalStackLayout>
-                    <Label Text="Humidity" WidthRequest="175"/>
-                    <Button Text="Auto" WidthRequest="80"/>
-                    <Switch/>
-                    <Label Text="Off" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-                <HorizontalStackLayout>
-                    <Label Text="Soil Moisture" WidthRequest="175"/>
-                    <Button Text="Manual" WidthRequest="80"/>
-                    <Switch/>
-                    <Label Text="Off" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-                <HorizontalStackLayout>
-                    <Label Text="Fan" WidthRequest="175"/>
-                    <Button Text="Manual" WidthRequest="80"/>
-                    <Switch/>
-                    <Label Text="On" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-                <HorizontalStackLayout>
-                    <Label Text="Light" WidthRequest="175"/>
-                    <Button Text="Auto" WidthRequest="80"/>
-                    <Switch/>
-                    <Label Text="On" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
+                <CollectionView x:Name="Actuators">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <HorizontalStackLayout>
+                                <Label Text="{Binding Name}"/>
+                                <Switch x:Name="toggleState" Toggled="toggleState_Toggled" IsToggled="{Binding State}"/>
+                            </HorizontalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
             </VerticalStackLayout>
         </Frame>
     </VerticalStackLayout>
