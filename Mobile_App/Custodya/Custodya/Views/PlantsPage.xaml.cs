@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using Custodya.Repos;
 using System.Reflection;
 using Microsoft.Azure.Devices;
+using Firebase.Auth;
 
 namespace Custodya;
 
@@ -56,6 +57,10 @@ public partial class PlantsPage : ContentPage
                 }
             }
         }
+        catch (FirebaseAuthException ex)
+        {
+            DisplayAlert("Alert", $"Exception occured during Firebase Http request\nUrl: {ex.HelpLink}\nRequest Data:{ex.Source}\nResponse:{ex.Message}\nReason:{ex.Reason}", "Ok");
+        }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
@@ -83,6 +88,10 @@ public partial class PlantsPage : ContentPage
             }
             while (s.Max <= s.Min);
         }
+        catch (FirebaseAuthException ex)
+        {
+            await DisplayAlert("Alert", $"Exception occured during Firebase Http request\nUrl: {ex.HelpLink}\nRequest Data:{ex.Source}\nResponse:{ex.Message}\nReason:{ex.Reason}", "Ok");
+        }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
@@ -91,31 +100,40 @@ public partial class PlantsPage : ContentPage
 
     private async void toggleState_Toggled(object sender, ToggledEventArgs e)
     {
-        // Logic goes here
-        //loop trought Actuators if name ==  fan or led then : change value 
-        var twin = await registryManager.GetTwinAsync(App.Settings.DeviceId);
-        Switch switchToggle = (Switch)sender;
+        try
+        {
+            var twin = await registryManager.GetTwinAsync(App.Settings.DeviceId);
+            Switch switchToggle = (Switch)sender;
 
 
-        var patch =
-                $@"{{
-                    properties: {{
-                        desired: {{
-                            actuatorControl: {{
-                                Fan:{{
-                                    manualState : {switchToggle.IsToggled.ToString().ToLower()}
-                                }},
-                                Led:{{
-                                    manualState : {switchToggle.IsToggled.ToString().ToLower()}
+            var patch =
+                    $@"{{
+                        properties: {{
+                            desired: {{
+                                actuatorControl: {{
+                                    Fan:{{
+                                        manualState : {switchToggle.IsToggled.ToString().ToLower()}
+                                    }},
+                                    Led:{{
+                                        manualState : {switchToggle.IsToggled.ToString().ToLower()}
+                                    }}
                                 }}
                             }}
                         }}
                     }}
-                }}
-        ";
+            ";
 
-        await registryManager.UpdateTwinAsync(twin.DeviceId, patch, twin.ETag);
+            await registryManager.UpdateTwinAsync(twin.DeviceId, patch, twin.ETag);
+        }
+        catch (FirebaseAuthException ex)
+        {
+            await DisplayAlert("Alert", $"Exception occured during Firebase Http request\nUrl: {ex.HelpLink}\nRequest Data:{ex.Source}\nResponse:{ex.Message}\nReason:{ex.Reason}", "Ok");
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Alert", $"Error: Cannot connect to the Iot Hub please check connection", "Ok");
 
+        }
 
     }
 

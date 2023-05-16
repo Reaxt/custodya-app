@@ -1,5 +1,6 @@
 using Custodya.Models;
 using Custodya.Repos;
+using Firebase.Auth;
 using Microsoft.Azure.Devices;
 using Microsoft.Maui.Controls;
 using System.Collections.ObjectModel;
@@ -66,6 +67,10 @@ public partial class GeoPage : ContentPage
                 }
             }
         }
+        catch (FirebaseAuthException ex)
+        {
+            DisplayAlert("Alert", $"Exception occured during Firebase Http request\nUrl: {ex.HelpLink}\nRequest Data:{ex.Source}\nResponse:{ex.Message}\nReason:{ex.Reason}", "Ok");
+        }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
@@ -92,6 +97,10 @@ public partial class GeoPage : ContentPage
             }
             while (s.Max <= s.Min);
         }
+        catch (FirebaseAuthException ex)
+        {
+            await DisplayAlert("Alert", $"Exception occured during Firebase Http request\nUrl: {ex.HelpLink}\nRequest Data:{ex.Source}\nResponse:{ex.Message}\nReason:{ex.Reason}", "Ok");
+        }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
@@ -100,25 +109,36 @@ public partial class GeoPage : ContentPage
 
     private async void toggleState_Toggled(object sender, ToggledEventArgs e)
     {
-        var twin = await registryManager.GetTwinAsync(App.Settings.DeviceId);
-        Switch switchToggle = (Switch)sender;
+        try
+        {
+            var twin = await registryManager.GetTwinAsync(App.Settings.DeviceId);
+            Switch switchToggle = (Switch)sender;
 
 
-        var patch =
-                $@"{{
-                    properties: {{
-                        desired: {{
-                            actuatorControl: {{
-                                Buzzer:{{
-                                    manualState : {switchToggle.IsToggled}
+            var patch =
+                    $@"{{
+                        properties: {{
+                            desired: {{
+                                actuatorControl: {{
+                                    Buzzer:{{
+                                        manualState : {switchToggle.IsToggled}
+                                    }}
                                 }}
                             }}
                         }}
                     }}
-                }}
-        ";
+            ";
 
-        await registryManager.UpdateTwinAsync(twin.DeviceId, patch, twin.ETag);
+            await registryManager.UpdateTwinAsync(twin.DeviceId, patch, twin.ETag);
+        }
+        catch (FirebaseAuthException ex)
+        {
+            await DisplayAlert("Alert", $"Exception occured during Firebase Http request\nUrl: {ex.HelpLink}\nRequest Data:{ex.Source}\nResponse:{ex.Message}\nReason:{ex.Reason}", "Ok");
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Alert", $"Error: Cannot connect to the Iot Hub please check connection", "Ok");
+        }
     }
 
     private async void ibtnAccount_Clicked(object sender, EventArgs e)

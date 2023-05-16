@@ -7,6 +7,7 @@ using Microsoft.Azure.Devices.Client;
 using Microsoft.Azure.Devices.Shared;
 using Microsoft.Azure.Devices;
 using Newtonsoft.Json;
+using Firebase.Auth;
 
 namespace Custodya;
 
@@ -86,6 +87,10 @@ public partial class SecurityPage : ContentPage
                     }
 
                 }
+                catch (FirebaseAuthException ex)
+                {
+                    DisplayAlert("Alert", $"Exception occured during Firebase Http request\nUrl: {ex.HelpLink}\nRequest Data:{ex.Source}\nResponse:{ex.Message}\nReason:{ex.Reason}", "Ok");
+                }
                 catch (Exception ex) 
                 {
                     Console.WriteLine(ex.Message);
@@ -119,6 +124,10 @@ public partial class SecurityPage : ContentPage
             }
             while (s.Max <= s.Min);
         }
+        catch (FirebaseAuthException ex)
+        {
+            await DisplayAlert("Alert", $"Exception occured during Firebase Http request\nUrl: {ex.HelpLink}\nRequest Data:{ex.Source}\nResponse:{ex.Message}\nReason:{ex.Reason}", "Ok");
+        }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
@@ -127,13 +136,14 @@ public partial class SecurityPage : ContentPage
 
     private async void toggleState_Toggled(object sender, ToggledEventArgs e)
     {
+        try
+        {
+            var twin = await registryManager.GetTwinAsync(App.Settings.DeviceId);
+            Switch switchToggle = (Switch)sender;
 
-        var twin = await registryManager.GetTwinAsync(App.Settings.DeviceId);
-        Switch switchToggle = (Switch)sender;
 
-
-        var patch =
-                $@"{{
+            var patch =
+                    $@"{{
                     properties: {{
                         desired: {{
                             actuatorControl: {{
@@ -144,8 +154,17 @@ public partial class SecurityPage : ContentPage
                         }}
                     }}
                 }}";
-        
-        await registryManager.UpdateTwinAsync(twin.DeviceId, patch, twin.ETag);
+
+            await registryManager.UpdateTwinAsync(twin.DeviceId, patch, twin.ETag);
+        }
+        catch (FirebaseAuthException ex)
+        {
+           await DisplayAlert("Alert", $"Exception occured during Firebase Http request\nUrl: {ex.HelpLink}\nRequest Data:{ex.Source}\nResponse:{ex.Message}\nReason:{ex.Reason}", "Ok");
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Alert", $"Error: Cannot connect to the Iot Hub please check connection", "Ok");
+        }
     }
 
 
