@@ -100,7 +100,7 @@ public partial class GeoPage : ContentPage
 
     private async void toggleState_Toggled(object sender, ToggledEventArgs e)
     {
-        var twin = await registryManager.GetTwinAsync(App.Settings.HubConnectionString);
+        var twin = await registryManager.GetTwinAsync(App.Settings.DeviceId);
         Switch switchToggle = (Switch)sender;
 
 

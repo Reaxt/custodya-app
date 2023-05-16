@@ -18,6 +18,7 @@ public partial class PlantsPage : ContentPage
     /// </summary>
     public PlantsPage()
     {
+        registryManager = RegistryManager.CreateFromConnectionString(App.Settings.EventHubConnectionString);
         InitializeComponent();
         this.BindingContext = DataRepoProvider.PlantsDatabase;
         try
@@ -92,7 +93,7 @@ public partial class PlantsPage : ContentPage
     {
         // Logic goes here
         //loop trought Actuators if name ==  fan or led then : change value 
-        var twin = await registryManager.GetTwinAsync(App.Settings.HubConnectionString);
+        var twin = await registryManager.GetTwinAsync(App.Settings.DeviceId);
         Switch switchToggle = (Switch)sender;
 
 
@@ -102,10 +103,10 @@ public partial class PlantsPage : ContentPage
                         desired: {{
                             actuatorControl: {{
                                 Fan:{{
-                                    manualState : {switchToggle.IsToggled}
-                                }}
-                                LED:{{
-                                    manualState : {switchToggle.IsToggled}
+                                    manualState : {switchToggle.IsToggled.ToString().ToLower()}
+                                }},
+                                Led:{{
+                                    manualState : {switchToggle.IsToggled.ToString().ToLower()}
                                 }}
                             }}
                         }}
