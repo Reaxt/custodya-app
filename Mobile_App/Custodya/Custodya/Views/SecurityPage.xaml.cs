@@ -2,6 +2,11 @@ using Custodya.Models;
 using System.Collections.ObjectModel;
 using Custodya.Repos;
 using System.Reflection;
+using Microsoft.Maui.Controls;
+using Microsoft.Azure.Devices.Client;
+using Microsoft.Azure.Devices.Shared;
+using Microsoft.Azure.Devices;
+using Newtonsoft.Json;
 
 namespace Custodya;
 
@@ -12,10 +17,13 @@ public partial class SecurityPage : ContentPage
     /// </summary>
     private ObservableCollection<Sensor> _sensors = new();
     private ObservableCollection<Actuator> _actuators = new();
+    private static RegistryManager registryManager;
     
+
     public SecurityPage()
 	{
         InitializeComponent();
+        registryManager = RegistryManager.CreateFromConnectionString(App.Settings.EventHubConnectionString);
 
         this.BindingContext = DataRepoProvider.SecurityDatabase;
         if (Shell.Current.CurrentItem.Route == "Owner")
@@ -76,6 +84,7 @@ public partial class SecurityPage : ContentPage
                             State = (SecurityModel.DoorState)propertyInfo.GetValue(DataRepoProvider.SecurityDatabase.LatestItem, null) == SecurityModel.DoorState.Open
                         });
                     }
+
                 }
                 catch (Exception ex) 
                 {
@@ -116,13 +125,33 @@ public partial class SecurityPage : ContentPage
         }
     }
 
-    private void toggleState_Toggled(object sender, ToggledEventArgs e)
+    private async void toggleState_Toggled(object sender, ToggledEventArgs e)
     {
-        // Logic goes here
+
+        var twin = await registryManager.GetTwinAsync(App.Settings.HubConnectionString);
+        Switch switchToggle = (Switch)sender;
+
+
+        var patch =
+                $@"{{
+                    properties: {{
+                        desired: {{
+                            actuatorControl: {{
+                                DoorLock:{{
+                                    manualState : {switchToggle.IsToggled}
+                                }}
+                            }}
+                        }}
+                    }}
+                }}";
+        
+        await registryManager.UpdateTwinAsync(twin.DeviceId, patch, twin.ETag);
     }
+
 
     private async void ibtnAccount_Clicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync($"//User/Account");
     }
+
 }

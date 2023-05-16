@@ -1,18 +1,23 @@
 from abc import ABC, abstractmethod
 from enum import Enum
 import json
-from typing import Any
+from typing import Any, Union
 
 class ACommand:
     """Class for actuator commands. The type of the command has to be handled by the actuator itself."""
-    def __init__(self, target: str, raw_message_body: str) -> None:
+    def __init__(self, target: str, body: Union[str, dict]) -> None:
         """Initialises an actuator command
         
         :param str target: The type of actuator this will target.
-        :param str raw_message_body: Body of the message as a json string"""
+        :param str raw_message_body: Body of the message as a json string OR parsed dict """
         self.target_type = target
-        
-        self.data: dict = json.loads(raw_message_body)
+        parsed_data:dict
+        if isinstance(body, str):
+            parsed_data = json.loads(body) # type: ignore
+        else:
+            parsed_data = body # type: ignore
+        self.data:dict = parsed_data
+
 
     def __repr__(self) -> str:
         return f'Command for {self.target_type} as {self.data}'

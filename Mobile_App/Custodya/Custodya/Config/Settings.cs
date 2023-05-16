@@ -21,8 +21,8 @@ namespace Custodya.Config
 
 
         //IoT Hub Connection Strings
-       // public string HubConnectionString { get; set; }
-       // public string DeviceId { get; set; }
+        public string HubConnectionString { get; set; }
+        public string DeviceId { get; set; }
 
         //Firebase Strings and URL
         public int RefreshRate { get; set; }
