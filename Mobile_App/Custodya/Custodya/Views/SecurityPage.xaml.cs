@@ -128,7 +128,7 @@ public partial class SecurityPage : ContentPage
     private async void toggleState_Toggled(object sender, ToggledEventArgs e)
     {
 
-        var twin = await registryManager.GetTwinAsync(App.Settings.h);
+        var twin = await registryManager.GetTwinAsync(App.Settings.HubConnectionString);
         Switch switchToggle = (Switch)sender;
 
 
