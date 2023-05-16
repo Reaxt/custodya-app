@@ -128,7 +128,7 @@ public partial class SecurityPage : ContentPage
     private async void toggleState_Toggled(object sender, ToggledEventArgs e)
     {
 
-        var twin = await registryManager.GetTwinAsync(App.Settings.HubConnectionString);
+        var twin = await registryManager.GetTwinAsync(App.Settings.DeviceId);
         Switch switchToggle = (Switch)sender;
 
 
@@ -138,7 +138,7 @@ public partial class SecurityPage : ContentPage
                         desired: {{
                             actuatorControl: {{
                                 DoorLock:{{
-                                    manualState : {switchToggle.IsToggled}
+                                    manualState : {switchToggle.IsToggled.ToString().ToLower()}
                                 }}
                             }}
                         }}
