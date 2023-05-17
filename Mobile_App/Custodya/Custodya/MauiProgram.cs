@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Custodya.Services;
 using Custodya.Models;
 using Custodya.Interfaces;
+using SkiaSharp.Views.Maui.Controls.Hosting;
 
 namespace Custodya;
 
@@ -22,11 +23,11 @@ public static class MauiProgram
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-            }).RegisterIOTServices();
+            }).RegisterIOTServices().UseSkiaSharp();
 
 
 #if DEBUG
-		builder.Logging.AddDebug();
+        builder.Logging.AddDebug();
 #endif
         //NEW CODE: before the return statement...
         var a = Assembly.GetExecutingAssembly();

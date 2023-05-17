@@ -21,107 +21,58 @@ public partial class PlantsPage : ContentPage
         registryManager = RegistryManager.CreateFromConnectionString(App.Settings.EventHubConnectionString);
         InitializeComponent();
         this.BindingContext = DataRepoProvider.PlantsDatabase;
-        try
-        {
-            foreach (PropertyInfo propertyInfo in DataRepoProvider.PlantsDatabase.LatestItem.GetType().GetProperties())
-            {
-                try
-                {
-                    if (Sensor.PlantSensors.Contains(propertyInfo.Name) && _sensors != null && !_sensors.Any(s => s.Name == propertyInfo.Name))
-                    {
-                        if (propertyInfo.PropertyType == typeof(float))
-                        {
-                            _sensors.Add(new()
-                            {
-                                Name = propertyInfo.Name,
-                                Value = propertyInfo.GetValue(DataRepoProvider.PlantsDatabase.LatestItem, null),
-                                State = (float)propertyInfo.GetValue(DataRepoProvider.PlantsDatabase.LatestItem, null) < 100
-                                || (float)propertyInfo.GetValue(DataRepoProvider.PlantsDatabase.LatestItem, null) > 0
-                                ? Sensor.SensorState.Valid : Sensor.SensorState.Error
-                            });
-                        }
-                    }
-                    else if (Actuator.PlantActuators.Contains(propertyInfo.Name) && !_actuators.Any(a => a.Name == propertyInfo.Name))
-                    {
-                        _actuators.Add(new()
-                        {
-                            Name = propertyInfo.Name,
-                            State = (bool)propertyInfo.GetValue(DataRepoProvider.PlantsDatabase.LatestItem, null)
-                        });
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
-
-        Sensors.ItemsSource = _sensors;
-        Actuators.ItemsSource = _actuators;
-    }
-
-    private async void ibtnEditSensor_Clicked(object sender, EventArgs e)
-    {
-        try
-        {
-            ImageButton btn = (ImageButton)sender;
-            Sensor s = (Sensor)btn.BindingContext;
-            do
-            {
-                s.Min = double.Parse(await DisplayPromptAsync("Min", $"Please input a minimum value below the current max: {s.Max}", "Ok", "Cancel", null, 10, Keyboard.Numeric));
-            }
-            while (s.Min >= s.Max);
-
-            do
-            {
-                s.Max = double.Parse(await DisplayPromptAsync("Max", $"Please input a maximum value above the current min: {s.Min}", "Ok", "Cancel", null, 10, Keyboard.Numeric));
-            }
-            while (s.Max <= s.Min);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
-    }
-
-    private async void toggleState_Toggled(object sender, ToggledEventArgs e)
-    {
-        // Logic goes here
-        //loop trought Actuators if name ==  fan or led then : change value 
-        var twin = await registryManager.GetTwinAsync(App.Settings.DeviceId);
-        Switch switchToggle = (Switch)sender;
-
-
-        var patch =
-                $@"{{
-                    properties: {{
-                        desired: {{
-                            actuatorControl: {{
-                                Fan:{{
-                                    manualState : {switchToggle.IsToggled.ToString().ToLower()}
-                                }},
-                                Led:{{
-                                    manualState : {switchToggle.IsToggled.ToString().ToLower()}
-                                }}
-                            }}
-                        }}
-                    }}
-                }}
-        ";
-
-        await registryManager.UpdateTwinAsync(twin.DeviceId, patch, twin.ETag);
-
+        HumidityChart.Series = ChartRepo<PlantsModel>.GetSeries(DataRepoProvider.PlantsDatabase.Items, "Humidity");
+        TemperatureChart.Series = ChartRepo<PlantsModel>.GetSeries(DataRepoProvider.PlantsDatabase.Items, "Temperature");
+        WaterChart.Series = ChartRepo<PlantsModel>.GetSeries(DataRepoProvider.PlantsDatabase.Items, "Water");
+        MoistureChart.Series = ChartRepo<PlantsModel>.GetSeries(DataRepoProvider.PlantsDatabase.Items, "Moisture");
 
     }
 
 
     private async void ibtnAccount_Clicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync($"//{Shell.Current.CurrentItem.Route}/Account");
+        await Shell.Current.GoToAsync($"//{Shell.Current.CurrentItem.Route}/Account", true);
+    }
+
+    private async void toggleLedState_Toggled(object sender, ToggledEventArgs e)
+    {
+        var twin = await registryManager.GetTwinAsync(App.Settings.DeviceId);
+        Switch switchToggle = (Switch)sender;
+        var patch =
+        $@"{{
+            properties: {{
+                desired: {{
+                    actuatorControl: {{
+                        Led:{{
+                            manualState : {switchToggle.IsToggled.ToString().ToLower()}
+                        }}
+                    }}
+                }}
+            }}
+        }}
+        ";
+
+        await registryManager.UpdateTwinAsync(twin.DeviceId, patch, twin.ETag);
+    }
+
+    private async void toggleFanState_Toggled(object sender, ToggledEventArgs e)
+    {
+        var twin = await registryManager.GetTwinAsync(App.Settings.DeviceId);
+        Switch switchToggle = (Switch)sender;
+        var patch =
+        $@"{{
+            properties: {{
+                desired: {{
+                    actuatorControl: {{
+                        Fan:{{
+                            manualState : {switchToggle.IsToggled.ToString().ToLower()}
+                        }}
+                    }}
+                }}
+            }}
+        }}
+        ";
+
+        await registryManager.UpdateTwinAsync(twin.DeviceId, patch, twin.ETag);
     }
 }

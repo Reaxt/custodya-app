@@ -1,6 +1,10 @@
 ﻿using Custodya.Interfaces;
+using LiveChartsCore;
+using LiveChartsCore.Defaults;
+using LiveChartsCore.SkiaSharpView;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,5 +25,6 @@ namespace Custodya.Models
         public dynamic Value { get; set; }
         public bool Editable { get; set; } = true;
         public SensorState State { get; set; }
+        public ObservableCollection<ISeries> Series { get; set; }
     }
 }

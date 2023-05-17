@@ -1,55 +1,86 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"             
+             xmlns:charts="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
              x:Class="Custodya.PlantsPage"
              Title="Plants">
-    <VerticalStackLayout Margin="10">
-        <HorizontalStackLayout Margin="0,0,0,20">
-            <Label Text="custodya" FontAttributes="Bold" FontSize="Large" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
-            <ImageButton  Source="user.png" HeightRequest="40" Margin="230,0,0,0" x:Name="ibtnAccount" Clicked="ibtnAccount_Clicked"/>
-        </HorizontalStackLayout>
-        <Frame Margin="0,0,0,10">
-            <VerticalStackLayout>
-                <HorizontalStackLayout>
-                    <ImageButton Background="lime"/>
-                    <Label Text="Status" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-                <CollectionView x:Name="Sensors" HorizontalOptions="Start">
-                    <CollectionView.ItemsLayout>
-                        <LinearItemsLayout Orientation="Vertical" />
-                    </CollectionView.ItemsLayout>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Frame>
-                                <HorizontalStackLayout>
-                                    <VerticalStackLayout>
-                                        <Label Text="{Binding Name}"/>
-                                        <Label Text="{Binding Value}"/>
-                                    </VerticalStackLayout>
-                                    <ImageButton HorizontalOptions="End" HeightRequest="20" x:Name="ibtnEditSensor" Clicked="ibtnEditSensor_Clicked" Source="edit.png" IsVisible="{Binding Editable}"/>
-                                </HorizontalStackLayout>
-                            </Frame>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </VerticalStackLayout>
-        </Frame>
-        <Frame x:Name="controlFrame">
-            <VerticalStackLayout>
-                <CollectionView x:Name="Actuators">
-                    <CollectionView.ItemsLayout>
-                        <LinearItemsLayout Orientation="Vertical" />
-                    </CollectionView.ItemsLayout>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
+    <ScrollView>
+        <VerticalStackLayout Margin="10">
+            <HorizontalStackLayout Margin="0,0,0,20">
+                <Label Text="custodya" FontAttributes="Bold" FontSize="Large" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
+                <ImageButton  Source="user.png" HeightRequest="40" Margin="230,0,0,0" x:Name="ibtnAccount" Clicked="ibtnAccount_Clicked"/>
+            </HorizontalStackLayout>
+            <Frame Margin="0,0,0,10">
+                <VerticalStackLayout>
+                    <Label Text="Sensors"/>
+                    <Frame>
+                        <VerticalStackLayout>
                             <HorizontalStackLayout>
-                                <Label Text="{Binding Name}"/>
-                                <Switch x:Name="toggleState" Toggled="toggleState_Toggled" IsToggled="{Binding State}"/>
+                                <VerticalStackLayout>
+                                    <Label Text="Humidity"/>
+                                    <Label Text="{Binding LatestItem.Humidity}"/>
+                                </VerticalStackLayout>                                
                             </HorizontalStackLayout>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </VerticalStackLayout>
-        </Frame>
-    </VerticalStackLayout>
+                            <Frame HeightRequest="250">
+                                <charts:CartesianChart x:Name="HumidityChart" ZoomMode="Both"/>
+                            </Frame>
+                        </VerticalStackLayout>
+                    </Frame>
+                    <Frame>
+                        <VerticalStackLayout>
+                            <HorizontalStackLayout>
+                                <VerticalStackLayout>
+                                    <Label Text="Temperature"/>
+                                    <Label Text="{Binding LatestItem.Temperature}"/>
+                                </VerticalStackLayout>
+                            </HorizontalStackLayout>
+                            <Frame HeightRequest="250">
+                                <charts:CartesianChart x:Name="TemperatureChart" ZoomMode="Both"/>
+                            </Frame>
+                        </VerticalStackLayout>
+                    </Frame>
+                    <Frame>
+                        <VerticalStackLayout>
+                            <HorizontalStackLayout>
+                                <VerticalStackLayout>
+                                    <Label Text="Water"/>
+                                    <Label Text="{Binding LatestItem.Water}"/>
+                                </VerticalStackLayout>
+                            </HorizontalStackLayout>
+                            <Frame HeightRequest="250">
+                                <charts:CartesianChart x:Name="WaterChart" ZoomMode="Both"/>
+                            </Frame>
+                        </VerticalStackLayout>
+                    </Frame>
+                    <Frame>
+                        <VerticalStackLayout>
+                            <HorizontalStackLayout>
+                                <VerticalStackLayout>
+                                    <Label Text="Moisture"/>
+                                    <Label Text="{Binding LatestItem.Moisture}"/>
+                                </VerticalStackLayout>
+                            </HorizontalStackLayout>
+                            <Frame HeightRequest="250">
+                                <charts:CartesianChart x:Name="MoistureChart" ZoomMode="Both"/>
+                            </Frame>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                </VerticalStackLayout>
+            </Frame>
+            <Frame x:Name="controlFrame">
+                <VerticalStackLayout>
+                    <Label Text="Actuators"/>
+                    <HorizontalStackLayout>
+                        <Label Text="Led"/>
+                        <Switch x:Name="toggleLedState" Toggled="toggleLedState_Toggled"  IsToggled="{Binding LatestItem.Led}"/>
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout>
+                        <Label Text="Fan"/>
+                        <Switch x:Name="toggleFanState" Toggled="toggleFanState_Toggled"  IsToggled="{Binding LatestItem.Fan}"/>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>
