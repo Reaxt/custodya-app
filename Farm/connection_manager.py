@@ -44,7 +44,8 @@ class ConnectionManager:
             self._report_sleep = data[ConnectionManager.REPORT_RATE_KEY]
         for handler in self._twin_handlers:
             print(f"serving {handler}")
-            handler.handle_desired(data)    
+            handler.handle_desired(data)
+        await self.report_twin() #if we JUST changed something, we should update our report.
     async def report_loop(self):
         #does this need a cancellation token?
         while True:
@@ -55,7 +56,13 @@ class ConnectionManager:
             for subscriber in self._twin_handlers:
                 report = subscriber.generate_report(report)
             await self.client.patch_twin_reported_properties(report)
-
+    async def report_twin(self):
+        report = {
+            ConnectionManager.REPORT_RATE_KEY: self._report_sleep
+        }
+        for subscriber in self._twin_handlers:
+            report = subscriber.generate_report(report)
+        await self.client.patch_twin_reported_properties(report)
     def add_twin_handler(self, handler: ITwinSubscriber):
         """Adds a callable to be ran when we receive twin updates.
 
