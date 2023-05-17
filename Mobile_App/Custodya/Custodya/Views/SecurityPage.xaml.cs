@@ -8,6 +8,8 @@ using Microsoft.Azure.Devices.Shared;
 using Microsoft.Azure.Devices;
 using Newtonsoft.Json;
 using Firebase.Auth;
+using System.ComponentModel;
+using Plugin.LocalNotification;
 
 namespace Custodya;
 
@@ -41,7 +43,7 @@ public partial class SecurityPage : ContentPage
                     {
                         if (propertyInfo.PropertyType == typeof(float))
                         {
-                            _sensors.Add(new()
+                            Sensor newSensor = new()
                             {
                                 Name = propertyInfo.Name,
                                 Min = 0,
@@ -50,7 +52,9 @@ public partial class SecurityPage : ContentPage
                                 State = (float)propertyInfo.GetValue(DataRepoProvider.SecurityDatabase.LatestItem, null) < 100
                                 || (float)propertyInfo.GetValue(DataRepoProvider.SecurityDatabase.LatestItem, null) > 0
                                 ? Sensor.SensorState.Valid : Sensor.SensorState.Error
-                            });
+                            };
+                            newSensor.PropertyChanged += OnSensorChanged;
+                            _sensors.Add(newSensor);
                         }
                         else
                         {
@@ -101,7 +105,36 @@ public partial class SecurityPage : ContentPage
         Sensors.ItemsSource = _sensors;
         Actuators.ItemsSource = _actuators;
     }
-
+    private void OnSensorChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == "Value")
+        {
+            Sensor changedSensor = (Sensor)sender;
+            if (changedSensor.Value > changedSensor.Max)
+            {
+                var request = new NotificationRequest
+                {
+                    NotificationId = 1000,
+                    Title = changedSensor.Name + "Sensor passed its max",
+                    Subtitle = "Sensor passed its max",
+                    Description = "The Sensor has reached its max value",
+                    BadgeNumber = 42,
+                    Schedule = new NotificationRequestSchedule
+                    {
+                        NotifyTime = DateTime.Now.AddSeconds(5),
+                        NotifyRepeatInterval = TimeSpan.FromDays(1)
+                    }
+                };
+                LocalNotificationCenter.Current.Show(request);
+                Console.WriteLine($"Sensor '{changedSensor.Name}' has exceeded its maximum value of '{changedSensor.Max}'");
+            }
+            else if (changedSensor.Value < changedSensor.Min)
+            {
+                // create notification for exceeding min value
+                Console.WriteLine($"Sensor '{changedSensor.Name}' has fallen below its minimum value of '{changedSensor.Min}'");
+            }
+        }
+    }
     private async void ibtnEditSensor_Clicked(object sender, EventArgs e)
     {
         try
