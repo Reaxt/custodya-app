@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using Custodya.Repos;
 using System.Reflection;
 using Microsoft.Azure.Devices;
+using Firebase.Auth;
 
 namespace Custodya;
 
@@ -111,10 +112,16 @@ public partial class PlantsPage : ContentPage
 
     private async void toggleState_Toggled(object sender, ToggledEventArgs e)
     {
-        Actuator test = sender as Actuator;
-        foreach (var actuator in _actuators)
+        try
         {
-            await App.DeviceTwinService.ApplyChanges(actuator);
+            foreach (var actuator in _actuators)
+            {
+                await App.DeviceTwinService.ApplyChanges(actuator);
+            }
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Alert", $"Error: Cannot connect to the Iot Hub please check connection", "Ok");
         }
     }
 

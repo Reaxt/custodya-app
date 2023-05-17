@@ -138,10 +138,16 @@ public partial class SecurityPage : ContentPage
 
     private async void toggleState_Toggled(object sender, ToggledEventArgs e)
     {
-        Actuator test = sender as Actuator;
-        foreach (var actuator in _actuators)
+        try
         {
-            await App.DeviceTwinService.ApplyChanges(actuator);
+            foreach (var actuator in _actuators)
+            {
+                await App.DeviceTwinService.ApplyChanges(actuator);
+            }
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Alert", $"Error: Cannot connect to the Iot Hub please check connection", "Ok");
         }
     }
 
