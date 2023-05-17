@@ -7,6 +7,7 @@ using Microsoft.Azure.Devices.Client;
 using Microsoft.Azure.Devices.Shared;
 using Microsoft.Azure.Devices;
 using Newtonsoft.Json;
+using Custodya.Services;
 
 namespace Custodya;
 
@@ -76,15 +77,6 @@ public partial class SecurityPage : ContentPage
                             
                         }
                     }
-                    else if (Actuator.SecurityActuators.Contains(propertyInfo.Name) && !_actuators.Any(a => a.Name == propertyInfo.Name))
-                    {
-                        _actuators.Add(new()
-                        {
-                            Name = propertyInfo.Name,
-                            State = (SecurityModel.DoorState)propertyInfo.GetValue(DataRepoProvider.SecurityDatabase.LatestItem, null) == SecurityModel.DoorState.Open
-                        });
-                    }
-
                 }
                 catch (Exception ex) 
                 {
@@ -100,7 +92,26 @@ public partial class SecurityPage : ContentPage
         Sensors.ItemsSource = _sensors;
         Actuators.ItemsSource = _actuators;
     }
-
+    protected override async void OnAppearing()
+    {
+        UpdateActuators();
+    }
+    private async void UpdateActuators()
+    {
+        var actuators = await App.DeviceTwinService.GetActuators(Actuator.SecurityActuators);
+        foreach (var actuator in actuators)
+        {
+            if (_actuators.Any(x => x.Name == actuator.Name))
+            {
+                int index = _actuators.IndexOf(_actuators.First(x => x.Name == actuator.Name));
+                _actuators[index] = actuator;
+            }
+            else
+            {
+                _actuators.Add(actuator);
+            }
+        }
+    }
     private async void ibtnEditSensor_Clicked(object sender, EventArgs e)
     {
         try
@@ -127,25 +138,17 @@ public partial class SecurityPage : ContentPage
 
     private async void toggleState_Toggled(object sender, ToggledEventArgs e)
     {
-
-        var twin = await registryManager.GetTwinAsync(App.Settings.DeviceId);
-        Switch switchToggle = (Switch)sender;
-
-
-        var patch =
-                $@"{{
-                    properties: {{
-                        desired: {{
-                            actuatorControl: {{
-                                DoorLock:{{
-                                    manualState : {switchToggle.IsToggled.ToString().ToLower()}
-                                }}
-                            }}
-                        }}
-                    }}
-                }}";
-        
-        await registryManager.UpdateTwinAsync(twin.DeviceId, patch, twin.ETag);
+        try
+        {
+            foreach (var actuator in _actuators)
+            {
+                await App.DeviceTwinService.ApplyChanges(actuator);
+            }
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Alert", $"Error: Cannot connect to the Iot Hub please check connection", "Ok");
+        }
     }
 
 
