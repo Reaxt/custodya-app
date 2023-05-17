@@ -57,10 +57,6 @@ public partial class PlantsPage : ContentPage
                 }
             }
         }
-        catch (FirebaseAuthException ex)
-        {
-            DisplayAlert("Alert", $"Exception occured during Firebase Http request\nUrl: {ex.HelpLink}\nRequest Data:{ex.Source}\nResponse:{ex.Message}\nReason:{ex.Reason}", "Ok");
-        }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
@@ -87,10 +83,6 @@ public partial class PlantsPage : ContentPage
                 s.Max = double.Parse(await DisplayPromptAsync("Max", $"Please input a maximum value above the current min: {s.Min}", "Ok", "Cancel", null, 10, Keyboard.Numeric));
             }
             while (s.Max <= s.Min);
-        }
-        catch (FirebaseAuthException ex)
-        {
-            await DisplayAlert("Alert", $"Exception occured during Firebase Http request\nUrl: {ex.HelpLink}\nRequest Data:{ex.Source}\nResponse:{ex.Message}\nReason:{ex.Reason}", "Ok");
         }
         catch (Exception ex)
         {
@@ -125,10 +117,7 @@ public partial class PlantsPage : ContentPage
 
             await registryManager.UpdateTwinAsync(twin.DeviceId, patch, twin.ETag);
         }
-        catch (FirebaseAuthException ex)
-        {
-            await DisplayAlert("Alert", $"Exception occured during Firebase Http request\nUrl: {ex.HelpLink}\nRequest Data:{ex.Source}\nResponse:{ex.Message}\nReason:{ex.Reason}", "Ok");
-        }
+
         catch (Exception ex)
         {
             await DisplayAlert("Alert", $"Error: Cannot connect to the Iot Hub please check connection", "Ok");

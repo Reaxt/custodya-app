@@ -87,10 +87,6 @@ public partial class SecurityPage : ContentPage
                     }
 
                 }
-                catch (FirebaseAuthException ex)
-                {
-                    DisplayAlert("Alert", $"Exception occured during Firebase Http request\nUrl: {ex.HelpLink}\nRequest Data:{ex.Source}\nResponse:{ex.Message}\nReason:{ex.Reason}", "Ok");
-                }
                 catch (Exception ex) 
                 {
                     Console.WriteLine(ex.Message);
@@ -124,10 +120,6 @@ public partial class SecurityPage : ContentPage
             }
             while (s.Max <= s.Min);
         }
-        catch (FirebaseAuthException ex)
-        {
-            await DisplayAlert("Alert", $"Exception occured during Firebase Http request\nUrl: {ex.HelpLink}\nRequest Data:{ex.Source}\nResponse:{ex.Message}\nReason:{ex.Reason}", "Ok");
-        }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
@@ -156,10 +148,6 @@ public partial class SecurityPage : ContentPage
                 }}";
 
             await registryManager.UpdateTwinAsync(twin.DeviceId, patch, twin.ETag);
-        }
-        catch (FirebaseAuthException ex)
-        {
-           await DisplayAlert("Alert", $"Exception occured during Firebase Http request\nUrl: {ex.HelpLink}\nRequest Data:{ex.Source}\nResponse:{ex.Message}\nReason:{ex.Reason}", "Ok");
         }
         catch (Exception ex)
         {
