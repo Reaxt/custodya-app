@@ -128,6 +128,26 @@ public partial class SecurityPage : ContentPage
             }
         }
     }
+    protected override async void OnAppearing()
+    {
+        UpdateActuators();
+    }
+    private async void UpdateActuators()
+    {
+        var actuators = await App.DeviceTwinService.GetActuators(Actuator.SecurityActuators);
+        foreach (var actuator in actuators)
+        {
+            if (_actuators.Any(x => x.Name == actuator.Name))
+            {
+                int index = _actuators.IndexOf(_actuators.First(x => x.Name == actuator.Name));
+                _actuators[index] = actuator;
+            }
+            else
+            {
+                _actuators.Add(actuator);
+            }
+        }
+    }
     private async void ibtnEditSensor_Clicked(object sender, EventArgs e)
     {
         try
