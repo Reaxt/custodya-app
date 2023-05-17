@@ -17,14 +17,14 @@ class TemperatureSensor(ISensor):
         self,
         gpio: int,
         model: str = MODEL_NAME,
-        type: AReading.Type = AReading.Type.TEMPERATURE,
+        type: AReading.ReadingType = AReading.ReadingType.TEMPERATURE,
     ):
         self._sensor = GroveTemperatureHumidityAHT20(gpio, BUS)
 
     def read_sensor(self) -> list[AReading]:
         temp, hum = self._sensor.read()
         res = AReading(
-            AReading.Type.TEMPERATURE,
+            AReading.ReadingType.TEMPERATURE,
             AReading.Unit.CELCIUS,
             float("{0:.2f}".format(temp)),
         )

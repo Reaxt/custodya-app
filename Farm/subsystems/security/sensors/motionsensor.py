@@ -9,10 +9,10 @@ from InterFaces.sensors import ISensor, AReading
 MODEL_NAME = "PIR Motion Sensor"
 
 class MotionSensor(ISensor):
-    def __init__(self, gpio: int , model: str = MODEL_NAME, type: AReading.Type = AReading.Type.MOTION):
+    def __init__(self, gpio: int , model: str = MODEL_NAME, type: AReading.ReadingType = AReading.ReadingType.MOTION):
         self._sensor = DigitalInputDevice(12)
     def read_sensor(self) -> list[AReading]:
-        res = AReading(AReading.Type.MOTION, AReading.Unit.BOOLEAN, True if (self._sensor.value == 1) else False)
+        res = AReading(AReading.ReadingType.MOTION, AReading.Unit.BOOLEAN, True if (self._sensor.value == 1) else False)
         return [res]
         
 

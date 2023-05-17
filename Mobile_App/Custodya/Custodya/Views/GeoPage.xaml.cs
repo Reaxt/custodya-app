@@ -52,14 +52,6 @@ public partial class GeoPage : ContentPage
                             });
                         }
                     }
-                    else if (Actuator.GeoActuators.Contains(propertyInfo.Name) && !_actuators.Any(a => a.Name == propertyInfo.Name))
-                    {
-                        _actuators.Add(new()
-                        {
-                            Name = propertyInfo.Name,
-                            State = (bool)propertyInfo.GetValue(DataRepoProvider.GeolocationDatabase.LatestItem, null)
-                        });
-                    }
                 }
                 catch (Exception ex)
                 {
@@ -74,6 +66,26 @@ public partial class GeoPage : ContentPage
 
         Sensors.ItemsSource = _sensors;
         Actuators.ItemsSource = _actuators;
+    }
+    protected override async void OnAppearing()
+    {
+        UpdateActuators();
+    }
+    private async void UpdateActuators()
+    {
+        var actuators = await App.DeviceTwinService.GetActuators(Actuator.GeoActuators);
+        foreach (var actuator in actuators)
+        {
+            if (_actuators.Any(x => x.Name == actuator.Name))
+            {
+                int index = _actuators.IndexOf(_actuators.First(x => x.Name == actuator.Name));
+                _actuators[index] = actuator;
+            }
+            else
+            {
+                _actuators.Add(actuator);
+            }
+        }
     }
     private async void ibtnEditSensor_Clicked(object sender, EventArgs e)
     {
@@ -103,25 +115,10 @@ public partial class GeoPage : ContentPage
     {
         try
         {
-            var twin = await registryManager.GetTwinAsync(App.Settings.DeviceId);
-            Switch switchToggle = (Switch)sender;
-
-
-            var patch =
-                    $@"{{
-                        properties: {{
-                            desired: {{
-                                actuatorControl: {{
-                                    Buzzer:{{
-                                        manualState : {switchToggle.IsToggled}
-                                    }}
-                                }}
-                            }}
-                        }}
-                    }}
-            ";
-
-            await registryManager.UpdateTwinAsync(twin.DeviceId, patch, twin.ETag);
+            foreach (var actuator in _actuators)
+            {
+                await App.DeviceTwinService.ApplyChanges(actuator);
+            }
         }
         catch (Exception ex)
         {

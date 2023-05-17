@@ -15,14 +15,14 @@ class MoistureSensor(ISensor):
         self,
         gpio: int = 0,
         model: str = MODEL_NAME,
-        type: AReading.Type = AReading.Type.MOISTURE,
+        type: AReading.ReadingType = AReading.ReadingType.MOISTURE,
     ):
         self.sensor = ADC(address=0x04)
         self.channel = gpio
 
     def read_sensor(self) -> list[AReading]:
         moisture = AReading(
-            AReading.Type.MOISTURE,
+            AReading.ReadingType.MOISTURE,
             AReading.Unit.MOISTURE,
             self.sensor.read(self.channel),
         )

@@ -6,13 +6,13 @@ import sys
 sys.path.append("..")
 from InterFaces.actuators import IActuator, ACommand
 
-OPEN_COMMAND = "True"
-CLOSE_COMMAND = "False"
-TARGET = "buzzer"
+OPEN_COMMAND = True
+CLOSE_COMMAND = False
+TARGET = "Buzzer"
 class Buzzer(IActuator):
     def __init__(self):
         self.buzzer = rt.buzzer
-        self._current_state = {"value": "FALSE"}
+        self._current_state = {"value": CLOSE_COMMAND}
     
     def validate_command(self, command: ACommand) -> bool:
         if command.target_type != TARGET:
@@ -33,7 +33,7 @@ class Buzzer(IActuator):
     def get_current_state(self) -> Any:
         return True if self._current_state["value"] == OPEN_COMMAND else False
     def get_actuator_name(self) -> str:
-        return "Buzzer"
+        return TARGET
 
 def main():
     buzzer = Buzzer()

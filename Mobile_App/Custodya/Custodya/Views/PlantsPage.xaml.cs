@@ -42,6 +42,7 @@ public partial class PlantsPage : ContentPage
                             });
                         }
                     }
+                    /*
                     else if (Actuator.PlantActuators.Contains(propertyInfo.Name) && !_actuators.Any(a => a.Name == propertyInfo.Name))
                     {
                         _actuators.Add(new()
@@ -49,7 +50,7 @@ public partial class PlantsPage : ContentPage
                             Name = propertyInfo.Name,
                             State = (bool)propertyInfo.GetValue(DataRepoProvider.PlantsDatabase.LatestItem, null)
                         });
-                    }
+                    } */
                 }
                 catch (Exception ex)
                 {
@@ -66,6 +67,25 @@ public partial class PlantsPage : ContentPage
         Actuators.ItemsSource = _actuators;
     }
 
+    protected override async void OnAppearing()
+    {
+        UpdateActuators();
+    }
+    private async void UpdateActuators()
+    {
+        var actuators = await App.DeviceTwinService.GetActuators(Actuator.PlantActuators);
+        foreach (var actuator in actuators)
+        {
+            if(_actuators.Any(x=>x.Name==actuator.Name))
+            {
+                int index = _actuators.IndexOf(_actuators.First(x => x.Name == actuator.Name));
+                _actuators[index] = actuator;
+            } else
+            {
+                _actuators.Add(actuator);
+            }
+        }
+    }
     private async void ibtnEditSensor_Clicked(object sender, EventArgs e)
     {
         try
@@ -94,36 +114,15 @@ public partial class PlantsPage : ContentPage
     {
         try
         {
-            var twin = await registryManager.GetTwinAsync(App.Settings.DeviceId);
-            Switch switchToggle = (Switch)sender;
-
-
-            var patch =
-                    $@"{{
-                        properties: {{
-                            desired: {{
-                                actuatorControl: {{
-                                    Fan:{{
-                                        manualState : {switchToggle.IsToggled.ToString().ToLower()}
-                                    }},
-                                    Led:{{
-                                        manualState : {switchToggle.IsToggled.ToString().ToLower()}
-                                    }}
-                                }}
-                            }}
-                        }}
-                    }}
-            ";
-
-            await registryManager.UpdateTwinAsync(twin.DeviceId, patch, twin.ETag);
+            foreach (var actuator in _actuators)
+            {
+                await App.DeviceTwinService.ApplyChanges(actuator);
+            }
         }
-
         catch (Exception ex)
         {
             await DisplayAlert("Alert", $"Error: Cannot connect to the Iot Hub please check connection", "Ok");
-
         }
-
     }
 
 

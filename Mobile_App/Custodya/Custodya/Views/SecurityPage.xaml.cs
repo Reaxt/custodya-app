@@ -10,6 +10,8 @@ using Newtonsoft.Json;
 using Firebase.Auth;
 using System.ComponentModel;
 using Plugin.LocalNotification;
+using Custodya.Services;
+
 
 namespace Custodya;
 
@@ -81,15 +83,6 @@ public partial class SecurityPage : ContentPage
                             
                         }
                     }
-                    else if (Actuator.SecurityActuators.Contains(propertyInfo.Name) && !_actuators.Any(a => a.Name == propertyInfo.Name))
-                    {
-                        _actuators.Add(new()
-                        {
-                            Name = propertyInfo.Name,
-                            State = (SecurityModel.DoorState)propertyInfo.GetValue(DataRepoProvider.SecurityDatabase.LatestItem, null) == SecurityModel.DoorState.Open
-                        });
-                    }
-
                 }
                 catch (Exception ex) 
                 {
@@ -163,24 +156,10 @@ public partial class SecurityPage : ContentPage
     {
         try
         {
-            var twin = await registryManager.GetTwinAsync(App.Settings.DeviceId);
-            Switch switchToggle = (Switch)sender;
-
-
-            var patch =
-                    $@"{{
-                    properties: {{
-                        desired: {{
-                            actuatorControl: {{
-                                DoorLock:{{
-                                    manualState : {switchToggle.IsToggled.ToString().ToLower()}
-                                }}
-                            }}
-                        }}
-                    }}
-                }}";
-
-            await registryManager.UpdateTwinAsync(twin.DeviceId, patch, twin.ETag);
+            foreach (var actuator in _actuators)
+            {
+                await App.DeviceTwinService.ApplyChanges(actuator);
+            }
         }
         catch (Exception ex)
         {

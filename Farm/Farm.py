@@ -30,6 +30,13 @@ class Farm:
         for subsystem in self._subsystems:
             state[subsystem.get_name()] = subsystem.serialize_state()
         return state
+    def get_actuator_states(self) -> dict[str, Any]:
+        state: dict[str, Any] = dict()
+        for subsystem in self._subsystems:
+            sys_actuators = subsystem.get_actuator_states()
+            for item in sys_actuators:
+                state[item] = sys_actuators[item]
+        return state
     def run_command(self, command:ACommand) -> bool:
         res:bool = False
         for subsystem in self._subsystems:
