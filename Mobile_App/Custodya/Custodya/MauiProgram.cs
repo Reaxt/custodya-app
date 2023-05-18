@@ -52,6 +52,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<IGenericDatabase<SecurityModel>>(x => x.GetService<IGenericRealtimeDatabase<SecurityModel>>());
         builder.Services.AddSingleton<IGenericDatabase<SecurityModel>>(x => x.GetService<IGenericRealtimeDatabase<SecurityModel>>());
         builder.Services.AddSingleton<EventHubService>();
+        builder.Services.AddSingleton<DeviceTwinService>();
         /*builder.Services.AddSingleton<TelemetryJsonParser<GeoLocationModel>>();
         builder.Services.AddSingleton<TelemetryDatabaseUpdaterService<GeoLocationModel>>();
         builder.Services.AddSingleton<TelemetryJsonParser<SecurityModel>>();

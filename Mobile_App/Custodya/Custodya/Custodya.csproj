@@ -71,10 +71,15 @@
 
 	<ItemGroup>
 	  <Folder Include="Files\" />
-	  <Folder Include="ViewModels\" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="ControlTemplates\ActuatorControlView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="ControlTemplates\ActuatorRuleEntry.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\GeoPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

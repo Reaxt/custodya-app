@@ -1,5 +1,6 @@
 using Custodya.Models;
 using Custodya.Repos;
+using Firebase.Auth;
 using Microsoft.Azure.Devices;
 using Microsoft.Maui.Controls;
 using System.Collections.ObjectModel;
@@ -21,29 +22,40 @@ public partial class GeoPage : ContentPage
         InitializeComponent();
         this.BindingContext = DataRepoProvider.GeolocationDatabase;
         registryManager = RegistryManager.CreateFromConnectionString(App.Settings.EventHubConnectionString);
+        Sensors.ItemsSource = _sensors;
+        Actuators.ItemsSource = _actuators;
     }
-
-    private async void toggleState_Toggled(object sender, ToggledEventArgs e)
+    protected override async void OnAppearing()
     {
-        var twin = await registryManager.GetTwinAsync(App.Settings.DeviceId);
-        Switch switchToggle = (Switch)sender;
-
-        var patch =
-        $@"{{
-            properties: {{
-                desired: {{
-                    actuatorControl: {{
-                        Buzzer:{{
-                            manualState : {switchToggle.IsToggled}
-                        }}
-                    }}
-                }}
-            }}
-        }}
-        ";
-
-        await registryManager.UpdateTwinAsync(twin.DeviceId, patch, twin.ETag);
+        Actuators.ItemsSource = App.DeviceTwinService.GeoActuators;
+        await App.DeviceTwinService.UpdateActuators();
     }
+
+    private async void ibtnEditSensor_Clicked(object sender, EventArgs e)
+    {
+        try
+        {
+            ImageButton btn = (ImageButton)sender;
+            Sensor s = (Sensor)btn.BindingContext;
+            do
+            {
+                s.Min = double.Parse(await DisplayPromptAsync("Min", $"Please input a minimum value below the current max: {s.Max}", "Ok", "Cancel", null, 10, Keyboard.Numeric));
+            }
+            while (s.Min >= s.Max);
+
+            do
+            {
+                s.Max = double.Parse(await DisplayPromptAsync("Max", $"Please input a maximum value above the current min: {s.Min}", "Ok", "Cancel", null, 10, Keyboard.Numeric));
+            }
+            while (s.Max <= s.Min);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+
 
     private async void ibtnAccount_Clicked(object sender, EventArgs e)
     {

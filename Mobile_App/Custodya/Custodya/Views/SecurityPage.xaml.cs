@@ -7,6 +7,7 @@ using Microsoft.Azure.Devices.Client;
 using Microsoft.Azure.Devices.Shared;
 using Microsoft.Azure.Devices;
 using Newtonsoft.Json;
+using Custodya.Services;
 using LiveChartsCore;
 
 namespace Custodya;
@@ -33,34 +34,41 @@ public partial class SecurityPage : ContentPage
         }
         Chart.Series = ChartRepo<SecurityModel>.GetSeries(DataRepoProvider.SecurityDatabase.Items, "Loudness");
     }
-
-    private async void toggleState_Toggled(object sender, ToggledEventArgs e)
+    
+    protected override async void OnAppearing()
     {
-
-        var twin = await registryManager.GetTwinAsync(App.Settings.DeviceId);
-        Switch switchToggle = (Switch)sender;
-
-
-        var patch =
-        $@"{{
-            properties: {{
-                desired: {{
-                    actuatorControl: {{
-                        DoorLock:{{
-                            manualState : {switchToggle.IsToggled.ToString().ToLower()}
-                        }}
-                    }}
-                }}
-            }}
-        }}";
-        
-        await registryManager.UpdateTwinAsync(twin.DeviceId, patch, twin.ETag);
+        Actuators.ItemsSource = App.DeviceTwinService.SecurityActuators;
+        await App.DeviceTwinService.UpdateActuators();
     }
+
+
 
 
     private async void ibtnAccount_Clicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync($"..//User/Account");
     }
+    private async void ibtnEditSensor_Clicked(object sender, EventArgs e)
+    {
+        try
+        {
+            ImageButton btn = (ImageButton)sender;
+            Sensor s = (Sensor)btn.BindingContext;
+            do
+            {
+                s.Min = double.Parse(await DisplayPromptAsync("Min", $"Please input a minimum value below the current max: {s.Max}", "Ok", "Cancel", null, 10, Keyboard.Numeric));
+            }
+            while (s.Min >= s.Max);
 
+            do
+            {
+                s.Max = double.Parse(await DisplayPromptAsync("Max", $"Please input a maximum value above the current min: {s.Min}", "Ok", "Cancel", null, 10, Keyboard.Numeric));
+            }
+            while (s.Max <= s.Min);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
 }

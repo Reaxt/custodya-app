@@ -20,7 +20,7 @@ namespace Custodya.Services
     /// This has a probability of getting VERY EXPENSIVE with lots of data!
     /// </remarks>
     /// <typeparam name="T">The item for the database</typeparam>
-    public class FirebaseRealtimeDatabaseService<T> : IGenericRealtimeDatabase<T> where T : class, IHasUKey, ISubsystemState
+    public class FirebaseRealtimeDatabaseService<T> : INotifyPropertyChanged, IGenericRealtimeDatabase<T> where T : class, IHasUKey, ISubsystemState
     {
         private readonly RealtimeDatabase<T> _realtimeDb;
         private string _dbKey;

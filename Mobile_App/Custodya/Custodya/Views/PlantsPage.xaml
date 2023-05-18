@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"             
              xmlns:charts="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
+             xmlns:templates="clr-namespace:Custodya.ControlTemplates"
              x:Class="Custodya.PlantsPage"
              Title="Plants">
     <ScrollView>
@@ -70,15 +71,16 @@
             </Frame>
             <Frame x:Name="controlFrame">
                 <VerticalStackLayout>
-                    <Label Text="Actuators"/>
-                    <HorizontalStackLayout>
-                        <Label Text="Led"/>
-                        <Switch x:Name="toggleLedState" Toggled="toggleLedState_Toggled"  IsToggled="{Binding LatestItem.Led}"/>
-                    </HorizontalStackLayout>
-                    <HorizontalStackLayout>
-                        <Label Text="Fan"/>
-                        <Switch x:Name="toggleFanState" Toggled="toggleFanState_Toggled"  IsToggled="{Binding LatestItem.Fan}"/>
-                    </HorizontalStackLayout>
+                    <CollectionView x:Name="Actuators">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <templates:ActuatorControlView/>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
                 </VerticalStackLayout>
             </Frame>
         </VerticalStackLayout>
