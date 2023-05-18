@@ -43,7 +43,7 @@
                             </VerticalStackLayout>
                         </HorizontalStackLayout>
                         <Frame HeightRequest="250">
-                            <charts:CartesianChart x:Name="Chart" Series="{Binding Series}" ZoomMode="Both"/>
+                            <charts:CartesianChart x:Name="Chart" Series="{Binding Series}" ZoomMode="None"/>
                         </Frame>
                     </VerticalStackLayout>
                 </Frame>
