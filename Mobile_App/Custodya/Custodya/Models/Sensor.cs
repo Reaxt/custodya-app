@@ -5,19 +5,22 @@ using LiveChartsCore.SkiaSharpView;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Custodya.Models
 {
 
-    public class Sensor
+    public class Sensor : INotifyPropertyChanged
     {
         public static string[] SecuritySensors = new[] { "Motion", "Loudness", "Door" };        
         public static string[] PlantSensors = new[] { "Temperature", "Moisture", "Humidity", "Water" };        
         public static string[] GeoSensors = new[] { "CoordinatesString", "HeadingString", "InTransport"};
         public enum SensorState { Valid, Error }
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public string Name { get; set; }
         public double Min { get; set; }
@@ -26,5 +29,11 @@ namespace Custodya.Models
         public bool Editable { get; set; } = true;
         public SensorState State { get; set; }
         public ObservableCollection<ISeries> Series { get; set; }
+
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
     }
 }

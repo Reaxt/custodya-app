@@ -7,8 +7,12 @@ using Microsoft.Azure.Devices.Client;
 using Microsoft.Azure.Devices.Shared;
 using Microsoft.Azure.Devices;
 using Newtonsoft.Json;
+using Firebase.Auth;
+using System.ComponentModel;
+using Plugin.LocalNotification;
 using Custodya.Services;
 using LiveChartsCore;
+
 
 namespace Custodya;
 
@@ -35,6 +39,36 @@ public partial class SecurityPage : ContentPage
         Chart.Series = ChartRepo<SecurityModel>.GetSeries(DataRepoProvider.SecurityDatabase.Items, "Loudness");
     }
     
+    private void OnSensorChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == "Value")
+        {
+            Sensor changedSensor = (Sensor)sender;
+            if (changedSensor.Value > changedSensor.Max)
+            {
+                var request = new NotificationRequest
+                {
+                    NotificationId = 1000,
+                    Title = changedSensor.Name + "Sensor passed its max",
+                    Subtitle = "Sensor passed its max",
+                    Description = "The Sensor has reached its max value",
+                    BadgeNumber = 42,
+                    Schedule = new NotificationRequestSchedule
+                    {
+                        NotifyTime = DateTime.Now.AddSeconds(5),
+                        NotifyRepeatInterval = TimeSpan.FromDays(1)
+                    }
+                };
+                LocalNotificationCenter.Current.Show(request);
+                Console.WriteLine($"Sensor '{changedSensor.Name}' has exceeded its maximum value of '{changedSensor.Max}'");
+            }
+            else if (changedSensor.Value < changedSensor.Min)
+            {
+                // create notification for exceeding min value
+                Console.WriteLine($"Sensor '{changedSensor.Name}' has fallen below its minimum value of '{changedSensor.Min}'");
+            }
+        }
+    }
     protected override async void OnAppearing()
     {
         Actuators.ItemsSource = App.DeviceTwinService.SecurityActuators;
