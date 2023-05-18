@@ -27,12 +27,10 @@ public partial class PlantsPage : ContentPage
         registryManager = RegistryManager.CreateFromConnectionString(App.Settings.EventHubConnectionString);
         InitializeComponent();
         this.BindingContext = DataRepoProvider.PlantsDatabase;
-<<<<<<< Updated upstream
         HumidityChart.Series = ChartRepo<PlantsModel>.GetSeries(DataRepoProvider.PlantsDatabase.Items, "Humidity");
         TemperatureChart.Series = ChartRepo<PlantsModel>.GetSeries(DataRepoProvider.PlantsDatabase.Items, "Temperature");
         WaterChart.Series = ChartRepo<PlantsModel>.GetSeries(DataRepoProvider.PlantsDatabase.Items, "Water");
         MoistureChart.Series = ChartRepo<PlantsModel>.GetSeries(DataRepoProvider.PlantsDatabase.Items, "Moisture");
-=======
         HumidityChart.Series = _humidityChartRepo.DataSeries;
         TemperatureChart.Series = _temperatureChartRepo.DataSeries;
         WaterChart.Series = _waterChartRepo.DataSeries;
