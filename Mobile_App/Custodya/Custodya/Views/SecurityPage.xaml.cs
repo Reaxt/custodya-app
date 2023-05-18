@@ -8,6 +8,7 @@ using Microsoft.Azure.Devices.Shared;
 using Microsoft.Azure.Devices;
 using Newtonsoft.Json;
 using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
 
 namespace Custodya;
 
@@ -31,7 +32,13 @@ public partial class SecurityPage : ContentPage
         {
             controlFrame.IsVisible = false;
         }
+<<<<<<< Updated upstream
         Chart.Series = ChartRepo<SecurityModel>.GetSeries(DataRepoProvider.SecurityDatabase.Items, "Loudness");
+=======
+        Chart.Series = _loudnessChart.DataSeries;
+        Chart.XAxes = new List<Axis> { new Axis { Labeler = (value) => new DateTime((long)value).ToString("ddd H:mm"), MinStep = TimeSpan.FromMinutes(2).Ticks, TextSize=25 } };
+        Chart.YAxes = new List<Axis> { new Axis { TextSize=25 } };
+>>>>>>> Stashed changes
     }
 
     private async void toggleState_Toggled(object sender, ToggledEventArgs e)
@@ -60,7 +67,7 @@ public partial class SecurityPage : ContentPage
 
     private async void ibtnAccount_Clicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync($"..//User/Account");
+        await Shell.Current.GoToAsync($"//{Shell.Current.CurrentItem.Route}Account");
     }
 
 }

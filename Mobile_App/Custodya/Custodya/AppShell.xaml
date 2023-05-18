@@ -24,7 +24,7 @@
         <Tab Title="Account" Icon="user.png">
             <ShellContent                
                 ContentTemplate="{DataTemplate local:AccountPage}"
-                Route="Account" 
+                Route="UserAccount" 
                 />
         </Tab>
     </TabBar>
@@ -44,7 +44,7 @@
         <Tab Title="Account" Icon="user.png">
             <ShellContent                
                 ContentTemplate="{DataTemplate local:AccountPage}"
-                Route="Account" 
+                Route="OwnerAccount" 
                 />
         </Tab>
     </TabBar>

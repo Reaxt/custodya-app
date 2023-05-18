@@ -8,39 +8,20 @@
     <VerticalStackLayout Margin="10">
         <HorizontalStackLayout Margin="0,0,0,20">
             <Label Text="custodya" FontAttributes="Bold" FontSize="Large" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
-            <ImageButton  Source="user.png" HeightRequest="40" Margin="230,0,0,0" x:Name="ibtnAccount" Clicked="ibtnAccount_Clicked"/>
+            <ImageButton  Source="user.png" HeightRequest="40" Margin="225,0,0,0" x:Name="ibtnAccount" Clicked="ibtnAccount_Clicked"/>
         </HorizontalStackLayout>
         <Frame Margin="0,0,0,10">
-                <VerticalStackLayout>
-                    <Label Text="Sensors"/>
-                    <Frame>
-                    <VerticalStackLayout>
-                        <HorizontalStackLayout>
-                            <VerticalStackLayout>
-                                <Label Text="Motion"/>
-                                <Label Text="{Binding LatestItem.Motion}"/>
-                            </VerticalStackLayout>
-                        </HorizontalStackLayout>
-                    </VerticalStackLayout>
-                </Frame>                
-                <Frame>
-                    <VerticalStackLayout>
-                        <HorizontalStackLayout>
-                            <VerticalStackLayout>
-                                <Label Text="Door"/>
-                                <Label Text="{Binding LatestItem.Door}"/>
-                            </VerticalStackLayout>
-                        </HorizontalStackLayout>
-                    </VerticalStackLayout>
+            <VerticalStackLayout>
+                <Label Text="Sensors"/>
+                <Frame Margin="0,0,0,5">
+                    <Label Text="{Binding LatestItem.Motion, StringFormat='Motion: {0}'}"/>
+                </Frame>
+                <Frame Margin="0,0,0,5">
+                    <Label Text="{Binding LatestItem.Door, StringFormat='Door: {0}'}"/>
                 </Frame>
                 <Frame>
                     <VerticalStackLayout>
-                        <HorizontalStackLayout>
-                            <VerticalStackLayout>
-                                <Label Text="Loudness"/>
-                                <Label Text="{Binding LatestItem.Loudness}"/>
-                            </VerticalStackLayout>
-                        </HorizontalStackLayout>
+                        <Label Text="{Binding LatestItem.Loudness, StringFormat='Loudness: {0}'}"/>
                         <Frame HeightRequest="250">
                             <charts:CartesianChart x:Name="Chart" Series="{Binding Series}" ZoomMode="Both"/>
                         </Frame>
