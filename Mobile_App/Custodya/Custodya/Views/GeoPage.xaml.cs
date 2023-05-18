@@ -22,7 +22,6 @@ public partial class GeoPage : ContentPage
         InitializeComponent();
         this.BindingContext = DataRepoProvider.GeolocationDatabase;
         registryManager = RegistryManager.CreateFromConnectionString(App.Settings.EventHubConnectionString);
-        Sensors.ItemsSource = _sensors;
         Actuators.ItemsSource = _actuators;
     }
     protected override async void OnAppearing()
