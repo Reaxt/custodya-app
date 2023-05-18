@@ -12,7 +12,7 @@ namespace Custodya.Models
     /// <summary>
     /// The relevant model for plant data
     /// </summary>
-    [Serializable, ModelJsonName("Plants"), ModelHasSensors]
+    [Serializable, ModelJsonName("Plants"), ModelHasRuleSensors]
     public class PlantsModel : IHasUKey, ISubsystemState
     {
         /// <summary>

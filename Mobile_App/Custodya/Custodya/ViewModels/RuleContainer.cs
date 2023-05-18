@@ -18,6 +18,9 @@ namespace Custodya.ViewModels
         public string[] Options { get; set; }
         public dynamic Default { get; set; }
     }
+    /// <summary>
+    /// A container class for editing actuator rules.
+    /// </summary>
     public class RuleContainer
     {
         public RuleType RuleType { get; set; }
@@ -27,6 +30,11 @@ namespace Custodya.ViewModels
         public float TargetValueFloat { get; set; } //This property exists for elegant binding of the float type.
         public bool TargetValueBool { get; set; } //This property exists for elegant binding of the bool type..
         public static List<RuleType> _ruleTypesCache = null; //reflection is expensive.. lets make sure we only ever do it once!
+        /// <summary>
+        /// Create a new RuleContainer based off an existing rule.
+        /// </summary>
+        /// <param name="ruleType">The ruleType for this rules parameter</param>
+        /// <param name="rule">The existing rule</param>
         public RuleContainer(RuleType ruleType, ActuatorRule rule)
         {
             this.RuleType = ruleType;
@@ -34,6 +42,10 @@ namespace Custodya.ViewModels
             this.ComparisonType = rule.ComparisonType;
             this.ValueOnRule= rule.ValueOnRule;
         }
+        /// <summary>
+        /// Create a new <c>RuleContainer</c> based off a RuleType
+        /// </summary>
+        /// <param name="ruleType">The RuleType for this rules parameter.</param>
         public RuleContainer(RuleType ruleType)
         {
             this.RuleType = ruleType;
@@ -41,6 +53,10 @@ namespace Custodya.ViewModels
             this.ComparisonType = ruleType.ComparisonTypes[0];
             this.ValueOnRule = true;
         }
+        /// <summary>
+        /// Obtain an ActuatorRule object from this container.
+        /// </summary>
+        /// <returns>The ActuatorRule this container represents.</returns>
         public ActuatorRule ToRule()
         {
             if (RuleType.ComparisonValueType == RuleCompatibleProperty.EntryOption.Float) TargetValue = TargetValueFloat;
@@ -55,6 +71,10 @@ namespace Custodya.ViewModels
             };
             return actuatorRule;
         }
+        /// <summary>
+        /// Get the RuleTypes for the assembly. First run will be expensive.
+        /// </summary>
+        /// <returns>A list of RuleType</returns>
         public static List<RuleType> RuleTypes()
         {
             if (_ruleTypesCache != null) return _ruleTypesCache;
@@ -62,7 +82,7 @@ namespace Custodya.ViewModels
             var typesWithSensors = AppDomain.CurrentDomain.GetAssemblies()
                 .AsParallel()
                 .SelectMany(x => x.GetTypes())
-                .Where(x => x.GetCustomAttribute(typeof(ModelHasSensors)) != null);
+                .Where(x => x.GetCustomAttribute(typeof(ModelHasRuleSensors)) != null);
 
             foreach (Type type in typesWithSensors)
             {

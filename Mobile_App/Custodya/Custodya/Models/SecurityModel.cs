@@ -11,7 +11,7 @@ namespace Custodya.Models
     /// <summary>
     /// The model representing received security data
     /// </summary>
-    [Serializable, ModelJsonName("Security"), ModelHasSensors]
+    [Serializable, ModelJsonName("Security"), ModelHasRuleSensors]
     public class SecurityModel : IHasUKey, ISubsystemState
     {
 
