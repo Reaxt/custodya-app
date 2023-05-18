@@ -18,8 +18,6 @@
                             <Label Text="{Binding LatestItem.Humidity, StringFormat='Humidity: {0}'}"/>
                             <Frame HeightRequest="250">
                                 <charts:CartesianChart x:Name="HumidityChart" ZoomMode="Both"/>
-<<<<<<< Updated upstream
-=======
                             </Frame>
                         </VerticalStackLayout>
                     </Frame>
@@ -36,7 +34,6 @@
                             <Label Text="{Binding LatestItem.Water, StringFormat='Water: {0}'}"/>
                             <Frame HeightRequest="250">
                                 <charts:CartesianChart x:Name="WaterChart" ZoomMode="Both"/>
->>>>>>> Stashed changes
                             </Frame>
                         </VerticalStackLayout>
                     </Frame>
@@ -44,40 +41,10 @@
                         <VerticalStackLayout>
                             <Label Text="{Binding LatestItem.Moisture, StringFormat='Moisture: {0}'}"/>
                             <Frame HeightRequest="250">
-<<<<<<< Updated upstream
-                                <charts:CartesianChart x:Name="TemperatureChart" ZoomMode="Both"/>
-                            </Frame>
-                        </VerticalStackLayout>
-                    </Frame>
-                    <Frame>
-                        <VerticalStackLayout>
-                            <HorizontalStackLayout>
-                                <VerticalStackLayout>
-                                    <Label Text="Water"/>
-                                    <Label Text="{Binding LatestItem.Water}"/>
-                                </VerticalStackLayout>
-                            </HorizontalStackLayout>
-                            <Frame HeightRequest="250">
-                                <charts:CartesianChart x:Name="WaterChart" ZoomMode="Both"/>
-                            </Frame>
-                        </VerticalStackLayout>
-                    </Frame>
-                    <Frame>
-                        <VerticalStackLayout>
-                            <HorizontalStackLayout>
-                                <VerticalStackLayout>
-                                    <Label Text="Moisture"/>
-                                    <Label Text="{Binding LatestItem.Moisture}"/>
-                                </VerticalStackLayout>
-                            </HorizontalStackLayout>
-                            <Frame HeightRequest="250">
-=======
->>>>>>> Stashed changes
                                 <charts:CartesianChart x:Name="MoistureChart" ZoomMode="Both"/>
                             </Frame>
                         </VerticalStackLayout>
                     </Frame>
-
                 </VerticalStackLayout>
             </Frame>
             <Frame x:Name="controlFrame">

@@ -14,11 +14,8 @@ using LiveChartsCore.Defaults;
 
 namespace Custodya.Repos
 {
-    public static class ChartRepo<T>
+    public class ChartRepo<T>
     {
-<<<<<<< Updated upstream
-        public static ObservableCollection<ISeries> GetSeries(ObservableCollection<T> models, string value)
-=======
         public ObservableCollection<ISeries> DataSeries { get; private set; }
         private ObservableCollection<DateTimePoint> data;
         private ObservableCollection<T> _modelCollection;
@@ -61,7 +58,6 @@ namespace Custodya.Repos
             data.Add(new((DateTime)item.GetType().GetProperty("Timestamp").GetValue(item), (dynamic)item.GetType().GetProperty(_propName).GetValue(item)));
         }
         private static ObservableCollection<ISeries> GetSeries(ObservableCollection<T> models, string value, int datapoints = 20)
->>>>>>> Stashed changes
         {
             ObservableCollection<DateTimePoint> oc = new();
             foreach (var item in models)
@@ -86,5 +82,8 @@ namespace Custodya.Repos
             }
             
         }
+
+        public static List<Axis> XAxis = new List<Axis> { new Axis { Labeler = (value) => new DateTime((long)value).ToString("ddd H:mm"), MinStep = TimeSpan.FromMinutes(2).Ticks, TextSize = 25 } };
+        public static List<Axis> YAxis = new List<Axis> { new Axis { TextSize = 25 } };
     }
 }

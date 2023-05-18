@@ -20,10 +20,11 @@ public partial class SecurityPage : ContentPage
     private ObservableCollection<Sensor> _sensors = new();
     private ObservableCollection<Actuator> _actuators = new();
     private static RegistryManager registryManager;
-    
+    private ChartRepo<SecurityModel> _loudnessChart;
 
     public SecurityPage()
 	{
+        _loudnessChart = new ChartRepo<SecurityModel>(DataRepoProvider.SecurityDatabase.Items, "Loudness", 20);
         InitializeComponent();
         registryManager = RegistryManager.CreateFromConnectionString(App.Settings.EventHubConnectionString);
 
@@ -32,13 +33,9 @@ public partial class SecurityPage : ContentPage
         {
             controlFrame.IsVisible = false;
         }
-<<<<<<< Updated upstream
-        Chart.Series = ChartRepo<SecurityModel>.GetSeries(DataRepoProvider.SecurityDatabase.Items, "Loudness");
-=======
         Chart.Series = _loudnessChart.DataSeries;
-        Chart.XAxes = new List<Axis> { new Axis { Labeler = (value) => new DateTime((long)value).ToString("ddd H:mm"), MinStep = TimeSpan.FromMinutes(2).Ticks, TextSize=25 } };
-        Chart.YAxes = new List<Axis> { new Axis { TextSize=25 } };
->>>>>>> Stashed changes
+        Chart.XAxes = ChartRepo<SecurityModel>.XAxis;
+        Chart.YAxes = ChartRepo<SecurityModel>.YAxis;
     }
 
     private async void toggleState_Toggled(object sender, ToggledEventArgs e)
