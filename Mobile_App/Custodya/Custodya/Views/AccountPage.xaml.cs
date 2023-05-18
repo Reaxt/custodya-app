@@ -25,6 +25,7 @@ public partial class AccountPage : ContentPage
             {
                 // Connection to internet is available
                 AuthService.Client.SignOut();
+                AuthService.ResetCachedCredentials();
                 await Shell.Current.GoToAsync("//Login");
             }
             else
