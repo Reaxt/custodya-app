@@ -94,23 +94,12 @@ public partial class SecurityPage : ContentPage
     }
     protected override async void OnAppearing()
     {
+        Actuators.ItemsSource = App.DeviceTwinService.SecurityActuators;
         UpdateActuators();
     }
     private async void UpdateActuators()
     {
-        var actuators = await App.DeviceTwinService.GetActuators(Actuator.SecurityActuators);
-        foreach (var actuator in actuators)
-        {
-            if (_actuators.Any(x => x.Name == actuator.Name))
-            {
-                int index = _actuators.IndexOf(_actuators.First(x => x.Name == actuator.Name));
-                _actuators[index] = actuator;
-            }
-            else
-            {
-                _actuators.Add(actuator);
-            }
-        }
+        await App.DeviceTwinService.UpdateActuators();
     }
     private async void ibtnEditSensor_Clicked(object sender, EventArgs e)
     {
@@ -135,22 +124,6 @@ public partial class SecurityPage : ContentPage
             Console.WriteLine(ex.Message);
         }
     }
-
-    private async void toggleState_Toggled(object sender, ToggledEventArgs e)
-    {
-        try
-        {
-            foreach (var actuator in _actuators)
-            {
-                await App.DeviceTwinService.ApplyChanges(actuator);
-            }
-        }
-        catch (Exception ex)
-        {
-            await DisplayAlert("Alert", $"Error: Cannot connect to the Iot Hub please check connection", "Ok");
-        }
-    }
-
 
     private async void ibtnAccount_Clicked(object sender, EventArgs e)
     {

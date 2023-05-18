@@ -3,17 +3,17 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Custodya.Models
 {
-    public class Actuator
+    public class Actuator: INotifyPropertyChanged
     {
-        public static string[] SecurityActuators = new[] { "DoorLock" };
-        public static string[] PlantActuators = new[] { "Led", "Fan" };
-        public static string[] GeoActuators = new[] { "Buzzer" };
+        public event PropertyChangedEventHandler PropertyChanged;
+
         [JsonConverter(typeof(StringEnumConverter))]
         public enum ControlMethods
         {
@@ -28,5 +28,14 @@ namespace Custodya.Models
         public ControlMethods ControlMethod { get; set; }
         [JsonProperty("rules")]
         public List<ActuatorRule> Rules { get; set; }
+
+
+        public void CopyValues(Actuator obj)
+        {
+            this.Name = obj.Name;
+            this.State = obj.State;
+            this.Rules = obj.Rules;
+            this.ControlMethod= obj.ControlMethod;
+        }
     }
 }

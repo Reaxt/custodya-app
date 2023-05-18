@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Custodya.GeoPage"
+             xmlns:templates="clr-namespace:Custodya.ControlTemplates"
              Title="GeoPage">
     <ScrollView>
         <VerticalStackLayout Margin="10">
@@ -43,10 +44,7 @@
                         </CollectionView.ItemsLayout>
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <HorizontalStackLayout>
-                                    <Label Text="{Binding Name}"/>
-                                    <Switch x:Name="toggleState" Toggled="toggleState_Toggled" IsToggled="{Binding State}"/>
-                                </HorizontalStackLayout>
+                                <templates:ActuatorControlView/>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>

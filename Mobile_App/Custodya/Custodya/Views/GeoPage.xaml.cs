@@ -69,23 +69,12 @@ public partial class GeoPage : ContentPage
     }
     protected override async void OnAppearing()
     {
-        UpdateActuators();
+        Actuators.ItemsSource = App.DeviceTwinService.GeoActuators;
+        await App.DeviceTwinService.UpdateActuators();
     }
     private async void UpdateActuators()
     {
-        var actuators = await App.DeviceTwinService.GetActuators(Actuator.GeoActuators);
-        foreach (var actuator in actuators)
-        {
-            if (_actuators.Any(x => x.Name == actuator.Name))
-            {
-                int index = _actuators.IndexOf(_actuators.First(x => x.Name == actuator.Name));
-                _actuators[index] = actuator;
-            }
-            else
-            {
-                _actuators.Add(actuator);
-            }
-        }
+        await App.DeviceTwinService.UpdateActuators();
     }
     private async void ibtnEditSensor_Clicked(object sender, EventArgs e)
     {
@@ -117,7 +106,7 @@ public partial class GeoPage : ContentPage
         {
             foreach (var actuator in _actuators)
             {
-                await App.DeviceTwinService.ApplyChanges(actuator);
+                //await App.DeviceTwinService.ApplyChanges(actuator);
             }
         }
         catch (Exception ex)

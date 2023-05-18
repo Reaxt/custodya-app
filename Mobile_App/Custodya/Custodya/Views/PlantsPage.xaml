@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:templates="clr-namespace:Custodya.ControlTemplates"
              x:Class="Custodya.PlantsPage"
              Title="Plants">
     <VerticalStackLayout Margin="10">
@@ -38,14 +39,11 @@
             <VerticalStackLayout>
                 <CollectionView x:Name="Actuators">
                     <CollectionView.ItemsLayout>
-                        <LinearItemsLayout Orientation="Vertical" />
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <HorizontalStackLayout>
-                                <Label Text="{Binding Name}"/>
-                                <Switch x:Name="toggleState" Toggled="toggleState_Toggled" IsToggled="{Binding State}"/>
-                            </HorizontalStackLayout>
+                            <templates:ActuatorControlView/>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
