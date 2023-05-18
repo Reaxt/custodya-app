@@ -50,6 +50,7 @@
             </Frame>
             <Frame x:Name="controlFrame">
                 <VerticalStackLayout>
+                    <Label Text="Actuators"/>
                     <CollectionView x:Name="Actuators">
                         <CollectionView.ItemsLayout>
                             <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />

@@ -11,10 +11,6 @@ namespace Custodya;
 
 public partial class PlantsPage : ContentPage
 {
-
-    private ObservableCollection<Sensor> _sensors = new();
-    private ObservableCollection<Actuator> _actuators = new();
-    private static RegistryManager registryManager;
     private ChartRepo<PlantsModel> _humidityChartRepo;
     private ChartRepo<PlantsModel> _moistureChartRepo;
     private ChartRepo<PlantsModel> _waterChartRepo;

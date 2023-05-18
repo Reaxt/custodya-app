@@ -18,16 +18,12 @@ public partial class SecurityPage : ContentPage
     /// <summary>
     /// binds the XAML to the database data, and shows the right user the information that they are intended to see
     /// </summary>
-    private ObservableCollection<Sensor> _sensors = new();
-    private ObservableCollection<Actuator> _actuators = new();
-    private static RegistryManager registryManager;
     private ChartRepo<SecurityModel> _loudnessChart;
 
     public SecurityPage()
 	{
         _loudnessChart = new ChartRepo<SecurityModel>(DataRepoProvider.SecurityDatabase.Items, "Loudness", 20);
         InitializeComponent();
-        registryManager = RegistryManager.CreateFromConnectionString(App.Settings.EventHubConnectionString);
 
         this.BindingContext = DataRepoProvider.SecurityDatabase;
         if (Shell.Current.CurrentItem.Route == "Owner")
@@ -44,9 +40,6 @@ public partial class SecurityPage : ContentPage
         Actuators.ItemsSource = App.DeviceTwinService.SecurityActuators;
         await App.DeviceTwinService.UpdateActuators();
     }
-
-
-
 
     private async void ibtnAccount_Clicked(object sender, EventArgs e)
     {
