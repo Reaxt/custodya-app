@@ -14,6 +14,7 @@ class ConnectionManager:
     """
     REPORT_RATE_KEY = "reportUpdateRate"
     DEFAULT_REPORT_RATE = 10
+    REPORT_UPDATE_MESSAGE = '{"twinReportUpdate":true}'
     def __init__(self, configuration:Configuration):
         conn_string = configuration.iot_connection_string
         self.client: IoTHubDeviceClient = IoTHubDeviceClient.create_from_connection_string(conn_string)
@@ -21,7 +22,7 @@ class ConnectionManager:
         self._commands: Dict[str, Callable[[MethodRequest], MethodResponse]] = dict()
         self._twin_handlers: list[ITwinSubscriber] = list()
         self._report_sleep = ConnectionManager.DEFAULT_REPORT_RATE
-        
+        self._last_report: str = ""
         async def method_request_handler(method_request:MethodRequest):
             method_response:MethodResponse
             if any (method_request.name in key for key in self._commands):
@@ -55,7 +56,15 @@ class ConnectionManager:
             }
             for subscriber in self._twin_handlers:
                 report = subscriber.generate_report(report)
-            await self.client.patch_twin_reported_properties(report)
+            #check if the report is new from our last one.
+            dump = json.dumps(report)
+            if dump != self._last_report:
+                #new report!
+                self._last_report = dump
+                await self.client.patch_twin_reported_properties(report)
+                await self.client.send_message(self.REPORT_UPDATE_MESSAGE)
+                print("sending out update!")
+
     async def report_twin(self):
         report = {
             ConnectionManager.REPORT_RATE_KEY: self._report_sleep
