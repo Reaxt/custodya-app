@@ -3,6 +3,8 @@ using Firebase.Auth;
 using Microsoft.Maui.ApplicationModel.Communication;
 using Custodya.Config;
 using Custodya.Repos;
+using Custodya.ControlTemplates;
+using CommunityToolkit.Maui.Views;
 
 namespace Custodya;
 
@@ -23,6 +25,8 @@ public partial class MainPage : ContentPage
     {
         try
         {
+            var popup = new LoadingPopup();
+            this.ShowPopup(popup);
             NetworkAccess accessType = Connectivity.Current.NetworkAccess;
 
             if (accessType == NetworkAccess.Internet)
@@ -32,6 +36,7 @@ public partial class MainPage : ContentPage
                 DataRepoProvider.InitDb();
                 string destination = entryUsername.Text.Split('@')[0].ToLower() == "owner" ? "Owner" : "User";
                 await Shell.Current.GoToAsync($"//{destination}");
+                popup.Close();
                 //uid.Text = $"Id: {AuthService.UserCreds.User.Uid}";
                 //email.Text = $"Email: {entryUsername.Text}";
                 //Login.IsVisible = false;

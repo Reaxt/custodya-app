@@ -59,6 +59,7 @@
 	<ItemGroup>
 		<PackageReference Include="Azure.Messaging.EventHubs.Processor" Version="5.9.0" />
 		<PackageReference Include="Azure.Storage.Blobs" Version="12.16.0" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="5.1.0" />
 		<PackageReference Include="FirebaseAuthentication.net" Version="4.0.2" />
 		<PackageReference Include="FirebaseDatabase.net" Version="4.2.0" />
 		<PackageReference Include="Azure.Messaging.EventHubs" Version="5.9.0" />
@@ -71,10 +72,18 @@
 
 	<ItemGroup>
 	  <Folder Include="Files\" />
-	  <Folder Include="ViewModels\" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="ControlTemplates\ActuatorControlView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="ControlTemplates\ActuatorRuleEntry.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="ControlTemplates\LoadingPopup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\GeoPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

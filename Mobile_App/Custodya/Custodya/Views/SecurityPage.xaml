@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:charts="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
              x:Class="Custodya.SecurityPage"
+             xmlns:templates="clr-namespace:Custodya.ControlTemplates"
              Title="SecurityPage">
     <ScrollView>
     <VerticalStackLayout Margin="10">
@@ -23,7 +24,7 @@
                     <VerticalStackLayout>
                         <Label Text="{Binding LatestItem.Loudness, StringFormat='Loudness: {0}'}"/>
                         <Frame HeightRequest="250">
-                            <charts:CartesianChart x:Name="Chart" Series="{Binding Series}" ZoomMode="Both"/>
+                            <charts:CartesianChart x:Name="Chart" Series="{Binding Series}" ZoomMode="None"/>
                         </Frame>
                     </VerticalStackLayout>
                 </Frame>
@@ -32,11 +33,16 @@
         <Frame x:Name="controlFrame">
             
             <VerticalStackLayout>
-                    <Label Text="Actuators"/>
-                    <HorizontalStackLayout>
-                    <Label Text="Door Lock"/>
-                    <Switch x:Name="toggleState" Toggled="toggleState_Toggled" IsToggled="{Binding LatestItem.DoorLock}"/>
-                </HorizontalStackLayout>
+                <CollectionView x:Name="Actuators">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <templates:ActuatorControlView/>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
             </VerticalStackLayout>
         </Frame>
     </VerticalStackLayout>

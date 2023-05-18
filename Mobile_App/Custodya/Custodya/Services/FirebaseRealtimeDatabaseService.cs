@@ -20,7 +20,7 @@ namespace Custodya.Services
     /// This has a probability of getting VERY EXPENSIVE with lots of data!
     /// </remarks>
     /// <typeparam name="T">The item for the database</typeparam>
-    public class FirebaseRealtimeDatabaseService<T> : IGenericRealtimeDatabase<T> where T : class, IHasUKey, ISubsystemState
+    public class FirebaseRealtimeDatabaseService<T> : INotifyPropertyChanged, IGenericRealtimeDatabase<T> where T : class, IHasUKey, ISubsystemState
     {
         private readonly RealtimeDatabase<T> _realtimeDb;
         private string _dbKey;
@@ -144,7 +144,42 @@ namespace Custodya.Services
 
         public async Task<bool> CheckExists(T item)
         {
-            return Items.Any((x) => x.Timestamp.Equals(item.Timestamp));
+            //for some reason linq just doesnt work here anymore... no exceptions either....
+            bool hasTimestamp = false;
+            bool hasKey = false;
+            try
+            {
+                foreach (var x in Items)
+                {
+                    try
+                    {
+                        DateTime timestampX = x.Timestamp;
+                        DateTime timestampItem = item.Timestamp;
+                        if(timestampX == timestampItem)
+                        {
+                            hasTimestamp = true;
+                            break;
+                        }
+                        //WHY ARE THEY NULL SOMETIMES
+                        if(x.Key != null && x.Key == item.Key)
+                        {
+                            int huh = Items.IndexOf(x);
+                            hasKey = true;
+                            break;
+                        }
+                    } catch (Exception e)
+                    {
+                        //????
+                        Console.WriteLine(e);
+                    }
+                }
+            } catch (Exception e)
+            {
+                //????
+                Console.WriteLine(e.Message);
+            }
+            
+            return hasTimestamp || hasKey;
         }
     }
 }

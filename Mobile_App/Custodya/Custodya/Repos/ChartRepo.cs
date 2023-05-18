@@ -38,7 +38,7 @@ namespace Custodya.Repos
                 {
                     new LineSeries<DateTimePoint>
                     {
-                        TooltipLabelFormatter = (chartPoint) => $"{new DateTime((long)chartPoint.SecondaryValue):MMMM dd}: {chartPoint.PrimaryValue}",
+                        TooltipLabelFormatter = (chartPoint) => $"{new DateTime((long) chartPoint.SecondaryValue):MMMM dd}: {chartPoint.PrimaryValue}",
                         Values = data
                     }
                 };
@@ -65,13 +65,13 @@ namespace Custodya.Repos
                 oc.Add(new((DateTime)item.GetType().GetProperty("Timestamp").GetValue(item), (dynamic)item.GetType().GetProperty(value).GetValue(item)));
             }
             try {
-
+                var oc2 = oc.OrderBy(x => x.DateTime).TakeLast(datapoints);
                 return new ObservableCollection<ISeries>
                 {
-                    new StepLineSeries<DateTimePoint>
+                    new LineSeries<DateTimePoint>
                     {
                         TooltipLabelFormatter = (chartPoint) => $"{new DateTime((long) chartPoint.SecondaryValue):MMMM dd}: {chartPoint.PrimaryValue}",
-                        Values = oc
+                        Values = oc2
                     }
                 };
             }
