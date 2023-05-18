@@ -9,6 +9,7 @@ using Custodya.Services;
 using Custodya.Models;
 using Custodya.Interfaces;
 using SkiaSharp.Views.Maui.Controls.Hosting;
+using CommunityToolkit.Maui;
 
 namespace Custodya;
 
@@ -23,7 +24,9 @@ public static class MauiProgram
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-            }).RegisterIOTServices().UseSkiaSharp();
+            }).RegisterIOTServices()
+            .UseSkiaSharp()
+            .UseMauiCommunityToolkit();
 
 
 #if DEBUG
