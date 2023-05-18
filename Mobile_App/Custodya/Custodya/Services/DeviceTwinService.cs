@@ -15,9 +15,11 @@ namespace Custodya.Services
     /// <summary>
     /// This class is responsible for both reading and writing anything relevant to the device twin. 
     /// </summary>
-    public class DeviceTwinService
+    public class DeviceTwinService : IObserver<string>
     {
+        EventHubService _eventHubService;
         private const string ACTUATOR_CONTROL_KEY = "actuatorControl";
+        private const string UPDATE_KEY = "twinReportUpdate";
 
         private static string[] _securityActuatorsNames = new[] { "DoorLock" };
         private static string[] _plantActuatorsNames = new[] { "Led", "Fan" };
@@ -36,12 +38,14 @@ namespace Custodya.Services
         public ObservableCollection<Actuator> GeoActuators { get; private set; }
         private RegistryManager _registryManager;
         private SemaphoreSlim _semaphore_update = new SemaphoreSlim(1, 1);
-        public DeviceTwinService()
+        public DeviceTwinService(EventHubService eventHubServier)
         {
             _registryManager = RegistryManager.CreateFromConnectionString(App.Settings.EventHubConnectionString);
             SecurityActuators = new ObservableCollection<Actuator>();
             PlantActuators = new ObservableCollection<Actuator>();
-            GeoActuators= new ObservableCollection<Actuator>();
+            GeoActuators = new ObservableCollection<Actuator>();
+            _eventHubService = eventHubServier;
+            _eventHubService.Subscribe(this);
         }
         /// <summary>
         /// Update all the actuators based off the reported device twin.
@@ -140,6 +144,33 @@ namespace Custodya.Services
             Twin twin = await _registryManager.GetTwinAsync(App.Settings.DeviceId);
             await _registryManager.UpdateTwinAsync(twin.DeviceId, patch, twin.ETag);
             _semaphore_update.Release();
+        }
+
+        public void OnCompleted()
+        {
+            //not implemented by event hub!
+            throw new NotImplementedException();
+        }
+
+        public void OnError(Exception error)
+        {
+            //not implemented by event hub!
+            throw new NotImplementedException();
+        }
+
+        public async void OnNext(string value)
+        {
+            JObject message = JObject.Parse(value);
+            //is it for us?
+            JToken parsed = message[UPDATE_KEY];
+            if (parsed != null)
+            {
+                dynamic test = parsed.ToObject<bool>();
+                if(test)
+                {
+                    await UpdateActuators();
+                }
+            }
         }
     }
 }

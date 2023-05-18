@@ -52,9 +52,9 @@ namespace Custodya.Services
             JObject telemetry = JObject.Parse(value);
             //is it for us?
             JToken modelJson = telemetry[_jsonModelKey];
-            T model = null;
             if(modelJson != null)
             {
+                T model = null;
                 model = modelJson.ToObject<T>();
                 long posix = (long)telemetry["timestamp"];
                 var timeOffset = DateTimeOffset.FromUnixTimeSeconds(posix);
