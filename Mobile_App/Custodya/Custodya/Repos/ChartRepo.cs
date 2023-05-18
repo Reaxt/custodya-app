@@ -82,5 +82,8 @@ namespace Custodya.Repos
             }
             
         }
+
+        public static List<Axis> XAxis = new List<Axis> { new Axis { Labeler = (value) => new DateTime((long)value).ToString("ddd H:mm"), MinStep = TimeSpan.FromMinutes(2).Ticks, TextSize = 25 } };
+        public static List<Axis> YAxis = new List<Axis> { new Axis { TextSize = 25 } };
     }
 }

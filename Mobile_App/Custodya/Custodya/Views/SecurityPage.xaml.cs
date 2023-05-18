@@ -9,6 +9,7 @@ using Microsoft.Azure.Devices;
 using Newtonsoft.Json;
 using Custodya.Services;
 using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
 
 namespace Custodya;
 
@@ -34,6 +35,8 @@ public partial class SecurityPage : ContentPage
             controlFrame.IsVisible = false;
         }
         Chart.Series = _loudnessChart.DataSeries;
+        Chart.XAxes = ChartRepo<SecurityModel>.XAxis;
+        Chart.YAxes = ChartRepo<SecurityModel>.YAxis;
     }
     
     protected override async void OnAppearing()
@@ -47,7 +50,7 @@ public partial class SecurityPage : ContentPage
 
     private async void ibtnAccount_Clicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync($"..//User/Account");
+        await Shell.Current.GoToAsync($"//{Shell.Current.CurrentItem.Route}Account");
     }
     private async void ibtnEditSensor_Clicked(object sender, EventArgs e)
     {

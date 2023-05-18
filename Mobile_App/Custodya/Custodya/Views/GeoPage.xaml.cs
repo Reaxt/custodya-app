@@ -58,6 +58,6 @@ public partial class GeoPage : ContentPage
 
     private async void ibtnAccount_Clicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync($"//{Shell.Current.CurrentItem.Route}/Account", true);
+        await Shell.Current.GoToAsync($"//{Shell.Current.CurrentItem.Route}Account");
     }
 }

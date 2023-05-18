@@ -4,6 +4,8 @@ using Custodya.Repos;
 using System.Reflection;
 using Microsoft.Azure.Devices;
 using Firebase.Auth;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
 
 namespace Custodya;
 
@@ -34,6 +36,8 @@ public partial class PlantsPage : ContentPage
         WaterChart.Series = _waterChartRepo.DataSeries;
         MoistureChart.Series = _moistureChartRepo.DataSeries;
         
+        HumidityChart.XAxes = TemperatureChart.XAxes = WaterChart.XAxes = MoistureChart.XAxes = ChartRepo<PlantsModel>.XAxis;
+        HumidityChart.YAxes = TemperatureChart.YAxes = WaterChart.YAxes = MoistureChart.YAxes = ChartRepo<PlantsModel>.YAxis;
     }
 
     protected override async void OnAppearing()
@@ -68,7 +72,7 @@ public partial class PlantsPage : ContentPage
     }
     private async void ibtnAccount_Clicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync($"//{Shell.Current.CurrentItem.Route}/Account", true);
+        await Shell.Current.GoToAsync($"//{Shell.Current.CurrentItem.Route}Account");
     }
     
 

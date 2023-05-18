@@ -9,45 +9,30 @@
         <VerticalStackLayout Margin="10">
             <HorizontalStackLayout Margin="0,0,0,20">
                 <Label Text="custodya" FontAttributes="Bold" FontSize="Large" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
-                <ImageButton  Source="user.png" HeightRequest="40" Margin="230,0,0,0" x:Name="ibtnAccount" Clicked="ibtnAccount_Clicked"/>
+                <ImageButton  Source="user.png" HeightRequest="40" Margin="225,0,0,0" x:Name="ibtnAccount" Clicked="ibtnAccount_Clicked"/>
             </HorizontalStackLayout>
             <Frame Margin="0,0,0,10">
                 <VerticalStackLayout>
                     <Label Text="Sensors"/>
-                    <Frame>
+                    <Frame Margin="0,0,0,5">
                         <VerticalStackLayout>
-                            <HorizontalStackLayout>
-                                <VerticalStackLayout>
-                                    <Label Text="Humidity"/>
-                                    <Label Text="{Binding LatestItem.Humidity}"/>
-                                </VerticalStackLayout>                                
-                            </HorizontalStackLayout>
+                            <Label Text="{Binding LatestItem.Humidity, StringFormat='Humidity: {0}'}"/>
                             <Frame HeightRequest="250">
                                 <charts:CartesianChart x:Name="HumidityChart" ZoomMode="None"/>
                             </Frame>
                         </VerticalStackLayout>
                     </Frame>
-                    <Frame>
+                    <Frame Margin="0,0,0,5">
                         <VerticalStackLayout>
-                            <HorizontalStackLayout>
-                                <VerticalStackLayout>
-                                    <Label Text="Temperature"/>
-                                    <Label Text="{Binding LatestItem.Temperature}"/>
-                                </VerticalStackLayout>
-                            </HorizontalStackLayout>
+                            <Label Text="{Binding LatestItem.Temperature, StringFormat='Temperature: {0}'}"/>
                             <Frame HeightRequest="250">
                                 <charts:CartesianChart x:Name="TemperatureChart" />
                             </Frame>
                         </VerticalStackLayout>
                     </Frame>
-                    <Frame>
+                    <Frame Margin="0,0,0,5">
                         <VerticalStackLayout>
-                            <HorizontalStackLayout>
-                                <VerticalStackLayout>
-                                    <Label Text="Water"/>
-                                    <Label Text="{Binding LatestItem.Water}"/>
-                                </VerticalStackLayout>
-                            </HorizontalStackLayout>
+                            <Label Text="{Binding LatestItem.Water, StringFormat='Water: {0}'}"/>
                             <Frame HeightRequest="250">
                                 <charts:CartesianChart x:Name="WaterChart" ZoomMode="None"/>
                             </Frame>
@@ -55,18 +40,12 @@
                     </Frame>
                     <Frame>
                         <VerticalStackLayout>
-                            <HorizontalStackLayout>
-                                <VerticalStackLayout>
-                                    <Label Text="Moisture"/>
-                                    <Label Text="{Binding LatestItem.Moisture}"/>
-                                </VerticalStackLayout>
-                            </HorizontalStackLayout>
+                            <Label Text="{Binding LatestItem.Moisture, StringFormat='Moisture: {0}'}"/>
                             <Frame HeightRequest="250">
                                 <charts:CartesianChart x:Name="MoistureChart" ZoomMode="None"/>
                             </Frame>
                         </VerticalStackLayout>
                     </Frame>
-
                 </VerticalStackLayout>
             </Frame>
             <Frame x:Name="controlFrame">
