@@ -18,6 +18,7 @@ namespace Custodya.Services
         private ConcurrentDictionary<string, int> _partitionEventCount;
         private List<IObserver<string>> _observers;
         private List<string> _telemeteryEvents;
+        private Task _eventProcessorTask; //to stop garbage collection
         public EventHubService() 
         {
             var blobClient = new BlobContainerClient(App.Settings.StorageConnectionString, App.Settings.BlobContainerName);
@@ -27,11 +28,12 @@ namespace Custodya.Services
             _observers = new List<IObserver<string>>();
             _eventProcessor.ProcessEventAsync += ProcessEventHandler;
             _eventProcessor.ProcessErrorAsync += _eventProcessor_ProcessErrorAsync;
-            Task.Run(() => _eventProcessor.StartProcessingAsync());
+            _eventProcessorTask = Task.Run(() => _eventProcessor.StartProcessingAsync());
         }
 
         private async Task _eventProcessor_ProcessErrorAsync(ProcessErrorEventArgs arg)
         {
+            Console.WriteLine(arg);
 #if ANDROID
 // Log.Error("EventHubService", $"Error: {arg.Exception.Message}");
 #endif

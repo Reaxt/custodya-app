@@ -23,7 +23,7 @@
                                 </VerticalStackLayout>                                
                             </HorizontalStackLayout>
                             <Frame HeightRequest="250">
-                                <charts:CartesianChart x:Name="HumidityChart" ZoomMode="Both"/>
+                                <charts:CartesianChart x:Name="HumidityChart" ZoomMode="None"/>
                             </Frame>
                         </VerticalStackLayout>
                     </Frame>
@@ -36,7 +36,7 @@
                                 </VerticalStackLayout>
                             </HorizontalStackLayout>
                             <Frame HeightRequest="250">
-                                <charts:CartesianChart x:Name="TemperatureChart" ZoomMode="Both"/>
+                                <charts:CartesianChart x:Name="TemperatureChart" />
                             </Frame>
                         </VerticalStackLayout>
                     </Frame>
@@ -49,7 +49,7 @@
                                 </VerticalStackLayout>
                             </HorizontalStackLayout>
                             <Frame HeightRequest="250">
-                                <charts:CartesianChart x:Name="WaterChart" ZoomMode="Both"/>
+                                <charts:CartesianChart x:Name="WaterChart" ZoomMode="None"/>
                             </Frame>
                         </VerticalStackLayout>
                     </Frame>
@@ -62,7 +62,7 @@
                                 </VerticalStackLayout>
                             </HorizontalStackLayout>
                             <Frame HeightRequest="250">
-                                <charts:CartesianChart x:Name="MoistureChart" ZoomMode="Both"/>
+                                <charts:CartesianChart x:Name="MoistureChart" ZoomMode="None"/>
                             </Frame>
                         </VerticalStackLayout>
                     </Frame>

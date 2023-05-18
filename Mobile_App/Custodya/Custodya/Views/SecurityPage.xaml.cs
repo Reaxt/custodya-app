@@ -20,10 +20,11 @@ public partial class SecurityPage : ContentPage
     private ObservableCollection<Sensor> _sensors = new();
     private ObservableCollection<Actuator> _actuators = new();
     private static RegistryManager registryManager;
-    
+    private ChartRepo<SecurityModel> _loudnessChart;
 
     public SecurityPage()
 	{
+        _loudnessChart = new ChartRepo<SecurityModel>(DataRepoProvider.SecurityDatabase.Items, "Loudness", 20);
         InitializeComponent();
         registryManager = RegistryManager.CreateFromConnectionString(App.Settings.EventHubConnectionString);
 
@@ -32,7 +33,7 @@ public partial class SecurityPage : ContentPage
         {
             controlFrame.IsVisible = false;
         }
-        Chart.Series = ChartRepo<SecurityModel>.GetSeries(DataRepoProvider.SecurityDatabase.Items, "Loudness");
+        Chart.Series = _loudnessChart.DataSeries;
     }
     
     protected override async void OnAppearing()

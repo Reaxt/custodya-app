@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Custodya.Config;
 using Custodya.Services;
+using LiveChartsCore;
 
 namespace Custodya;
 
