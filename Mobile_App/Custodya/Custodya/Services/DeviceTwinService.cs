@@ -17,6 +17,7 @@ namespace Custodya.Services
     /// </summary>
     public class DeviceTwinService : IObserver<string>
     {
+        IConnectivity _connectivity;
         EventHubService _eventHubService;
         private const string ACTUATOR_CONTROL_KEY = "actuatorControl";
         private const string UPDATE_KEY = "twinReportUpdate";
@@ -40,6 +41,7 @@ namespace Custodya.Services
         private SemaphoreSlim _semaphore_update = new SemaphoreSlim(1, 1);
         public DeviceTwinService(EventHubService eventHubServier)
         {
+            _connectivity = Connectivity.Current;
             _registryManager = RegistryManager.CreateFromConnectionString(App.Settings.EventHubConnectionString);
             SecurityActuators = new ObservableCollection<Actuator>();
             PlantActuators = new ObservableCollection<Actuator>();
@@ -53,6 +55,10 @@ namespace Custodya.Services
         /// <returns>An awaitable task.</returns>
         public async Task UpdateActuators()
         {
+            if(_connectivity.NetworkAccess != NetworkAccess.Internet)
+            {
+                return;
+            } 
             List<Actuator> actuators = await GetActuators();
             foreach(var actuator in actuators) 
             {
@@ -87,8 +93,14 @@ namespace Custodya.Services
 
         private async void Actuator_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            Actuator test = sender as Actuator;
-            await ApplyChanges(test);
+            if(_connectivity.NetworkAccess == NetworkAccess.Internet)
+            {
+                Actuator actuator = sender as Actuator;
+                await ApplyChanges(actuator);
+            } else
+            {
+                MauiProgram.Services.GetService<ErrorAlertProviderService>().RaiseError("Can't update actuators without an internet connection");
+            }
         }
         /// <summary>
         /// Gets all the actuators from the reported device twin.
@@ -126,6 +138,11 @@ namespace Custodya.Services
         /// <returns>An awaitable task.</returns>
         public async Task ApplyChanges(Actuator actuator)
         {
+            if (_connectivity.NetworkAccess != NetworkAccess.Internet)
+            {
+                MauiProgram.Services.GetService<ErrorAlertProviderService>().RaiseError("Can't update actuators without an internet connection");
+                return;
+            }
             //one at a time!!! We need to use this as we could easily end up with the wrong ETag without it.
             await _semaphore_update.WaitAsync();
             var patch =

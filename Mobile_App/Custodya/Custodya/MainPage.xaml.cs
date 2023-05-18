@@ -23,10 +23,10 @@ public partial class MainPage : ContentPage
     /// <param name="e"></param>
     private async void btnLogin_Clicked(object sender, EventArgs e)
     {
+        var popup = new LoadingPopup();
+        this.ShowPopup(popup);
         try
         {
-            var popup = new LoadingPopup();
-            this.ShowPopup(popup);
             NetworkAccess accessType = Connectivity.Current.NetworkAccess;
 
             if (accessType == NetworkAccess.Internet)
@@ -37,24 +37,24 @@ public partial class MainPage : ContentPage
                 string destination = entryUsername.Text.Split('@')[0].ToLower() == "owner" ? "Owner" : "User";
                 await Shell.Current.GoToAsync($"//{destination}");
                 popup.Close();
-                //uid.Text = $"Id: {AuthService.UserCreds.User.Uid}";
-                //email.Text = $"Email: {entryUsername.Text}";
-                //Login.IsVisible = false;
-                //Logout.IsVisible = true;
             }
             else
             {
-                throw new Exception("No internet connection");
+                popup.Close();
+                await DisplayAlert("Error", $"No internet connection. Can not authenticate.", "Ok");
             }
         }
         catch (FirebaseAuthException ex)
         {
+            popup.Close();
             await DisplayAlert("Alert", $"Exception occured during Firebase Http request\nUrl: {ex.HelpLink}\nRequest Data:{ex.Source}\nResponse:{ex.Message}\nReason:{ex.Reason}", "Ok");
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Alert", $"{ex.Message}", "Ok");
+            popup.Close();
+            await DisplayAlert("Error", $"Exception occured: {ex.Message} from {ex.Source}", "Ok");
         }
+
     }
 }
 
