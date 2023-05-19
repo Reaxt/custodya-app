@@ -26,14 +26,15 @@
                         <Frame HeightRequest="250">
                             <charts:CartesianChart x:Name="Chart" Series="{Binding Series}" ZoomMode="None"/>
                         </Frame>
+                        <Button Text="See more" x:Name="btnChart" Clicked="btnChart_Clicked"/>
                     </VerticalStackLayout>
                 </Frame>
             </VerticalStackLayout>
         </Frame>
-        <Frame x:Name="controlFrame">
-            
+        <Frame x:Name="controlFrame">            
             <VerticalStackLayout>
-                <CollectionView x:Name="Actuators">
+                    <Label Text="Actuators"/>
+                    <CollectionView x:Name="Actuators">
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout Orientation="Vertical" />
                     </CollectionView.ItemsLayout>

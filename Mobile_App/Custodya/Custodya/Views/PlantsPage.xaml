@@ -20,6 +20,7 @@
                             <Frame HeightRequest="250">
                                 <charts:CartesianChart x:Name="HumidityChart" ZoomMode="None"/>
                             </Frame>
+                            <Button Text="See more" x:Name="btnHumidity" Clicked="btnHumidity_Clicked"/>
                         </VerticalStackLayout>
                     </Frame>
                     <Frame Margin="0,0,0,5">
@@ -28,6 +29,7 @@
                             <Frame HeightRequest="250">
                                 <charts:CartesianChart x:Name="TemperatureChart" />
                             </Frame>
+                            <Button Text="See more" x:Name="btnTemperature" Clicked="btnTemperature_Clicked"/>
                         </VerticalStackLayout>
                     </Frame>
                     <Frame Margin="0,0,0,5">
@@ -36,6 +38,7 @@
                             <Frame HeightRequest="250">
                                 <charts:CartesianChart x:Name="WaterChart" ZoomMode="None"/>
                             </Frame>
+                            <Button Text="See more" x:Name="btnWater" Clicked="btnWater_Clicked"/>
                         </VerticalStackLayout>
                     </Frame>
                     <Frame>
@@ -44,12 +47,14 @@
                             <Frame HeightRequest="250">
                                 <charts:CartesianChart x:Name="MoistureChart" ZoomMode="None"/>
                             </Frame>
+                            <Button Text="See more" x:Name="btnMoisture" Clicked="btnMoisture_Clicked"/>
                         </VerticalStackLayout>
                     </Frame>
                 </VerticalStackLayout>
             </Frame>
             <Frame x:Name="controlFrame">
                 <VerticalStackLayout>
+                    <Label Text="Actuators"/>
                     <CollectionView x:Name="Actuators">
                         <CollectionView.ItemsLayout>
                             <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />

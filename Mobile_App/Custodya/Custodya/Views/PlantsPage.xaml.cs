@@ -11,10 +11,6 @@ namespace Custodya;
 
 public partial class PlantsPage : ContentPage
 {
-
-    private ObservableCollection<Sensor> _sensors = new();
-    private ObservableCollection<Actuator> _actuators = new();
-    private static RegistryManager registryManager;
     private ChartRepo<PlantsModel> _humidityChartRepo;
     private ChartRepo<PlantsModel> _moistureChartRepo;
     private ChartRepo<PlantsModel> _waterChartRepo;
@@ -74,6 +70,24 @@ public partial class PlantsPage : ContentPage
     {
         await Shell.Current.GoToAsync($"//{Shell.Current.CurrentItem.Route}Account");
     }
-    
 
+    private async void btnMoisture_Clicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync($"//ChartView?PlantsChart=Moisture&SecurityChart={null}&back={Shell.Current.CurrentItem.Route}");
+    }
+
+    private async void btnWater_Clicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync($"//ChartView?PlantsChart=Water&SecurityChart={null}&back={Shell.Current.CurrentItem.Route}");
+    }
+
+    private async void btnTemperature_Clicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync($"//ChartView?PlantsChart=Temperature&SecurityChart={null}&back={Shell.Current.CurrentItem.Route}");
+    }
+
+    private async void btnHumidity_Clicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync($"//ChartView?PlantsChart=Humidity&SecurityChart={null}&back={Shell.Current.CurrentItem.Route}");
+    }
 }

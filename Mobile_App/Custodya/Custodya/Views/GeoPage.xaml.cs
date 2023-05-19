@@ -13,15 +13,12 @@ namespace Custodya;
 /// </summary>
 public partial class GeoPage : ContentPage
 {
-    private ObservableCollection<Sensor> _sensors = new();
     private ObservableCollection<Actuator> _actuators = new();
-    private static RegistryManager registryManager;
 
     public GeoPage()
     {
         InitializeComponent();
         this.BindingContext = DataRepoProvider.GeolocationDatabase;
-        registryManager = RegistryManager.CreateFromConnectionString(App.Settings.EventHubConnectionString);
         Actuators.ItemsSource = _actuators;
     }
     protected override async void OnAppearing()
