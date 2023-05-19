@@ -11,10 +11,10 @@ namespace Custodya.Models
     /// <summary>
     /// The model representing received security data
     /// </summary>
-    [Serializable, ModelJsonName("Security")]
+    [Serializable, ModelJsonName("Security"), ModelHasRuleSensors]
     public class SecurityModel : IHasUKey, ISubsystemState
     {
-        
+
         [Serializable]
         public enum DoorState
         {
@@ -24,14 +24,17 @@ namespace Custodya.Models
         /// <summary>
         /// The motion sensor value
         /// </summary>
+        [RuleCompatibleProperty(RuleCompatibleProperty.EntryOption.Bool)]
         public bool Motion { get; set; }
         /// <summary>
         /// Loudness sensor value
         /// </summary>
+        [RuleCompatibleProperty(RuleCompatibleProperty.EntryOption.Float)]
         public float Loudness { get; set; }
         /// <summary>
         /// Whether the door is currently open or closed
         /// </summary>
+        [RuleCompatibleProperty(RuleCompatibleProperty.EntryOption.Bool, Options = new string[]{"Open", "Closed"})]
         public DoorState Door { get; set; } 
         /// <summary>
         /// Whether the door is currently locked or unlocked

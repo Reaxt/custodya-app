@@ -1,40 +1,37 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:charts="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
              x:Class="Custodya.SecurityPage"
+             xmlns:templates="clr-namespace:Custodya.ControlTemplates"
              Title="SecurityPage">
+    <ScrollView>
     <VerticalStackLayout Margin="10">
         <HorizontalStackLayout Margin="0,0,0,20">
             <Label Text="custodya" FontAttributes="Bold" FontSize="Large" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
-            <ImageButton  Source="user.png" HeightRequest="40" Margin="230,0,0,0" x:Name="ibtnAccount" Clicked="ibtnAccount_Clicked"/>
+            <ImageButton  Source="user.png" HeightRequest="40" Margin="225,0,0,0" x:Name="ibtnAccount" Clicked="ibtnAccount_Clicked"/>
         </HorizontalStackLayout>
         <Frame Margin="0,0,0,10">
             <VerticalStackLayout>
-                <HorizontalStackLayout>
-                    <ImageButton Background="lime"/>
-                    <Label Text="Status" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-                <CollectionView x:Name="Sensors" HorizontalOptions="Start">
-                    <CollectionView.ItemsLayout>
-                        <LinearItemsLayout Orientation="Vertical" />
-                    </CollectionView.ItemsLayout>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Frame>
-                                <HorizontalStackLayout>
-                                    <VerticalStackLayout>
-                                        <Label Text="{Binding Name}"/>
-                                        <Label Text="{Binding Value}"/>
-                                    </VerticalStackLayout>
-                                    <ImageButton HorizontalOptions="End" HeightRequest="20" x:Name="ibtnEditSensor" Clicked="ibtnEditSensor_Clicked" Source="edit.png" IsVisible="{Binding Editable}"/>
-                                </HorizontalStackLayout>
-                            </Frame>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                <Label Text="Sensors"/>
+                <Frame Margin="0,0,0,5">
+                    <Label Text="{Binding LatestItem.Motion, StringFormat='Motion: {0}'}"/>
+                </Frame>
+                <Frame Margin="0,0,0,5">
+                    <Label Text="{Binding LatestItem.Door, StringFormat='Door: {0}'}"/>
+                </Frame>
+                <Frame>
+                    <VerticalStackLayout>
+                        <Label Text="{Binding LatestItem.Loudness, StringFormat='Loudness: {0}'}"/>
+                        <Frame HeightRequest="250">
+                            <charts:CartesianChart x:Name="Chart" Series="{Binding Series}" ZoomMode="None"/>
+                        </Frame>
+                    </VerticalStackLayout>
+                </Frame>
             </VerticalStackLayout>
         </Frame>
         <Frame x:Name="controlFrame">
+            
             <VerticalStackLayout>
                 <CollectionView x:Name="Actuators">
                     <CollectionView.ItemsLayout>
@@ -42,14 +39,12 @@
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <HorizontalStackLayout>
-                                <Label Text="{Binding Name}"/>
-                                <Switch x:Name="toggleState" Toggled="toggleState_Toggled" IsToggled="{Binding State}"/>
-                            </HorizontalStackLayout>
+                            <templates:ActuatorControlView/>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
             </VerticalStackLayout>
         </Frame>
     </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

@@ -8,6 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Custodya.Services;
 using Custodya.Models;
 using Custodya.Interfaces;
+using SkiaSharp.Views.Maui.Controls.Hosting;
+using CommunityToolkit.Maui;
 
 namespace Custodya;
 
@@ -22,11 +24,14 @@ public static class MauiProgram
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-            }).RegisterIOTServices();
+            })
+            .RegisterCustodyaServices()
+            .UseSkiaSharp()
+            .UseMauiCommunityToolkit();
 
 
 #if DEBUG
-		builder.Logging.AddDebug();
+        builder.Logging.AddDebug();
 #endif
         //NEW CODE: before the return statement...
         var a = Assembly.GetExecutingAssembly();
@@ -42,7 +47,7 @@ public static class MauiProgram
     }
     public static IServiceProvider Services { get; private set; }
 
-    public static MauiAppBuilder RegisterIOTServices(this MauiAppBuilder builder)
+    public static MauiAppBuilder RegisterCustodyaServices(this MauiAppBuilder builder)
     {
         builder.Services.AddSingleton<IGenericRealtimeDatabase<PlantsModel>, FirebaseRealtimeDatabaseService<PlantsModel>>();
         builder.Services.AddSingleton<IGenericRealtimeDatabase<GeoLocationModel>, FirebaseRealtimeDatabaseService<GeoLocationModel>>();
@@ -51,12 +56,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<IGenericDatabase<SecurityModel>>(x => x.GetService<IGenericRealtimeDatabase<SecurityModel>>());
         builder.Services.AddSingleton<IGenericDatabase<SecurityModel>>(x => x.GetService<IGenericRealtimeDatabase<SecurityModel>>());
         builder.Services.AddSingleton<EventHubService>();
-        /*builder.Services.AddSingleton<TelemetryJsonParser<GeoLocationModel>>();
-        builder.Services.AddSingleton<TelemetryDatabaseUpdaterService<GeoLocationModel>>();
-        builder.Services.AddSingleton<TelemetryJsonParser<SecurityModel>>();
-        builder.Services.AddSingleton<TelemetryDatabaseUpdaterService<SecurityModel>>();
-        builder.Services.AddSingleton<TelemetryJsonParser<PlantsModel>>();
-        builder.Services.AddSingleton<TelemetryDatabaseUpdaterService<PlantsModel>>();*/
+        builder.Services.AddSingleton<DeviceTwinService>();
+        builder.Services.AddSingleton<ErrorAlertProviderService>();
         return builder;
     }
 }

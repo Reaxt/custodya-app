@@ -3,6 +3,9 @@ using System.Collections.ObjectModel;
 using Custodya.Repos;
 using System.Reflection;
 using Microsoft.Azure.Devices;
+using Firebase.Auth;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
 
 namespace Custodya;
 
@@ -12,58 +15,37 @@ public partial class PlantsPage : ContentPage
     private ObservableCollection<Sensor> _sensors = new();
     private ObservableCollection<Actuator> _actuators = new();
     private static RegistryManager registryManager;
-
+    private ChartRepo<PlantsModel> _humidityChartRepo;
+    private ChartRepo<PlantsModel> _moistureChartRepo;
+    private ChartRepo<PlantsModel> _waterChartRepo;
+    private ChartRepo<PlantsModel> _temperatureChartRepo;
     /// <summary>
     /// binds the plant database to its corespiting XMAL part
     /// </summary>
     public PlantsPage()
     {
-        registryManager = RegistryManager.CreateFromConnectionString(App.Settings.EventHubConnectionString);
+        _humidityChartRepo = new ChartRepo<PlantsModel>(DataRepoProvider.PlantsDatabase.Items, "Humidity", 20);
+        _moistureChartRepo = new ChartRepo<PlantsModel>(DataRepoProvider.PlantsDatabase.Items, "Moisture", 20);
+        _waterChartRepo    = new ChartRepo<PlantsModel>(DataRepoProvider.PlantsDatabase.Items, "Water", 20);
+        _temperatureChartRepo = new ChartRepo<PlantsModel>(DataRepoProvider.PlantsDatabase.Items, "Temperature", 20);
         InitializeComponent();
+        
         this.BindingContext = DataRepoProvider.PlantsDatabase;
-        try
-        {
-            foreach (PropertyInfo propertyInfo in DataRepoProvider.PlantsDatabase.LatestItem.GetType().GetProperties())
-            {
-                try
-                {
-                    if (Sensor.PlantSensors.Contains(propertyInfo.Name) && _sensors != null && !_sensors.Any(s => s.Name == propertyInfo.Name))
-                    {
-                        if (propertyInfo.PropertyType == typeof(float))
-                        {
-                            _sensors.Add(new()
-                            {
-                                Name = propertyInfo.Name,
-                                Value = propertyInfo.GetValue(DataRepoProvider.PlantsDatabase.LatestItem, null),
-                                State = (float)propertyInfo.GetValue(DataRepoProvider.PlantsDatabase.LatestItem, null) < 100
-                                || (float)propertyInfo.GetValue(DataRepoProvider.PlantsDatabase.LatestItem, null) > 0
-                                ? Sensor.SensorState.Valid : Sensor.SensorState.Error
-                            });
-                        }
-                    }
-                    else if (Actuator.PlantActuators.Contains(propertyInfo.Name) && !_actuators.Any(a => a.Name == propertyInfo.Name))
-                    {
-                        _actuators.Add(new()
-                        {
-                            Name = propertyInfo.Name,
-                            State = (bool)propertyInfo.GetValue(DataRepoProvider.PlantsDatabase.LatestItem, null)
-                        });
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
-
-        Sensors.ItemsSource = _sensors;
-        Actuators.ItemsSource = _actuators;
+        HumidityChart.Series = _humidityChartRepo.DataSeries;
+        TemperatureChart.Series = _temperatureChartRepo.DataSeries;
+        WaterChart.Series = _waterChartRepo.DataSeries;
+        MoistureChart.Series = _moistureChartRepo.DataSeries;
+        
+        HumidityChart.XAxes = TemperatureChart.XAxes = WaterChart.XAxes = MoistureChart.XAxes = ChartRepo<PlantsModel>.XAxis;
+        HumidityChart.YAxes = TemperatureChart.YAxes = WaterChart.YAxes = MoistureChart.YAxes = ChartRepo<PlantsModel>.YAxis;
     }
+
+    protected override async void OnAppearing()
+    {
+        Actuators.ItemsSource = App.DeviceTwinService.PlantActuators;
+        await App.DeviceTwinService.UpdateActuators();
+    }
+
 
     private async void ibtnEditSensor_Clicked(object sender, EventArgs e)
     {
@@ -88,40 +70,10 @@ public partial class PlantsPage : ContentPage
             Console.WriteLine(ex.Message);
         }
     }
-
-    private async void toggleState_Toggled(object sender, ToggledEventArgs e)
-    {
-        // Logic goes here
-        //loop trought Actuators if name ==  fan or led then : change value 
-        var twin = await registryManager.GetTwinAsync(App.Settings.DeviceId);
-        Switch switchToggle = (Switch)sender;
-
-
-        var patch =
-                $@"{{
-                    properties: {{
-                        desired: {{
-                            actuatorControl: {{
-                                Fan:{{
-                                    manualState : {switchToggle.IsToggled.ToString().ToLower()}
-                                }},
-                                Led:{{
-                                    manualState : {switchToggle.IsToggled.ToString().ToLower()}
-                                }}
-                            }}
-                        }}
-                    }}
-                }}
-        ";
-
-        await registryManager.UpdateTwinAsync(twin.DeviceId, patch, twin.ETag);
-
-
-    }
-
-
     private async void ibtnAccount_Clicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync($"//{Shell.Current.CurrentItem.Route}/Account");
+        await Shell.Current.GoToAsync($"//{Shell.Current.CurrentItem.Route}Account");
     }
+    
+
 }

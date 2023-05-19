@@ -7,6 +7,9 @@ using Microsoft.Azure.Devices.Client;
 using Microsoft.Azure.Devices.Shared;
 using Microsoft.Azure.Devices;
 using Newtonsoft.Json;
+using Custodya.Services;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
 
 namespace Custodya;
 
@@ -18,10 +21,11 @@ public partial class SecurityPage : ContentPage
     private ObservableCollection<Sensor> _sensors = new();
     private ObservableCollection<Actuator> _actuators = new();
     private static RegistryManager registryManager;
-    
+    private ChartRepo<SecurityModel> _loudnessChart;
 
     public SecurityPage()
 	{
+        _loudnessChart = new ChartRepo<SecurityModel>(DataRepoProvider.SecurityDatabase.Items, "Loudness", 20);
         InitializeComponent();
         registryManager = RegistryManager.CreateFromConnectionString(App.Settings.EventHubConnectionString);
 
@@ -30,77 +34,24 @@ public partial class SecurityPage : ContentPage
         {
             controlFrame.IsVisible = false;
         }
-        try
-        {
-            foreach (PropertyInfo propertyInfo in DataRepoProvider.SecurityDatabase.LatestItem.GetType().GetProperties())
-            {
-                try
-                {
-                    if (Sensor.SecuritySensors.Contains(propertyInfo.Name) && _sensors != null && !_sensors.Any(s => s.Name == propertyInfo.Name))
-                    {
-                        if (propertyInfo.PropertyType == typeof(float))
-                        {
-                            _sensors.Add(new()
-                            {
-                                Name = propertyInfo.Name,
-                                Min = 0,
-                                Max = 100,
-                                Value = propertyInfo.GetValue(DataRepoProvider.SecurityDatabase.LatestItem, null),
-                                State = (float)propertyInfo.GetValue(DataRepoProvider.SecurityDatabase.LatestItem, null) < 100
-                                || (float)propertyInfo.GetValue(DataRepoProvider.SecurityDatabase.LatestItem, null) > 0
-                                ? Sensor.SensorState.Valid : Sensor.SensorState.Error
-                            });
-                        }
-                        else
-                        {
-                            if(propertyInfo.PropertyType == typeof(bool))
-                            {
-                                _sensors.Add(new()
-                                {
-                                    Name = propertyInfo.Name,
-                                    Value = propertyInfo.GetValue(DataRepoProvider.SecurityDatabase.LatestItem, null),
-                                    State = (bool) propertyInfo.GetValue(DataRepoProvider.SecurityDatabase.LatestItem, null) ? Sensor.SensorState.Error : Sensor.SensorState.Valid,
-                                    Editable = false
-                                });
-                            }
-                            else if (propertyInfo.PropertyType == typeof(SecurityModel.DoorState))
-                            {
-                                _sensors.Add(new()
-                                {
-                                    Name = propertyInfo.Name,
-                                    Value = propertyInfo.GetValue(DataRepoProvider.SecurityDatabase.LatestItem, null),
-                                    State = (SecurityModel.DoorState)propertyInfo.GetValue(DataRepoProvider.SecurityDatabase.LatestItem, null) == SecurityModel.DoorState.Closed ? Sensor.SensorState.Error : Sensor.SensorState.Valid,
-                                    Editable = false
-                                });
-                            }
-                            
-                        }
-                    }
-                    else if (Actuator.SecurityActuators.Contains(propertyInfo.Name) && !_actuators.Any(a => a.Name == propertyInfo.Name))
-                    {
-                        _actuators.Add(new()
-                        {
-                            Name = propertyInfo.Name,
-                            State = (SecurityModel.DoorState)propertyInfo.GetValue(DataRepoProvider.SecurityDatabase.LatestItem, null) == SecurityModel.DoorState.Open
-                        });
-                    }
-
-                }
-                catch (Exception ex) 
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
-
-        Sensors.ItemsSource = _sensors;
-        Actuators.ItemsSource = _actuators;
+        Chart.Series = _loudnessChart.DataSeries;
+        Chart.XAxes = ChartRepo<SecurityModel>.XAxis;
+        Chart.YAxes = ChartRepo<SecurityModel>.YAxis;
+    }
+    
+    protected override async void OnAppearing()
+    {
+        Actuators.ItemsSource = App.DeviceTwinService.SecurityActuators;
+        await App.DeviceTwinService.UpdateActuators();
     }
 
+
+
+
+    private async void ibtnAccount_Clicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync($"//{Shell.Current.CurrentItem.Route}Account");
+    }
     private async void ibtnEditSensor_Clicked(object sender, EventArgs e)
     {
         try
@@ -124,34 +75,4 @@ public partial class SecurityPage : ContentPage
             Console.WriteLine(ex.Message);
         }
     }
-
-    private async void toggleState_Toggled(object sender, ToggledEventArgs e)
-    {
-
-        var twin = await registryManager.GetTwinAsync(App.Settings.DeviceId);
-        Switch switchToggle = (Switch)sender;
-
-
-        var patch =
-                $@"{{
-                    properties: {{
-                        desired: {{
-                            actuatorControl: {{
-                                DoorLock:{{
-                                    manualState : {switchToggle.IsToggled.ToString().ToLower()}
-                                }}
-                            }}
-                        }}
-                    }}
-                }}";
-        
-        await registryManager.UpdateTwinAsync(twin.DeviceId, patch, twin.ETag);
-    }
-
-
-    private async void ibtnAccount_Clicked(object sender, EventArgs e)
-    {
-        await Shell.Current.GoToAsync($"//User/Account");
-    }
-
 }

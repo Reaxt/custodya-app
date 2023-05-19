@@ -18,8 +18,15 @@ namespace Custodya.Services
         private ConcurrentDictionary<string, int> _partitionEventCount;
         private List<IObserver<string>> _observers;
         private List<string> _telemeteryEvents;
+        private Task _eventProcessorTask; //to stop garbage collection
+        private IConnectivity _connectivity;
+        private SemaphoreSlim _telemetrySemaphore;
+        private CancellationTokenSource _eventProcessorNetworkCancel;
         public EventHubService() 
         {
+            _eventProcessorNetworkCancel= new CancellationTokenSource();
+            _connectivity = Connectivity.Current;
+            _telemetrySemaphore = new SemaphoreSlim(1, 1);
             var blobClient = new BlobContainerClient(App.Settings.StorageConnectionString, App.Settings.BlobContainerName);
             _eventProcessor = new EventProcessorClient(blobClient, App.Settings.ConsumerGroup, App.Settings.EndpointConnectionString);
             _partitionEventCount = new ConcurrentDictionary<string, int>();
@@ -27,13 +34,29 @@ namespace Custodya.Services
             _observers = new List<IObserver<string>>();
             _eventProcessor.ProcessEventAsync += ProcessEventHandler;
             _eventProcessor.ProcessErrorAsync += _eventProcessor_ProcessErrorAsync;
-            Task.Run(() => _eventProcessor.StartProcessingAsync());
+            _connectivity.ConnectivityChanged += _connectivity_ConnectivityChanged;
+            _eventProcessor.StartProcessing(_eventProcessorNetworkCancel.Token);
+        }
+        private async void _connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+        {
+            if(e.NetworkAccess != NetworkAccess.Internet)
+            {
+                if (!_eventProcessor.IsRunning)
+                {
+                    _eventProcessorNetworkCancel.Dispose();
+                    _eventProcessorNetworkCancel = new CancellationTokenSource();
+                    await _eventProcessor.StartProcessingAsync(_eventProcessorNetworkCancel.Token);
+                }
+            } else
+            {
+                _eventProcessorNetworkCancel.Cancel();
+            }
         }
 
         private async Task _eventProcessor_ProcessErrorAsync(ProcessErrorEventArgs arg)
         {
 #if ANDROID
-// Log.Error("EventHubService", $"Error: {arg.Exception.Message}");
+            //Log.Error("EventHubService", $"Error: {arg.Exception.Message}");
 #endif
         }
 
@@ -42,10 +65,10 @@ namespace Custodya.Services
             
             if(args.CancellationToken.IsCancellationRequested) return;
 
+            await _telemetrySemaphore.WaitAsync();
             string partition = args.Partition.PartitionId;
             byte[] eventBody = args.Data.EventBody.ToArray();
             string body = args.Data.EventBody.ToString();
-
             _telemeteryEvents.Add(body);
             foreach(var observer in _observers)
             {
@@ -61,19 +84,33 @@ namespace Custodya.Services
                 await args.UpdateCheckpointAsync();
                 _partitionEventCount[partition] = 0;
             }
+            _telemetrySemaphore.Release();
         }
 
         public IDisposable Subscribe(IObserver<string> observer)
         {
             if(!_observers.Contains(observer)) {
                 _observers.Add(observer);
-                //give the observer any events it may have missed
+                GiveObserverEvents(observer);
+            }
+            return new Unsubscriber<string>(_observers, observer);
+        }
+        private async void GiveObserverEvents(IObserver<string> observer)
+        {
+            await _telemetrySemaphore.WaitAsync();
+            try
+            {
                 foreach (string str in _telemeteryEvents)
                 {
                     observer.OnNext(str);
                 }
             }
-            return new Unsubscriber<string>(_observers, observer);
+            catch (Exception e)
+            {
+                MauiProgram.Services.GetService<ErrorAlertProviderService>().RaiseError($"err in GiveObserverEvents {e.Message}");
+                throw;
+            }
+            _telemetrySemaphore.Release();
         }
     }
 }

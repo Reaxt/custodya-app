@@ -1,5 +1,6 @@
 using Custodya.Models;
 using Custodya.Repos;
+using Firebase.Auth;
 using Microsoft.Azure.Devices;
 using Microsoft.Maui.Controls;
 using System.Collections.ObjectModel;
@@ -21,59 +22,14 @@ public partial class GeoPage : ContentPage
         InitializeComponent();
         this.BindingContext = DataRepoProvider.GeolocationDatabase;
         registryManager = RegistryManager.CreateFromConnectionString(App.Settings.EventHubConnectionString);
-
-        try
-        {
-            foreach (PropertyInfo propertyInfo in DataRepoProvider.GeolocationDatabase.LatestItem.GetType().GetProperties())
-            {
-                try
-                {
-                    if (Sensor.GeoSensors.Contains(propertyInfo.Name) && _sensors != null && !_sensors.Any(s => s.Name == propertyInfo.Name))
-                    {
-                        if (propertyInfo.PropertyType == typeof(string) && !propertyInfo.Name.Contains("Json"))
-                        {
-                            _sensors.Add(new()
-                            {
-                                Name = propertyInfo.Name,
-                                Value = propertyInfo.GetValue(DataRepoProvider.GeolocationDatabase.LatestItem, null),
-                                State = Sensor.SensorState.Valid,
-                                Editable = false
-                            });
-                        }
-                        else if (propertyInfo.PropertyType == typeof(bool))
-                        {
-                            _sensors.Add(new()
-                            {
-                                Name = propertyInfo.Name,
-                                Value = propertyInfo.GetValue(DataRepoProvider.GeolocationDatabase.LatestItem, null),
-                                State = (bool)propertyInfo.GetValue(DataRepoProvider.GeolocationDatabase.LatestItem, null) ? Sensor.SensorState.Error : Sensor.SensorState.Valid,
-                                Editable = false
-                            });
-                        }
-                    }
-                    else if (Actuator.GeoActuators.Contains(propertyInfo.Name) && !_actuators.Any(a => a.Name == propertyInfo.Name))
-                    {
-                        _actuators.Add(new()
-                        {
-                            Name = propertyInfo.Name,
-                            State = (bool)propertyInfo.GetValue(DataRepoProvider.GeolocationDatabase.LatestItem, null)
-                        });
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
-
-        Sensors.ItemsSource = _sensors;
         Actuators.ItemsSource = _actuators;
     }
+    protected override async void OnAppearing()
+    {
+        Actuators.ItemsSource = App.DeviceTwinService.GeoActuators;
+        await App.DeviceTwinService.UpdateActuators();
+    }
+
     private async void ibtnEditSensor_Clicked(object sender, EventArgs e)
     {
         try
@@ -98,31 +54,10 @@ public partial class GeoPage : ContentPage
         }
     }
 
-    private async void toggleState_Toggled(object sender, ToggledEventArgs e)
-    {
-        var twin = await registryManager.GetTwinAsync(App.Settings.DeviceId);
-        Switch switchToggle = (Switch)sender;
 
-
-        var patch =
-                $@"{{
-                    properties: {{
-                        desired: {{
-                            actuatorControl: {{
-                                Buzzer:{{
-                                    manualState : {switchToggle.IsToggled}
-                                }}
-                            }}
-                        }}
-                    }}
-                }}
-        ";
-
-        await registryManager.UpdateTwinAsync(twin.DeviceId, patch, twin.ETag);
-    }
 
     private async void ibtnAccount_Clicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync($"//{Shell.Current.CurrentItem.Route}/Account");
+        await Shell.Current.GoToAsync($"//{Shell.Current.CurrentItem.Route}Account");
     }
 }
