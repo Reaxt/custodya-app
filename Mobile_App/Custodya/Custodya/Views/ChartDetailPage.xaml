@@ -8,7 +8,7 @@
     <VerticalStackLayout>
         <Label x:Name="Title" HorizontalOptions="Center"/>
         <Frame HeightRequest="600">
-            <charts:CartesianChart x:Name="BigChart" ZoomMode="Both"/>
+            <charts:CartesianChart x:Name="BigChart" ZoomMode="X"/>
         </Frame>
         <Button Text="Back" x:Name="btnBack" Clicked="btnBack_Clicked"/>
     </VerticalStackLayout>
