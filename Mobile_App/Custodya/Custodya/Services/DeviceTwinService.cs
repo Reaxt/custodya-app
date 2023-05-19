@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,8 +20,10 @@ namespace Custodya.Services
     {
         IConnectivity _connectivity;
         EventHubService _eventHubService;
+        Stopwatch _stopwatch;
         private const string ACTUATOR_CONTROL_KEY = "actuatorControl";
         private const string UPDATE_KEY = "twinReportUpdate";
+        private const int TIMEOUT_MS = 250;
 
         private static string[] _securityActuatorsNames = new[] { "DoorLock" };
         private static string[] _plantActuatorsNames = new[] { "Led", "Fan" };
@@ -41,6 +44,8 @@ namespace Custodya.Services
         private SemaphoreSlim _semaphore_update = new SemaphoreSlim(1, 1);
         public DeviceTwinService(EventHubService eventHubServier)
         {
+            _stopwatch = new Stopwatch();
+            _stopwatch.Start();
             _connectivity = Connectivity.Current;
             _registryManager = RegistryManager.CreateFromConnectionString(App.Settings.EventHubConnectionString);
             SecurityActuators = new ObservableCollection<Actuator>();
@@ -182,10 +187,18 @@ namespace Custodya.Services
             JToken parsed = message[UPDATE_KEY];
             if (parsed != null)
             {
-                dynamic test = parsed.ToObject<bool>();
-                if(test)
+                bool state = parsed.ToObject<bool>();
+                if(state)
                 {
-                    await UpdateActuators();
+                    if(_stopwatch.IsRunning)
+                    {
+                        //we like responsivness, but we dont wanna spam the IoT hub, so if we boot up and have a lot of update requests this stops that from causing issues.
+                        if (_stopwatch.ElapsedMilliseconds > TIMEOUT_MS)
+                        {
+                            _stopwatch.Restart();
+                            await UpdateActuators();
+                        }
+                    }
                 }
             }
         }
