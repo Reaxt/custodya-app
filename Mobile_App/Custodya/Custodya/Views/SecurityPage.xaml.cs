@@ -68,4 +68,9 @@ public partial class SecurityPage : ContentPage
             Console.WriteLine(ex.Message);
         }
     }
+
+    private async void btnChart_Clicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync($"//ChartView?SecurityChart=Loudness&PlantsChart={null}&back={Shell.Current.CurrentItem.Route}");
+    }
 }

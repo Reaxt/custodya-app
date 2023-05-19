@@ -86,6 +86,9 @@
 	  <MauiXaml Update="ControlTemplates\LoadingPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\ChartDetailPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\GeoPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

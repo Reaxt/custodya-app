@@ -26,6 +26,7 @@
                         <Frame HeightRequest="250">
                             <charts:CartesianChart x:Name="Chart" Series="{Binding Series}" ZoomMode="None"/>
                         </Frame>
+                        <Button Text="See more" x:Name="btnChart" Clicked="btnChart_Clicked"/>
                     </VerticalStackLayout>
                 </Frame>
             </VerticalStackLayout>
