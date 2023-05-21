@@ -1,83 +1,72 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"             
+             xmlns:charts="clr-namespace:LiveChartsCore.SkiaSharpView.Maui;assembly=LiveChartsCore.SkiaSharpView.Maui"
+             xmlns:templates="clr-namespace:Custodya.ControlTemplates"
              x:Class="Custodya.PlantsPage"
              Title="Plants">
-    <VerticalStackLayout Margin="10">
-        <HorizontalStackLayout Margin="0,0,0,20">
-            <Label Text="custodya" FontAttributes="Bold" FontSize="Large" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
-            <ImageButton  Source="user.png" HeightRequest="40" Margin="230,0,0,0"/>
-        </HorizontalStackLayout>
-        <Frame Margin="0,0,0,10">
-            <VerticalStackLayout>
-                <HorizontalStackLayout>
-                    <ImageButton BackgroundColor="Lime"/>
-                    <Label Text="Status" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1.25*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Frame Grid.Column="0">
+    <ScrollView>
+        <VerticalStackLayout Margin="10">
+            <HorizontalStackLayout Margin="0,0,0,20">
+                <Label Text="custodya" FontAttributes="Bold" FontSize="Large" VerticalOptions="Center" HorizontalOptions="StartAndExpand"/>
+                <ImageButton  Source="user.png" HeightRequest="40" Margin="225,0,0,0" x:Name="ibtnAccount" Clicked="ibtnAccount_Clicked"/>
+            </HorizontalStackLayout>
+            <Frame Margin="0,0,0,10">
+                <VerticalStackLayout>
+                    <Label Text="Sensors"/>
+                    <Frame Margin="0,0,0,5">
                         <VerticalStackLayout>
-                            <Label Text="Temperature:"/>
-                            <Label Text="{Binding LatestItem.Temperature, StringFormat='{0}°C'}"/>
+                            <Label Text="{Binding LatestItem.Humidity, StringFormat='Humidity: {0}'}"/>
+                            <Frame HeightRequest="250">
+                                <charts:CartesianChart x:Name="HumidityChart" ZoomMode="None"/>
+                            </Frame>
+                            <Button Text="See more" x:Name="btnHumidity" Clicked="btnHumidity_Clicked"/>
                         </VerticalStackLayout>
                     </Frame>
-                    <Frame Grid.Column="1">
+                    <Frame Margin="0,0,0,5">
                         <VerticalStackLayout>
-                            <Label Text="Humidity:"/>
-                            <Label Text="{Binding LatestItem.Humidity, StringFormat='{0}%'}"/>
+                            <Label Text="{Binding LatestItem.Temperature, StringFormat='Temperature: {0}'}"/>
+                            <Frame HeightRequest="250">
+                                <charts:CartesianChart x:Name="TemperatureChart" />
+                            </Frame>
+                            <Button Text="See more" x:Name="btnTemperature" Clicked="btnTemperature_Clicked"/>
                         </VerticalStackLayout>
                     </Frame>
-                    <Frame Grid.Column="2">
+                    <Frame Margin="0,0,0,5">
                         <VerticalStackLayout>
-                            <Label Text="Water:"/>
-                            <Label Text="{Binding LatestItem.Moisture}"/>
+                            <Label Text="{Binding LatestItem.Water, StringFormat='Water: {0}'}"/>
+                            <Frame HeightRequest="250">
+                                <charts:CartesianChart x:Name="WaterChart" ZoomMode="None"/>
+                            </Frame>
+                            <Button Text="See more" x:Name="btnWater" Clicked="btnWater_Clicked"/>
                         </VerticalStackLayout>
                     </Frame>
-                </Grid>
-            </VerticalStackLayout>
-        </Frame>
-        <Frame>
-            <VerticalStackLayout>
-                <HorizontalStackLayout>
-                    <ImageButton BackgroundColor="Lime"/>
-                    <Label Text="Control" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-                <HorizontalStackLayout>
-                    <Label Text="Temperature" WidthRequest="175"/>
-                    <Button Text="Manual" WidthRequest="80"/>
-                    <Switch/>
-                    <Label Text="On" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-                <HorizontalStackLayout>
-                    <Label Text="Humidity" WidthRequest="175"/>
-                    <Button Text="Auto" WidthRequest="80"/>
-                    <Switch/>
-                    <Label Text="Off" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-                <HorizontalStackLayout>
-                    <Label Text="Soil Moisture" WidthRequest="175"/>
-                    <Button Text="Manual" WidthRequest="80"/>
-                    <Switch/>
-                    <Label Text="Off" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-                <HorizontalStackLayout>
-                    <Label Text="Fan" WidthRequest="175"/>
-                    <Button Text="Manual" WidthRequest="80"/>
-                    <Switch/>
-                    <Label Text="On" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-                <HorizontalStackLayout>
-                    <Label Text="Light" WidthRequest="175"/>
-                    <Button Text="Auto" WidthRequest="80"/>
-                    <Switch/>
-                    <Label Text="On" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-            </VerticalStackLayout>
-        </Frame>
-    </VerticalStackLayout>
+                    <Frame>
+                        <VerticalStackLayout>
+                            <Label Text="{Binding LatestItem.Moisture, StringFormat='Moisture: {0}'}"/>
+                            <Frame HeightRequest="250">
+                                <charts:CartesianChart x:Name="MoistureChart" ZoomMode="None"/>
+                            </Frame>
+                            <Button Text="See more" x:Name="btnMoisture" Clicked="btnMoisture_Clicked"/>
+                        </VerticalStackLayout>
+                    </Frame>
+                </VerticalStackLayout>
+            </Frame>
+            <Frame x:Name="controlFrame">
+                <VerticalStackLayout>
+                    <Label Text="Actuators"/>
+                    <CollectionView x:Name="Actuators">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <templates:ActuatorControlView/>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

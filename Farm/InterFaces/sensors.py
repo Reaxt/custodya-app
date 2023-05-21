@@ -6,7 +6,7 @@ class AReading:
     """Class for sensor readings. Defines possible types of readings and reading units using enums.
     """
 
-    class Type(str, Enum):
+    class ReadingType(str, Enum):
         """Enum defining all possible types of readings that sensors might make.
         """
         # Add new reading types here.
@@ -37,10 +37,10 @@ class AReading:
         PITCH_ROLL = "PitchAndRoll"
         GPS = "GPS Coords"
 
-    def __init__(self, type: Type, unit: Unit, value: Any) -> None:
+    def __init__(self, type: ReadingType, unit: Unit, value: Any) -> None:
         """Create new AReading based on a type of reading its units and value
 
-        :param Type type: Type of reading taken from Type enum.
+        :param ReadingType type: Type of reading taken from Type enum.
         :param Unit unit: Readings units taken from Unit enum.
         :param Any value: Value of the reading.
         """
@@ -69,10 +69,10 @@ class ISensor(ABC):
 
     # Properties to be initialized in constructor of implementation classes
     _sensor_model: str
-    reading_type: AReading.Type
+    reading_type: AReading.ReadingType
 
     @abstractmethod
-    def __init__(self, gpio: int,  model: str, type: AReading.Type):
+    def __init__(self, gpio: int,  model: str, type: AReading.ReadingType):
         """Constructor for Sensor  class. May be called from childclass.
 
         :param str model: specific model of sensor hardware. Ex. AHT20 or LTR-303ALS-01

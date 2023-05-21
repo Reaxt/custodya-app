@@ -3,13 +3,17 @@ using Firebase.Auth;
 
 namespace Custodya;
 
+/// <summary>
+/// sets up the context for the account page then if the user clicks the logout button it will redirect them to the login page, and will also have the proper error catching details if needed
+/// </summary>
 public partial class AccountPage : ContentPage
 {
 	public AccountPage()
 	{
 		InitializeComponent();
-        this.BindingContext = AuthService.UserCreds.User.Info;        
-	}
+        this.BindingContext = AuthService.UserCreds.User.Info;
+        lblType.Text = $"Type: {Shell.Current.CurrentItem.Route}";
+    }
 
 	private async void btnLogout_Clicked(object sender, EventArgs e)
 	{
@@ -21,6 +25,7 @@ public partial class AccountPage : ContentPage
             {
                 // Connection to internet is available
                 AuthService.Client.SignOut();
+                AuthService.ResetCachedCredentials();
                 await Shell.Current.GoToAsync("//Login");
             }
             else

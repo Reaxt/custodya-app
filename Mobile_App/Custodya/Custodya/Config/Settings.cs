@@ -8,8 +8,10 @@ namespace Custodya.Config
 {
     public class Settings
     {
-        //Event Hub Connection Strings
+        //IoT Hub Connection Strings
         public string EventHubConnectionString { get; set; }
+
+        public string EndpointConnectionString { get; set; }
 
         public string EventHubName { get; set; }
 
@@ -18,11 +20,7 @@ namespace Custodya.Config
         public string StorageConnectionString { get; set; }
 
         public string BlobContainerName { get; set; }
-
-
-        //IoT Hub Connection Strings
-       // public string HubConnectionString { get; set; }
-       // public string DeviceId { get; set; }
+        public string DeviceId { get; set; }
 
         //Firebase Strings and URL
         public int RefreshRate { get; set; }

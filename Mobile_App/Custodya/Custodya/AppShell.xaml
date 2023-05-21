@@ -8,6 +8,9 @@
     <ShellContent
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="Login" />
+    <ShellContent
+        ContentTemplate="{DataTemplate local:ChartDetailPage}"
+        Route="ChartView" />
     <TabBar Route="User">
         <Tab Title="Security" Icon="security.png">
             <ShellContent                
@@ -24,7 +27,7 @@
         <Tab Title="Account" Icon="user.png">
             <ShellContent                
                 ContentTemplate="{DataTemplate local:AccountPage}"
-                Route="Account" 
+                Route="UserAccount" 
                 />
         </Tab>
     </TabBar>
@@ -44,7 +47,7 @@
         <Tab Title="Account" Icon="user.png">
             <ShellContent                
                 ContentTemplate="{DataTemplate local:AccountPage}"
-                Route="Account" 
+                Route="OwnerAccount" 
                 />
         </Tab>
     </TabBar>

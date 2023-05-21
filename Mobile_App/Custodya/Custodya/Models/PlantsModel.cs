@@ -12,24 +12,28 @@ namespace Custodya.Models
     /// <summary>
     /// The relevant model for plant data
     /// </summary>
-    [Serializable, ModelJsonName("Plants")]
+    [Serializable, ModelJsonName("Plants"), ModelHasRuleSensors]
     public class PlantsModel : IHasUKey, ISubsystemState
     {
         /// <summary>
         /// The humidity sensor value
         /// </summary>
+        [RuleCompatibleProperty(RuleCompatibleProperty.EntryOption.Float)]
         public float Humidity { get; set; }
         /// <summary>
         /// The moisture sensor value
         /// </summary>
+        [RuleCompatibleProperty(RuleCompatibleProperty.EntryOption.Float)]
         public float Moisture { get; set; }
         /// <summary>
         /// The temperature sensor value
         /// </summary>
+        [RuleCompatibleProperty(RuleCompatibleProperty.EntryOption.Float)]
         public float Temperature { get; set; }
         /// <summary>
         /// The water sensor value
         /// </summary>
+        [RuleCompatibleProperty(RuleCompatibleProperty.EntryOption.Float)]
         public float Water { get; set; }
         /// <summary>
         /// The fan state (true = on. false = off)

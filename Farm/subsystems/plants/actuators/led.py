@@ -13,11 +13,9 @@ from InterFaces.actuators import IActuator, ACommand
 
 OUTPIN = 16
 COUNT = 10
-OPEN_COMMAND = "on"
-CLOSE_COMMAND = "off"
-TARGET = "led"
-MAX_BRIGHTNESS = 255
-MIN_BRIGHTNESS = 0
+OPEN_COMMAND = True
+CLOSE_COMMAND = False
+TARGET = "Led"
 
 
 class LedController(IActuator):
@@ -26,7 +24,7 @@ class LedController(IActuator):
     def __init__(
         self, gpio: int = OUTPIN, initial_state: dict = {"value": CLOSE_COMMAND}
     ):
-        self.led = GroveWS2813RgbStrip(gpio, COUNT, MIN_BRIGHTNESS)
+        self.led = GroveWS2813RgbStrip(gpio, COUNT)
         self._current_state = {"value": "NEITHER"}
         starting_command = ACommand(TARGET, json.dumps(initial_state))
 
@@ -41,15 +39,24 @@ class LedController(IActuator):
         if data["value"] == self._current_state["value"]:
             return False
         if data["value"] == OPEN_COMMAND:
-            self.led.setBrightness(MAX_BRIGHTNESS)
+            for i in range(self.led.numPixels()):
+                self.led.setPixelColor(i, Color(255, 255, 255))
+                self.led.show()
+                sleep(50/1000.0)
         elif data["value"] == CLOSE_COMMAND:
-            self.led.setBrightness(MIN_BRIGHTNESS)
-        self._current_state = data;
+            for i in range(self.led.numPixels()):
+                self.led.setPixelColor(i, Color(0, 0, 0))
+                self.led.show()
+                sleep(50/1000.0)
+        self._current_state = data
         return True
+
+
     def get_current_state(self) -> Any:
         return True if self._current_state["value"] == OPEN_COMMAND else False
     def get_actuator_name(self) -> str:
-        return "Led"
+        return TARGET
+
 if __name__ == "__main__":
     ledtest = LedController()
     while True:

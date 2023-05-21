@@ -16,16 +16,17 @@ class WaterSensor(ISensor):
         self,
         gpio: int,
         model: str = MODEL_NAME,
-        type: AReading.Type = AReading.Type.WATER,
+        type: AReading.ReadingType = AReading.ReadingType.WATER,
     ):
         self._sensor = ADC(gpio)
         self.gpio = gpio
 
     def read_sensor(self) -> list[AReading]:
+        value = self._sensor.read(2)
         res = AReading(
-            AReading.Type.WATER,
+            AReading.ReadingType.WATER,
             AReading.Unit.WATER,
-            float("{0:.2f}".format(self._sensor.read(self.gpio) / 10)),
+            value
         )
         return [res]
 

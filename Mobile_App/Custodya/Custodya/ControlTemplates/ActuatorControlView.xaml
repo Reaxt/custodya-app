@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Custodya.ControlTemplates.ActuatorControlView">
+    <Grid RowDefinitions="*" ColumnDefinitions="*, 2.5*, *" ColumnSpacing="5">
+        <Label Text="{Binding Name}" Grid.Column="0" VerticalOptions="Center"/>
+        <Grid x:Name ="ButtonsGrid" RowDefinitions="*" ColumnDefinitions="*, *" Grid.Column="1"  ColumnSpacing="10">
+            <Button x:Name="ControlMethodButton" Text="{Binding ControlMethod}" Clicked="ControlMethodButton_Clicked" CommandParameter="{Binding .}" Grid.Column="0"/>
+            <Button x:Name="EditRulesButton" Text="Edit Rules" Grid.Column="1" Clicked="EditRulesButton_Clicked" CommandParameter="{Binding .}"/>
+        </Grid>
+        <Switch x:Name="toggleState" IsToggled="{Binding State}" Grid.Column="2"/>
+    </Grid>
+</ContentView>

@@ -23,8 +23,8 @@
                 FontSize="26"
                 Margin="0,0,0,25"/>
 
-            <Label Text="Email"/>
-            <Label Text="{Binding Email}" Margin="0,0,0,25"/>
+            <Label x:Name="lblType" Margin="0,0,0,25"/>
+            <Label Text="{Binding Email, StringFormat='Email: {0}'}" Margin="0,0,0,25"/>
 
             <Button x:Name="btnLogout" Clicked="btnLogout_Clicked"  Text="Log Out" Margin="0,0,0,30"/>
 

@@ -10,6 +10,7 @@ using System.Reflection;
 using Custodya.Attributes;
 using System.Reactive.Linq;
 using System.Reactive;
+using System.Threading;
 
 namespace Custodya.Services
 {
@@ -19,6 +20,7 @@ namespace Custodya.Services
         private string _jsonModelKey;
         private List<T> _previousVals;
         private List<IObserver<T>> _observers;
+        private SemaphoreSlim _jsonParserSemaphore;
         public TelemetryJsonParser(EventHubService hubService) 
         {
             var attr = typeof(T).GetCustomAttribute<ModelJsonName>();
@@ -30,6 +32,7 @@ namespace Custodya.Services
             {
                 _jsonModelKey = attr.Name;
             }
+            _jsonParserSemaphore = new SemaphoreSlim(1, 1);
             _previousVals = new List<T>();
             _observers = new List<IObserver<T>>();
             _hubService = hubService;
@@ -47,14 +50,14 @@ namespace Custodya.Services
             throw new NotImplementedException();
         }
 
-        public void OnNext(string value)
+        public async void OnNext(string value)
         {
             JObject telemetry = JObject.Parse(value);
             //is it for us?
             JToken modelJson = telemetry[_jsonModelKey];
-            T model = null;
             if(modelJson != null)
             {
+                T model = null;
                 model = modelJson.ToObject<T>();
                 long posix = (long)telemetry["timestamp"];
                 var timeOffset = DateTimeOffset.FromUnixTimeSeconds(posix);
@@ -62,13 +65,15 @@ namespace Custodya.Services
                 SendOutModel(model);
             }    
         }
-        private void SendOutModel(T model)
+        private async void SendOutModel(T model)
         {
+            await _jsonParserSemaphore.WaitAsync();
             _previousVals.Add(model);
             foreach (var observer in _observers)
             {
                 observer.OnNext(model);
             }
+            _jsonParserSemaphore.Release();
         }
 
         public IDisposable Subscribe(IObserver<T> observer)
@@ -77,12 +82,18 @@ namespace Custodya.Services
             {
                 _observers.Add(observer);
                 //send out all we missed
-                foreach(var item in _previousVals)
-                {
-                    observer.OnNext(item);
-                }
+                HandoutPreviousVals(observer);
             }
             return new Unsubscriber<T>(_observers, observer);
+        }
+        public async void HandoutPreviousVals(IObserver<T> observer)
+        {
+            await _jsonParserSemaphore.WaitAsync();
+            foreach (var item in _previousVals)
+            {
+                observer.OnNext(item);
+            }
+            _jsonParserSemaphore.Release();
         }
     }
 }

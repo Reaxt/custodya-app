@@ -8,13 +8,13 @@ MODEL_NAME = "Vibration Sensor"
 
 #theres a lot wrong here i think, I can't really work on refactoring this in its state. Is this still used?
 class VibrationSensor(ISensor):
-    def __init__(self, gpio = 0,  model = MODEL_NAME, type = AReading.Type.VIBRATION):
+    def __init__(self, gpio = 0,  model = MODEL_NAME, type = AReading.ReadingType.VIBRATION):
         self.accel_device = rt.get_acceleration_device()
 
     def read_sensor(self) -> list[AReading]:
         vibration_level = self.calculate_vibration_level()
         res = [
-        AReading(AReading.Type.VIBRATION,AReading.Unit.VIBRATION,vibration_level)
+        AReading(AReading.ReadingType.VIBRATION,AReading.Unit.VIBRATION,vibration_level)
         ]
         return res
 
