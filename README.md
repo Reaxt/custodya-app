@@ -559,7 +559,7 @@ Although the current version of the application provides essential functionality
 
 1. **Notification System:** Implementing a comprehensive notification system to keep users informed about important events, alerts, or updates related to their account, security, or plant status.
 
-2. **Transportation Notifications:** Adding the ability to receive notifications regarding transportation status, such as package delivery updates or vehicle tracking information.
+2. **Transportation Notifications:** Adding the ability to receive notifications regarding transportation status, such location updates or vehicle tracking information.
 
 3. **Pods System:** Developing a pod system for each subsystem to neatly organize the data in one view.
 
