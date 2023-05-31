@@ -352,3 +352,4 @@ MigrationBackup/
 
 #VSCode files
 *.code-workspace
+Mobile_App/Custodya/Custodya/Config/appsettings.json
